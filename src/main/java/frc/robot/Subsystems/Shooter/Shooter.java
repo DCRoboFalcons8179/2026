@@ -4,21 +4,65 @@
 
 package frc.robot.Subsystems.Shooter;
 
-import com.ctre.phoenix6.hardware.TalonFX;
+import static frc.robot.Constants.Shooter.OUTPUT_SPEED;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.SMF.StateMachine;
+import frc.robot.Subsystems.Shooter.ShooterIO.ShooterInputs;
 
-public class Shooter extends SubsystemBase {
-  private final TalonFX leadShooter;
+public class Shooter extends StateMachine<Shooter.State> {
+    private final ShooterIO io;
 
-  /** Creates a new Shooter. */
-  public Shooter() {
-    leadShooter = new TalonFX(Constants.Shooter.leadShooterID);
-  }
+    private final ShooterInputs inputs = new ShooterInputs();
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+    public Shooter(ShooterIO io) {
+        super("Shooter", State.UNDETERMINED, State.class);
+        this.io = io;
+
+        io.updateInputs(inputs);
+
+        registerStateCommands();
+        registerStateTransitions();
+    }
+
+    public void registerStateCommands() {
+
+        registerStateCommand(State.IDLE, new InstantCommand(io::stop));
+
+        registerStateCommand(State.CHARGE, new SequentialCommandGroup(
+                new InstantCommand(() -> io.setShooterTargetVelocity(OUTPUT_SPEED)),
+                new WaitCommand(0.25),
+                new WaitUntilCommand(() -> io.isCharged()),
+                new WaitCommand(0.1),
+                transitionCommand(State.SHOOT)));
+    }
+
+    public void registerStateTransitions() {
+        addOmniTransition(State.IDLE);
+        addOmniTransition(State.CHARGE);
+        addOmniTransition(State.SHOOT);
+    }
+
+    @Override
+    protected void determineSelf() {
+        setState(State.IDLE);
+    }
+
+    @Override
+    protected void update() {
+        io.updateInputs(inputs);
+        SmartDashboard.putString("Shooter State", getState().toString());
+    }
+
+    public enum State {
+        // states
+        UNDETERMINED,
+        IDLE,
+        CHARGE,
+        SHOOT
+    }
 }
