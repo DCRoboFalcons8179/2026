@@ -1,4 +1,3 @@
-
 package frc.robot.SMF.transitions;
 
 import edu.wpi.first.wpilibj2.command.Command;

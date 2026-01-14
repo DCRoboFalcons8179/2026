@@ -1,4 +1,3 @@
-
 package frc.robot.SMF.graph;
 
 import frc.robot.SMF.transitions.TransitionBase;
