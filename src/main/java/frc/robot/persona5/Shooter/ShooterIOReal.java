@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Shooter;
+package frc.robot.persona5.Shooter;
 
 import static frc.robot.Constants.Shooter.*;
 
