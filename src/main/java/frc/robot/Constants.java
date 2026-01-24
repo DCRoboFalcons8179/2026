@@ -55,4 +55,20 @@ public final class Constants {
     /// The mode for the motors when innactive
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
   }
+
+  public static class Intake {
+    // ID for feeder
+    public static final int FEEDER_ID = 1;
+    // ID for extruder
+    public static final int EXTRUDER_ID = 0;
+
+    // motor velocity (current just a placeholder number before being calculated)
+    public static final double FEEDER_SPEED_IN = 10;
+    public static final double FEEDER_SPEED_OUT = -10;
+
+    // Neutral Mode for feeder
+    public static final NeutralModeValue FEEDER_NEUTRAL_MODE = NeutralModeValue.Coast;
+    // Neutral Mode for Extruder
+    public static final NeutralModeValue EXTRUDER_NEUTRAL_MODE = NeutralModeValue.Brake;
+  }
 }

@@ -5,20 +5,39 @@
 package frc.robot.subsystems.Intake;
 
 import com.ctre.phoenix6.hardware.TalonFXS;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class IntakeIOReal implements IntakeIO {
 
-  //PID control
-  private PIDController pid = new PIDController(0, 0, 0);
+  // PID control
+  private PIDController ExtruderPID = new PIDController(0.25, 0, 0);
 
-  protected final TalonFXS intake = new TalonFXS(0);
-  protected final TalonFXS hinge = new TalonFXS(0);
+  // Motors
+  protected final TalonFXS feeder = new TalonFXS(Constants.Intake.FEEDER_ID);
+  protected final TalonFXS extruder = new TalonFXS(Constants.Intake.EXTRUDER_ID);
+
   public IntakeIOReal() {
-
+    configureMotors();
   }
 
+  private void configureMotors() {
+    feeder.setNeutralMode(Constants.Intake.FEEDER_NEUTRAL_MODE);
+    extruder.setNeutralMode(Constants.Intake.EXTRUDER_NEUTRAL_MODE);
+  }
 
+  public void setFeederTargetVelocity(double velocity) {
+    feeder.set(velocity);
+  }
+
+  public void stopFeeder() {
+    feeder.set(0);
+    feeder.stopMotor();
+  }
+
+  @Override
+  public void updateInputs(IntakeInputs inputs) {
+    inputs.current = feeder.getTorqueCurrent().getValueAsDouble();
+    inputs.encoderPosition = feeder.getPosition().getValueAsDouble();
+  }
 }
