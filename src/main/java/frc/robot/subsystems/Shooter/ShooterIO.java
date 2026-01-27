@@ -21,4 +21,8 @@ public interface ShooterIO {
   public default boolean isCharged() {
     return false;
   }
+
+  public default void moveTurret(double position) {}
+
+  public default void tiltShooter(double position) {}
 }

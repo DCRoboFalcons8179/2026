@@ -33,12 +33,12 @@ public final class Constants {
   }
 
   public static class Shooter {
-    /// Shooter ID of Lead Shooter
+    /// ID of Lead Shooter
     public static final int LEAD_SHOOTER_ID = 1;
     /// boolean for the Lead Shooter's invert
     public static final InvertedValue LEAD_SHOOTER_INVERT = InvertedValue.Clockwise_Positive;
 
-    /// Shooter ID of Follower Shooter
+    /// ID of Follower Shooter
     public static final int FOLLOW_SHOOTER_ID = 2;
 
     /// Current to limit the motors to in amps
@@ -54,5 +54,23 @@ public final class Constants {
 
     /// The mode for the motors when innactive
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
+
+
+    public static class Turret {
+      /// ID of the turret motor 
+      public static final int TURRET_ID = 3;
+
+      /// ID of the y-axis controlling motor
+      public static final int Y_AXIS_ID = 4;
+
+      public static final double TURRET_KP = 0;
+      public static final double TURRET_KI = 0;
+      public static final double TURRET_KD = 0;
+
+      public static final double Y_AXIS_KP = 0;
+      public static final double Y_AXIS_KI = 0;
+      public static final double Y_AXIS_KD = 0;
+    
+    }
   }
 }
