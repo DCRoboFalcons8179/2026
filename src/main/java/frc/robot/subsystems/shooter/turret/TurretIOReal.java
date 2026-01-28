@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shoot.turret;
+package frc.robot.subsystems.shooter.turret;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;

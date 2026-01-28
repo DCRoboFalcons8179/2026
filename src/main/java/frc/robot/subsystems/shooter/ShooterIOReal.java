@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shoot;
+package frc.robot.subsystems.shooter;
 
 import static frc.robot.Constants.Shooter.*;
 
