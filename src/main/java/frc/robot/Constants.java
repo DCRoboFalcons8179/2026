@@ -55,9 +55,8 @@ public final class Constants {
     /// The mode for the motors when innactive
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
 
-
     public static class Turret {
-      /// ID of the turret motor 
+      /// ID of the turret motor
       public static final int TURRET_ID = 3;
 
       /// ID of the y-axis controlling motor
@@ -70,7 +69,6 @@ public final class Constants {
       public static final double Y_AXIS_KP = 0;
       public static final double Y_AXIS_KI = 0;
       public static final double Y_AXIS_KD = 0;
-    
     }
   }
 }

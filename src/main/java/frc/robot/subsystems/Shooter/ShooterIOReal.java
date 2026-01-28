@@ -5,10 +5,8 @@ import static frc.robot.Constants.Shooter.*;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants.Shooter.Turret;
@@ -34,21 +32,18 @@ public class ShooterIOReal implements ShooterIO {
     leadShooter.getConfigurator().apply(CURRENT_LIMIT);
     leadShooter.setNeutralMode(NEUTRAL_MODE);
     leadShooter.getConfigurator().apply(new MotorOutputConfigs().withInverted(LEAD_SHOOTER_INVERT));
-    
+
     // Follower configuration
     followerShooter.getConfigurator().apply(CURRENT_LIMIT);
     followerShooter.setNeutralMode(NEUTRAL_MODE);
     followerShooter.setControl(new Follower(LEAD_SHOOTER_ID, MotorAlignmentValue.Aligned));
 
-    // Turret config
-    Slot0Configs turretGain =
-      new Slot0Configs().withKP(Turret.TURRET_KP).withKI(Turret.TURRET_KI).withKD(Turret.TURRET_KD);
-
-    turretMotor.getConfigurator().apply(turretGain);
-
-
     // Y-Axis config
-    Slot0Configs yAxisGain = new Slot0Configs().withKP(Turret.Y_AXIS_KP).withKI(Turret.Y_AXIS_KI).withKD(Turret.Y_AXIS_KD);
+    Slot0Configs yAxisGain =
+        new Slot0Configs()
+            .withKP(Turret.Y_AXIS_KP)
+            .withKI(Turret.Y_AXIS_KI)
+            .withKD(Turret.Y_AXIS_KD);
 
     yAxisMotor.getConfigurator().apply(yAxisGain);
   }
@@ -81,15 +76,5 @@ public class ShooterIOReal implements ShooterIO {
     double omega = leadShooter.getVelocity().getValueAsDouble();
 
     return omega >= OUTPUT_SPEED - ERROR_MARGIN;
-  }
-
-  @Override
-  public void moveTurret(double position) {
-    turretMotor.setControl(new MotionMagicVoltage(position));
-  }
-
-  @Override
-  public void tiltShooter(double position) {
-    yAxisMotor.setControl(new MotionMagicVoltage(position));
   }
 }
