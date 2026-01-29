@@ -11,11 +11,10 @@ import frc.robot.Constants;
 public class IntakeIOReal implements IntakeIO {
 
   // PID control
-  private PIDController ExtruderPID = new PIDController(0.25, 0, 0);
+  private PIDController feederPID = new PIDController(0.25, 0, 0);
 
-  // Motors
+  // Motor
   protected final TalonFXS feeder = new TalonFXS(Constants.Intake.FEEDER_ID);
-  protected final TalonFXS extruder = new TalonFXS(Constants.Intake.EXTRUDER_ID);
 
   public IntakeIOReal() {
     configureMotors();
@@ -23,7 +22,6 @@ public class IntakeIOReal implements IntakeIO {
 
   private void configureMotors() {
     feeder.setNeutralMode(Constants.Intake.FEEDER_NEUTRAL_MODE);
-    extruder.setNeutralMode(Constants.Intake.EXTRUDER_NEUTRAL_MODE);
   }
 
   public void setFeederTargetVelocity(double velocity) {
@@ -34,6 +32,8 @@ public class IntakeIOReal implements IntakeIO {
     feeder.set(0);
     feeder.stopMotor();
   }
+
+  public void setPIDControl() {}
 
   @Override
   public void updateInputs(IntakeInputs inputs) {

@@ -167,10 +167,14 @@ public class RobotContainer {
 
     // Moves intake in
     controller.y().onTrue(new InstantCommand(() -> intake.transitionCommand(Intake.State.FEED_IN)));
+    // Moves intake out
     controller
         .x()
-        // Moves intake out
         .onTrue(new InstantCommand(() -> intake.transitionCommand(Intake.State.FEED_OUT)));
+
+    controller.y().onFalse(new InstantCommand(() -> intake.transitionCommand(Intake.State.IDLE)));
+
+    controller.x().onFalse(new InstantCommand(() -> intake.transitionCommand(Intake.State.IDLE)));
   }
 
   /**

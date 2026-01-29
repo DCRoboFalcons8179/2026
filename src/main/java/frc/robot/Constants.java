@@ -70,5 +70,9 @@ public final class Constants {
     public static final NeutralModeValue FEEDER_NEUTRAL_MODE = NeutralModeValue.Coast;
     // Neutral Mode for Extruder
     public static final NeutralModeValue EXTRUDER_NEUTRAL_MODE = NeutralModeValue.Brake;
+
+    public static final double EXTRUDER_IN_POSITION = 0;
+
+    public static final double EXTRUDER_OUT_POSITION = 5;
   }
 }

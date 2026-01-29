@@ -41,7 +41,6 @@ public class Intake extends StateMachine<Intake.State> {
     addOmniTransition(State.IDLE);
     addOmniTransition(State.FEED_IN);
     addOmniTransition(State.FEED_OUT);
-    addOmniTransition(State.EXTRUDE_OUT);
   }
 
   @Override
@@ -60,7 +59,5 @@ public class Intake extends StateMachine<Intake.State> {
     IDLE,
     FEED_IN,
     FEED_OUT,
-    EXTRUDE_IN,
-    EXTRUDE_OUT,
   }
 }
