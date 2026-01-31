@@ -34,7 +34,6 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
-
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -69,8 +68,12 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
-        
-        vision = new Vision(drive::addVisionMeasurement, new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVision(
+                    VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
         turret = new Turret(new TurretIOReal(), vision);
 
@@ -103,7 +106,11 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
 
-        vision = new Vision(drive::addVisionMeasurement, new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
 
         turret = new Turret(new TurretIOSim(), vision);
         break;
@@ -162,15 +169,12 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    // Lock to 0° when A button is held
+    // Lock on to tag
     controller
         .a()
         .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> Rotation2d.kZero));
+            DriveCommands.cameraDrive(
+                drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
 
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -186,7 +190,10 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    controller.leftTrigger().onTrue(new InstantCommand(() -> turret.transitionCommand(Turret.State.AIM)));
+    controller
+        .leftTrigger()
+        .onTrue(new InstantCommand(() -> turret.transitionCommand(Turret.State.AIM)))
+        .onFalse(new InstantCommand(() -> turret.transitionCommand(Turret.State.UNLOCKED)));
   }
 
   /**

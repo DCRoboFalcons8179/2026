@@ -8,14 +8,14 @@ import frc.robot.Constants.C_Shooter.C_Turret;
 
 public class TurretIOReal implements TurretIO {
   protected final TalonFXS turretMotor = new TalonFXS(C_Turret.TURRET_ID);
-  
+
   private double targetPosition = 0.0;
   private boolean usePositionControl = false;
-  
+
   public TurretIOReal() {
     setPIDControl();
   }
-  
+
   @Override
   public void setPIDControl() {
     // Turret config
@@ -26,7 +26,7 @@ public class TurretIOReal implements TurretIO {
             .withKD(C_Turret.TURRET_KD);
     turretMotor.getConfigurator().apply(turretGain);
   }
-  
+
   @Override
   public void stop() {
     turretMotor.set(0);
@@ -34,7 +34,7 @@ public class TurretIOReal implements TurretIO {
     usePositionControl = false;
     targetPosition = 0.0;
   }
-  
+
   @Override
   public void updateInputs(TurretInputs inputs) {
     inputs.current = turretMotor.getTorqueCurrent().getValueAsDouble();
@@ -42,22 +42,23 @@ public class TurretIOReal implements TurretIO {
     inputs.velocity = turretMotor.getVelocity().getValueAsDouble();
     inputs.appliedVoltage = turretMotor.getMotorVoltage().getValueAsDouble();
     inputs.targetPosition = targetPosition;
-    
+
     // Check if at target (within tolerance when using position control)
     if (usePositionControl) {
-      inputs.atTarget = Math.abs(inputs.encoderPosition - targetPosition) < 0.01; // 0.01 rotations tolerance
+      inputs.atTarget =
+          Math.abs(inputs.encoderPosition - targetPosition) < 0.01; // 0.01 rotations tolerance
     } else {
       inputs.atTarget = false;
     }
   }
-  
+
   @Override
   public void moveTurret(double position) {
     targetPosition = position;
     usePositionControl = true;
     turretMotor.setControl(new MotionMagicVoltage(position));
   }
-  
+
   @Override
   public void moveTurretPO(double omegaPercent) {
     usePositionControl = false;

@@ -38,7 +38,7 @@ public class Turret extends StateMachine<Turret.State> {
     registerStateCommand(
         State.UNLOCKED,
         new SequentialCommandGroup(new InstantCommand(() -> io.moveTurret(desiredTurretPose))));
-      
+
     // Has the turret aim when the aim state is set
     registerStateCommand(State.AIM, new AutoAim(vision, this));
   }
@@ -70,6 +70,7 @@ public class Turret extends StateMachine<Turret.State> {
 
   /**
    * Aim the turret with percent out
+   *
    * @param omegaPercent - Percent out to give to the turret
    */
   public void aimPercentOut(double omegaPercent) {

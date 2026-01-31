@@ -22,12 +22,15 @@ public interface TurretIO {
 
   /**
    * Moves the turret to a desired spot
+   *
    * @param position - Position to move the turret to
    */
   public default void moveTurret(double position) {}
 
-  /** 
+  /**
    * Moves the turret using percent out
-   * @param omegaPercent - Percent out to give to the turret */
+   *
+   * @param omegaPercent - Percent out to give to the turret
+   */
   public default void moveTurretPO(double omegaPercent) {}
 }
