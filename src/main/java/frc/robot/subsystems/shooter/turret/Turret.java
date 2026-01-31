@@ -8,18 +8,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SMF.StateMachine;
+import frc.robot.commands.shooter.turret.AutoAim;
 import frc.robot.subsystems.shooter.turret.TurretIO.TurretInputs;
+import frc.robot.subsystems.vision.Vision;
 
 public class Turret extends StateMachine<Turret.State> {
   private final TurretIO io;
-
   private final TurretInputs inputs = new TurretInputs();
+
+  private final Vision vision;
 
   private double desiredTurretPose = 0;
 
-  public Turret(TurretIO io) {
+  public Turret(TurretIO io, Vision vision) {
     super("Turret", State.UNDETERMINED, State.class);
     this.io = io;
+    this.vision = vision;
 
     io.updateInputs(inputs);
 
@@ -34,6 +38,9 @@ public class Turret extends StateMachine<Turret.State> {
     registerStateCommand(
         State.UNLOCKED,
         new SequentialCommandGroup(new InstantCommand(() -> io.moveTurret(desiredTurretPose))));
+      
+    // Has the turret aim when the aim state is set
+    registerStateCommand(State.AIM, new AutoAim(vision, this));
   }
 
   public void registerStateTransitions() {
@@ -59,6 +66,14 @@ public class Turret extends StateMachine<Turret.State> {
 
   public void moveTurret() {
     io.moveTurret(desiredTurretPose);
+  }
+
+  /**
+   * Aim the turret with percent out
+   * @param omegaPercent - Percent out to give to the turret
+   */
+  public void aimPercentOut(double omegaPercent) {
+    io.moveTurretPO(omegaPercent);
   }
 
   public enum State {

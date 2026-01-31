@@ -1,6 +1,6 @@
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.Shooter.*;
+import static frc.robot.Constants.C_Shooter.*;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -9,7 +9,7 @@ import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants.Shooter.Turret;
+import frc.robot.Constants.C_Shooter.C_Turret;
 
 public class ShooterIOReal implements ShooterIO {
 
@@ -19,8 +19,8 @@ public class ShooterIOReal implements ShooterIO {
 
   protected final TalonFXS leadShooter = new TalonFXS(LEAD_SHOOTER_ID);
   protected final TalonFXS followerShooter = new TalonFXS(FOLLOW_SHOOTER_ID);
-  protected final TalonFXS turretMotor = new TalonFXS(Turret.TURRET_ID);
-  protected final TalonFXS yAxisMotor = new TalonFXS(Turret.Y_AXIS_ID);
+  protected final TalonFXS turretMotor = new TalonFXS(C_Turret.TURRET_ID);
+  protected final TalonFXS yAxisMotor = new TalonFXS(C_Turret.Y_AXIS_ID);
 
   public ShooterIOReal() {
     configureMotor();
@@ -41,9 +41,9 @@ public class ShooterIOReal implements ShooterIO {
     // Y-Axis config
     Slot0Configs yAxisGain =
         new Slot0Configs()
-            .withKP(Turret.Y_AXIS_KP)
-            .withKI(Turret.Y_AXIS_KI)
-            .withKD(Turret.Y_AXIS_KD);
+            .withKP(C_Turret.Y_AXIS_KP)
+            .withKI(C_Turret.Y_AXIS_KI)
+            .withKD(C_Turret.Y_AXIS_KD);
 
     yAxisMotor.getConfigurator().apply(yAxisGain);
   }

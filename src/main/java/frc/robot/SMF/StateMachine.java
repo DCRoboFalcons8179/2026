@@ -528,7 +528,9 @@ public abstract class StateMachine<E extends Enum<E>> extends SubsystemBase {
     currentState = state;
     clearFlags();
     if (stateCommands.containsKey(state)) {
-      stateCommands.get(state).schedule();
+      // Update to comply with deprecations
+      CommandScheduler.getInstance().schedule(stateCommands.get(state));
+      // stateCommands.get(state).schedule();
     }
   }
 

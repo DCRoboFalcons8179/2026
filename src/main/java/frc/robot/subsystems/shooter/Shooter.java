@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.Shooter.OUTPUT_SPEED;
+import static frc.robot.Constants.C_Shooter.OUTPUT_SPEED;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
