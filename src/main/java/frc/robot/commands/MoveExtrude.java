@@ -5,8 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.extrude.*;
-import java.util.function.DoubleSupplier;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class MoveExtrude extends Command {
@@ -14,6 +14,7 @@ public class MoveExtrude extends Command {
   private Extrude extrude = new Extrude(null);
 
   private Double currentPos = extrude.getPos();
+  private Double extrudeOutPos = Constants.Intake.EXTRUDER_OUT_POSITION;
 
   public MoveExtrude(Extrude extrude) {
     this.extrude = extrude;
@@ -26,7 +27,11 @@ public class MoveExtrude extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (Math.abs(extrudeOutPos - currentPos) < Constants.Intake.EXTRUDER_ERROR_THRESH_HOLD) {
+      return;
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override

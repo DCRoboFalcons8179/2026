@@ -62,7 +62,7 @@ public final class Constants {
     // ID for extruder
     public static final int EXTRUDER_ID = 0;
 
-    // motor velocity (current just a placeholder number before being calculated)
+    // motor velocity (current just a placeholder number before being tested)
     public static final double FEEDER_SPEED_IN = 10;
     public static final double FEEDER_SPEED_OUT = -10;
 
@@ -74,5 +74,7 @@ public final class Constants {
     public static final double EXTRUDER_IN_POSITION = 0;
 
     public static final double EXTRUDER_OUT_POSITION = 5;
+    // Error thresh hold (current just a placeholder number before being tested)
+    public static final double EXTRUDER_ERROR_THRESH_HOLD = .5;
   }
 }

@@ -27,6 +27,8 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.extrude.Extrude;
+import frc.robot.subsystems.extrude.ExtrudeIO;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -39,6 +41,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Intake intake = new Intake(new IntakeIO() {});
+  private final Extrude extrude = new Extrude(new ExtrudeIO() {});
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -175,6 +178,10 @@ public class RobotContainer {
     controller.y().onFalse(new InstantCommand(() -> intake.transitionCommand(Intake.State.IDLE)));
 
     controller.x().onFalse(new InstantCommand(() -> intake.transitionCommand(Intake.State.IDLE)));
+
+    controller
+        .rightBumper()
+        .onTrue(new InstantCommand(() -> extrude.transitionCommand(Extrude.State.EXTRUDE_OUT)));
   }
 
   /**
