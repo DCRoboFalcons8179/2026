@@ -55,4 +55,25 @@ public final class Constants {
     /// The mode for the motors when innactive
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
   }
+
+  public static class Hanger{
+    //motor id
+    public static final int Hanger_Motor_ID = 2;
+
+    /// Current to limit the motors to in amps
+    public static final CurrentLimitsConfigs CURRENT_LIMIT =
+        new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
+
+    public static final double OUTPUT_SPEED = 10;
+
+    /// The modes for when motors when innactive
+    //coast when hangers not in use
+    public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
+    //brake when hanging from bar
+    public static final NeutralModeValue HOLD_MODE = NeutralModeValue.Brake;
+
+    //maximum and minimum rotations (also the setpoints) that the hanger motor can make (adjust as needed)
+    public static final double minimum_height = 0.0;
+    public static final double maximum_height = 5.0;
+  }
 }

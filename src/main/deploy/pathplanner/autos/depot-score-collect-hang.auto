@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "line to depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "depot to hub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "upper hub to neutral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "collect neutral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "c-neutral to hang lower"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
