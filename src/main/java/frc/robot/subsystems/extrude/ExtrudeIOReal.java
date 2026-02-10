@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.extrude;
 
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
@@ -11,10 +12,13 @@ import frc.robot.Constants;
 public class ExtrudeIOReal implements ExtrudeIO {
 
   // PID control
-  private PIDController ExtruderPID = new PIDController(0.25, 0, 0);
+  private PIDController ExtruderPID = new PIDController(0, 0, 0);
 
   // Motor
   protected final TalonFXS extruder = new TalonFXS(Constants.Intake.EXTRUDER_ID);
+
+  // Control request for position control
+  private final PositionVoltage positionControl = new PositionVoltage(0);
 
   public ExtrudeIOReal() {
     configureMotors();
@@ -22,6 +26,23 @@ public class ExtrudeIOReal implements ExtrudeIO {
 
   private void configureMotors() {
     extruder.setNeutralMode(Constants.Intake.EXTRUDER_NEUTRAL_MODE);
+    extruder.setPosition(0); // Reset encoder position to 0 on startup
+  }
+
+  @Override
+  public void updateInputs(ExtrudeInputs inputs) {
+    inputs.encoderPosition = extruder.getPosition().getValueAsDouble();
+    inputs.current = extruder.getSupplyCurrent().getValueAsDouble();
+  }
+
+  @Override
+  public void setExtruderPosition(double position) {
+    extruder.setControl(positionControl.withPosition(position));
+  }
+
+  @Override
+  public void stop() {
+    extruder.stopMotor();
   }
 
   public void setPIDControl() {

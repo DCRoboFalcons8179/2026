@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems.extrude;
 
-import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -18,8 +17,6 @@ public class Extrude extends StateMachine<Extrude.State> {
   public final ExtrudeIO io;
 
   public final ExtrudeInputs inputs = new ExtrudeInputs();
-
-  protected final TalonFXS extruder = new TalonFXS(Constants.Intake.EXTRUDER_ID);
 
   public double desiredPos;
 
@@ -59,7 +56,7 @@ public class Extrude extends StateMachine<Extrude.State> {
   }
 
   public double getPos() {
-    return extruder.getPosition().getValueAsDouble();
+    return inputs.encoderPosition;
   }
 
   public double getDesiredPos() {

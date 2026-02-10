@@ -34,12 +34,12 @@ public final class Constants {
 
   public static class Shooter {
     /// Shooter ID of Lead Shooter
-    public static final int LEAD_SHOOTER_ID = 1;
+    public static final int LEAD_SHOOTER_ID = 8;
     /// boolean for the Lead Shooter's invert
     public static final InvertedValue LEAD_SHOOTER_INVERT = InvertedValue.Clockwise_Positive;
 
     /// Shooter ID of Follower Shooter
-    public static final int FOLLOW_SHOOTER_ID = 2;
+    public static final int FOLLOW_SHOOTER_ID = 9;
 
     /// Current to limit the motors to in amps
     public static final CurrentLimitsConfigs CURRENT_LIMIT =

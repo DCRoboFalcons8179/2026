@@ -11,7 +11,7 @@ import frc.robot.subsystems.extrude.*;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class MoveExtrude extends Command {
   /** Creates a new MoveExtrude. */
-  private Extrude extrude = new Extrude(null);
+  private Extrude extrude;
 
   private Double currentPos = extrude.getPos();
   private Double extrudeOutPos = extrude.getDesiredPos();

@@ -21,6 +21,7 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeIO;
+import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -29,6 +30,7 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.extrude.Extrude;
 import frc.robot.subsystems.extrude.ExtrudeIO;
+import frc.robot.subsystems.extrude.ExtrudeIOReal;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -40,8 +42,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private final Intake intake = new Intake(new IntakeIO() {});
-  private final Extrude extrude = new Extrude(new ExtrudeIO() {});
+  private Intake intake;
+  private Extrude extrude;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -81,6 +83,9 @@ public class RobotContainer {
         // new ModuleIOTalonFXS(TunerConstants.FrontRight),
         // new ModuleIOTalonFXS(TunerConstants.BackLeft),
         // new ModuleIOTalonFXS(TunerConstants.BackRight));
+
+        intake = new Intake(new IntakeIOReal());
+        extrude = new Extrude(new ExtrudeIOReal());
         break;
 
       case SIM:
@@ -92,6 +97,9 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
+
+        intake = new Intake(new IntakeIO() {});
+        extrude = new Extrude(new ExtrudeIO() {});
         break;
 
       default:
