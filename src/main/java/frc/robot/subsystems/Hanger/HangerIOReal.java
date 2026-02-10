@@ -52,6 +52,13 @@ public class HangerIOReal implements HangerIO {
   public boolean isMaxHeight() {
     double omega = hangerMotor.getPosition().getValueAsDouble();
 
-    return omega >= maximum_height;
+    return omega >= maximum_height - ERROR_MARGIN;
+  }
+
+  @Override
+  public boolean isMinHeight() {
+    double omega = hangerMotor.getPosition().getValueAsDouble();
+
+    return omega <= minimum_height + ERROR_MARGIN;
   }
 }

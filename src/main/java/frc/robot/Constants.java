@@ -75,5 +75,7 @@ public final class Constants {
     //maximum and minimum rotations (also the setpoints) that the hanger motor can make (adjust as needed)
     public static final double minimum_height = 0.0;
     public static final double maximum_height = 5.0;
+
+    public static final double ERROR_MARGIN = 0.1;
   }
 }

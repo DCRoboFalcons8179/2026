@@ -8,6 +8,7 @@ public interface HangerIO {
   public static class HangerInputs {
     public double current = 0.0;
     public double encoderPosition = 0.0;
+    public double velocity = 0.0;
   }
 
   public default void setHangerTargetVelocity(double velocity) {}
@@ -19,6 +20,10 @@ public interface HangerIO {
   public default void setPIDControl(double setpoint) {}
 
   public default boolean isMaxHeight() {
+    return false;
+  }
+
+  public default boolean isMinHeight() {
     return false;
   }
 }

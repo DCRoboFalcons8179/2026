@@ -5,7 +5,6 @@
 package frc.robot.subsystems.Hanger;
 
 import static frc.robot.Constants.Hanger.maximum_height;
-import static frc.robot.Constants.Shooter.OUTPUT_SPEED;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -32,14 +31,36 @@ public class Hanger extends StateMachine<Hanger.State> {
 
   public void registerStateCommands() {
 
+    // default command for idle is to stop the motor
     registerStateCommand(State.IDLE, new InstantCommand(io::stop));
 
+    //extend will move motor to maximum height, then hold it there until a new command is given
     registerStateCommand(
         State.EXTEND,
         new SequentialCommandGroup(
             new InstantCommand(() -> io.setPIDControl(maximum_height)),
             new WaitCommand(0.25),
             new WaitUntilCommand(() -> io.isMaxHeight()),
+            new WaitCommand(0.1),
+            transitionCommand(State.HOLD)));
+
+    //retract moves motor to minimum height, and sets motor to coast, so that power can be preserved\
+    //used for climbing down from the bar, and to preserve power when not hanging
+    registerStateCommand(State.RETRACT, 
+        new SequentialCommandGroup(
+            new InstantCommand(() -> io.setPIDControl(0.0)),
+            new WaitCommand(0.25),
+            new WaitUntilCommand(() -> io.isMinHeight()),
+            new WaitCommand(0.1),
+            transitionCommand(State.IDLE)));
+
+    //pull will move motor to lower position and brake the motors
+    //used for hanging
+    registerStateCommand(State.PULL, 
+        new SequentialCommandGroup(
+            new InstantCommand(() -> io.setPIDControl(0.0)),
+            new WaitCommand(0.25),
+            new WaitUntilCommand(() -> io.isMinHeight()),
             new WaitCommand(0.1),
             transitionCommand(State.HOLD)));
   }
@@ -49,6 +70,7 @@ public class Hanger extends StateMachine<Hanger.State> {
     addOmniTransition(State.HOLD);
     addOmniTransition(State.EXTEND);
     addOmniTransition(State.RETRACT);
+    addOmniTransition(State.PULL);
   }
 
   @Override
@@ -59,7 +81,7 @@ public class Hanger extends StateMachine<Hanger.State> {
   @Override
   protected void update() {
     io.updateInputs(inputs);
-    SmartDashboard.putString("Shooter State", getState().toString());
+    SmartDashboard.putString("Hanger State", getState().toString());
   }
 
   public enum State {
@@ -68,6 +90,7 @@ public class Hanger extends StateMachine<Hanger.State> {
     IDLE,
     EXTEND,
     RETRACT,
+    PULL,
     HOLD
   }
 }
