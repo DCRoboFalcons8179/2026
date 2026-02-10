@@ -21,6 +21,8 @@ public class Extrude extends StateMachine<Extrude.State> {
 
   protected final TalonFXS extruder = new TalonFXS(Constants.Intake.EXTRUDER_ID);
 
+  public double desiredPos;
+
   public Extrude(ExtrudeIO io) {
     super("Extruder", State.UNDETERMINED, State.class);
     this.io = io;
@@ -41,13 +43,14 @@ public class Extrude extends StateMachine<Extrude.State> {
         new SequentialCommandGroup(
             new InstantCommand(
                 () -> io.setExtruderPosition(Constants.Intake.EXTRUDER_OUT_POSITION)),
-            new MoveExtrude(null)));
+            new MoveExtrude(this)));
   }
 
   public void registerStateTransition() {
     addOmniTransition(State.UNDETERMINED);
     addOmniTransition(State.IDLE);
     addOmniTransition(State.EXTRUDE_OUT);
+    addOmniTransition(State.EXTRUDE_IN);
   }
 
   @Override
@@ -57,6 +60,15 @@ public class Extrude extends StateMachine<Extrude.State> {
 
   public double getPos() {
     return extruder.getPosition().getValueAsDouble();
+  }
+
+  public double getDesiredPos() {
+    if (getState().equals(State.EXTRUDE_IN)) {
+      desiredPos = Constants.Intake.EXTRUDER_IN_POSITION;
+    } else if (getState().equals(State.EXTRUDE_OUT)) {
+      desiredPos = Constants.Intake.EXTRUDER_OUT_POSITION;
+    }
+    return desiredPos;
   }
 
   @Override

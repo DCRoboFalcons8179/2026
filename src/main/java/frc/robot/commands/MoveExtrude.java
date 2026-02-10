@@ -14,7 +14,7 @@ public class MoveExtrude extends Command {
   private Extrude extrude = new Extrude(null);
 
   private Double currentPos = extrude.getPos();
-  private Double extrudeOutPos = Constants.Intake.EXTRUDER_OUT_POSITION;
+  private Double extrudeOutPos = extrude.getDesiredPos();
 
   public MoveExtrude(Extrude extrude) {
     this.extrude = extrude;

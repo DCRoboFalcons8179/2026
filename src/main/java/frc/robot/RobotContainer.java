@@ -168,9 +168,9 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    // Moves intake in
+    // Feeds intake in
     controller.y().onTrue(new InstantCommand(() -> intake.transitionCommand(Intake.State.FEED_IN)));
-    // Moves intake out
+    // Feeds intake out
     controller
         .x()
         .onTrue(new InstantCommand(() -> intake.transitionCommand(Intake.State.FEED_OUT)));
@@ -182,6 +182,9 @@ public class RobotContainer {
     controller
         .rightBumper()
         .onTrue(new InstantCommand(() -> extrude.transitionCommand(Extrude.State.EXTRUDE_OUT)));
+    controller
+        .leftBumper()
+        .onTrue(new InstantCommand(() -> extrude.transitionCommand(Extrude.State.EXTRUDE_IN)));
   }
 
   /**
