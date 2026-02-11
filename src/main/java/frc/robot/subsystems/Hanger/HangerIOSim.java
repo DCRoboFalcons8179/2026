@@ -73,6 +73,7 @@ public class HangerIOSim implements HangerIO {
 
   @Override
   public boolean isMaxHeight() {
+    //return whether or not the hanger is at its maximum height, which is when the simulated encoder position is at the maximum height
     double omega = hangerMotorSim.getAngularPositionRotations();
 
     return omega >= maximum_height - ERROR_MARGIN;
@@ -80,6 +81,7 @@ public class HangerIOSim implements HangerIO {
 
   @Override
   public boolean isMinHeight() {
+    //return whether or not the hanger is at its minimum height, which is when the simulated encoder position is at 0
     double omega = hangerMotorSim.getAngularPositionRotations();
 
     return omega <= minimum_height + ERROR_MARGIN;
