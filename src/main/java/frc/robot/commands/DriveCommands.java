@@ -108,12 +108,19 @@ public class DriveCommands {
       DoubleSupplier omegaSupplier) {
     return Commands.run(
         () -> {
+          double xPow = xSupplier.getAsDouble();
+          double yPow = ySupplier.getAsDouble();
+
+          var x = Math.copySign(Math.pow(xPow, 3), xPow);
+          var y = Math.copySign(Math.pow(yPow, 3), yPow);
+
           // Get linear velocity
-          Translation2d linearVelocity =
-              getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+          Translation2d linearVelocity = getLinearVelocityFromJoysticks(x, y);
 
           // Apply rotation deadband
           double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
+
+          omega = Math.copySign(omega * omega * omega, omega);
 
           SmartDashboard.putNumber("Real Omega", omega);
 
