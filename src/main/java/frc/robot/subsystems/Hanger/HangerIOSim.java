@@ -19,11 +19,8 @@ public class HangerIOSim implements HangerIO {
 
   private final DCMotorSim hangerMotorSim;
 
-  //protected final TalonFXS hangerMotor = new TalonFXS(Hanger_Motor_ID);
-
-  // Simulation constants - ADJUST THESE TO MATCH YOUR ROBOT
   private static final double HANGER_GEARING = 100.0; // Adjust based on your gearing ratio
-  private static final double HANGER_MOI = 0.001; // kg*m^2, adjust for your turret mass
+  private static final double HANGER_MOI = 0.001; // kg*m^2, adjust for hanger mass
 
   // Applied values
   private double appliedVoltage = 0.0;
@@ -33,10 +30,10 @@ public class HangerIOSim implements HangerIO {
   public HangerIOSim() {
     hangerMotorSim = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60(1), // Or getFalcon500(1), getNEO(1), etc.
+                DCMotor.getKrakenX60(Hanger_Motor_ID), // Or getFalcon500(1), getNEO(1), etc.
                 HANGER_MOI,
                 HANGER_GEARING),
-            DCMotor.getKrakenX60(1) // Must match the motor above
+            DCMotor.getKrakenX60(Hanger_Motor_ID) // Must match the motor above
             );
     timer.reset();
   }
@@ -62,8 +59,6 @@ public class HangerIOSim implements HangerIO {
 
   @Override
   public void updateInputs(HangerInputs inputs) {
-    // inputs.current = hangerMotor.getTorqueCurrent().getValueAsDouble();
-    // inputs.encoderPosition = hangerMotor.getPosition().getValueAsDouble();
 
     // Update simulation with applied voltage
     hangerMotorSim.setInputVoltage(appliedVoltage);
@@ -78,8 +73,7 @@ public class HangerIOSim implements HangerIO {
 
   @Override
   public boolean isMaxHeight() {
-    double omega = hangerMotorSim.getAngularPositionRotations(); // Use the simulated encoder position
-
+    double omega = hangerMotorSim.getAngularPositionRotations();
 
     return omega >= maximum_height - ERROR_MARGIN;
   }
