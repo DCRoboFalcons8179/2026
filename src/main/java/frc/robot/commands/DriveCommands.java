@@ -76,7 +76,7 @@ public class DriveCommands {
 
           SmartDashboard.putNumber("Rads", rads);
 
-          var omegaPercent = aimController.calculate(rads);
+          var omegaPercent = -aimController.calculate(rads);
 
           SmartDashboard.putNumber("Omeag Percent Out", omegaPercent);
 
