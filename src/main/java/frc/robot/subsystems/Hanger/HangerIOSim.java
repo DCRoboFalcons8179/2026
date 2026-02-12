@@ -2,13 +2,10 @@ package frc.robot.subsystems.Hanger;
 
 import static frc.robot.Constants.Hanger.*;
 
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.hardware.TalonFXS;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class HangerIOSim implements HangerIO {
@@ -28,7 +25,8 @@ public class HangerIOSim implements HangerIO {
   private boolean usePositionControl = false;
 
   public HangerIOSim() {
-    hangerMotorSim = new DCMotorSim(
+    hangerMotorSim =
+        new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
                 DCMotor.getKrakenX60(Hanger_Motor_ID), // Or getFalcon500(1), getNEO(1), etc.
                 HANGER_MOI,
@@ -37,7 +35,6 @@ public class HangerIOSim implements HangerIO {
             );
     timer.reset();
   }
-
 
   @Override
   public void setHangerTargetVelocity(double velocity) {
@@ -73,7 +70,8 @@ public class HangerIOSim implements HangerIO {
 
   @Override
   public boolean isMaxHeight() {
-    //return whether or not the hanger is at its maximum height, which is when the simulated encoder position is at the maximum height
+    // return whether or not the hanger is at its maximum height, which is when the simulated
+    // encoder position is at the maximum height
     double omega = hangerMotorSim.getAngularPositionRotations();
 
     return omega >= maximum_height - ERROR_MARGIN;
@@ -81,7 +79,8 @@ public class HangerIOSim implements HangerIO {
 
   @Override
   public boolean isMinHeight() {
-    //return whether or not the hanger is at its minimum height, which is when the simulated encoder position is at 0
+    // return whether or not the hanger is at its minimum height, which is when the simulated
+    // encoder position is at 0
     double omega = hangerMotorSim.getAngularPositionRotations();
 
     return omega <= minimum_height + ERROR_MARGIN;

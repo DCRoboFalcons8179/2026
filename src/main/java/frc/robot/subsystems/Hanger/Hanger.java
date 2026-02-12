@@ -34,8 +34,8 @@ public class Hanger extends StateMachine<Hanger.State> {
     // default command for idle is to stop the motor
     registerStateCommand(State.IDLE, new InstantCommand(io::stop));
 
-    //extend will move motor to maximum height, then hold it there until a new command is given
-    //this is used for readying the hanger for use, and for lowering the robot down after hanging
+    // extend will move motor to maximum height, then hold it there until a new command is given
+    // this is used for readying the hanger for use, and for lowering the robot down after hanging
     registerStateCommand(
         State.EXTEND,
         new SequentialCommandGroup(
@@ -45,9 +45,11 @@ public class Hanger extends StateMachine<Hanger.State> {
             new WaitCommand(0.1),
             transitionCommand(State.HOLD)));
 
-    //retract moves motor to minimum height, and sets motor to coast, so that power can be preserved
-    //used for stowing the hanger when not in use
-    registerStateCommand(State.RETRACT, 
+    // retract moves motor to minimum height, and sets motor to coast, so that power can be
+    // preserved
+    // used for stowing the hanger when not in use
+    registerStateCommand(
+        State.RETRACT,
         new SequentialCommandGroup(
             new InstantCommand(() -> io.setPIDControl(0.0)),
             new WaitCommand(0.25),
@@ -55,9 +57,10 @@ public class Hanger extends StateMachine<Hanger.State> {
             new WaitCommand(0.1),
             transitionCommand(State.IDLE)));
 
-    //pull will move motor to minimum height and brake the motors
-    //used for hanging
-    registerStateCommand(State.PULL, 
+    // pull will move motor to minimum height and brake the motors
+    // used for hanging
+    registerStateCommand(
+        State.PULL,
         new SequentialCommandGroup(
             new InstantCommand(() -> io.setPIDControl(0.0)),
             new WaitCommand(0.25),
