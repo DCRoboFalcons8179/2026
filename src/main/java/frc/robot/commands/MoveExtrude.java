@@ -28,7 +28,7 @@ public class MoveExtrude extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Math.abs(extrudeOutPos - currentPos) < Constants.Intake.EXTRUDER_ERROR_THRESH_HOLD) {
+    if (Math.abs(extrudeOutPos - currentPos) < Constants.Extruder.EXTRUDER_ERROR_THRESH_HOLD) {
       return;
     }
   }

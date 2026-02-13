@@ -9,6 +9,8 @@ public interface ExtrudeIO {
   public static class ExtrudeInputs {
     public double current = 0.0;
     public double encoderPosition = 0.0;
+    public double appliedVoltage = 0.0;
+    public double targetPosition = 0.0;
   }
 
   public default void updateInputs(ExtrudeInputs inputs) {}

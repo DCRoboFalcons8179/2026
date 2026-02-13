@@ -12,10 +12,10 @@ import frc.robot.Constants;
 public class ExtrudeIOReal implements ExtrudeIO {
 
   // PID control
-  private PIDController ExtruderPID = new PIDController(0, 0, 0);
+  private PIDController ExtruderPID = new PIDController(Constants.Extruder.EXTRUDER_KP, Constants.Extruder.EXTRUDER_KI, Constants.Extruder.EXTRUDER_KD);
 
   // Motor
-  protected final TalonFXS extruder = new TalonFXS(Constants.Intake.EXTRUDER_ID);
+  protected final TalonFXS extruder = new TalonFXS(Constants.Extruder.EXTRUDER_ID);
 
   // Control request for position control
   private final PositionVoltage positionControl = new PositionVoltage(0);
@@ -25,7 +25,7 @@ public class ExtrudeIOReal implements ExtrudeIO {
   }
 
   private void configureMotors() {
-    extruder.setNeutralMode(Constants.Intake.EXTRUDER_NEUTRAL_MODE);
+    extruder.setNeutralMode(Constants.Extruder.EXTRUDER_NEUTRAL_MODE);
     extruder.setPosition(0); // Reset encoder position to 0 on startup
   }
 

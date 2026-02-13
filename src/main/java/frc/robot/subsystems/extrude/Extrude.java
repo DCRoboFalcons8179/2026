@@ -34,12 +34,12 @@ public class Extrude extends StateMachine<Extrude.State> {
     registerStateCommand(State.IDLE, new InstantCommand(io::stop));
     registerStateCommand(
         State.EXTRUDE_IN,
-        new InstantCommand(() -> io.setExtruderPosition(Constants.Intake.EXTRUDER_IN_POSITION)));
+        new InstantCommand(() -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_IN_POSITION)));
     registerStateCommand(
         State.EXTRUDE_OUT,
         new SequentialCommandGroup(
             new InstantCommand(
-                () -> io.setExtruderPosition(Constants.Intake.EXTRUDER_OUT_POSITION)),
+                () -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_OUT_POSITION)),
             new MoveExtrude(this)));
   }
 
@@ -61,9 +61,9 @@ public class Extrude extends StateMachine<Extrude.State> {
 
   public double getDesiredPos() {
     if (getState().equals(State.EXTRUDE_IN)) {
-      desiredPos = Constants.Intake.EXTRUDER_IN_POSITION;
+      desiredPos = Constants.Extruder.EXTRUDER_IN_POSITION;
     } else if (getState().equals(State.EXTRUDE_OUT)) {
-      desiredPos = Constants.Intake.EXTRUDER_OUT_POSITION;
+      desiredPos = Constants.Extruder.EXTRUDER_OUT_POSITION;
     }
     return desiredPos;
   }

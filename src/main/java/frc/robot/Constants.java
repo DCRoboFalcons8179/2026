@@ -59,8 +59,6 @@ public final class Constants {
   public static class Intake {
     // ID for feeder
     public static final int FEEDER_ID = 1;
-    // ID for extruder
-    public static final int EXTRUDER_ID = 0;
 
     // motor velocity (current just a placeholder number before being tested)
     public static final double FEEDER_SPEED_IN = 10;
@@ -68,6 +66,11 @@ public final class Constants {
 
     // Neutral Mode for feeder
     public static final NeutralModeValue FEEDER_NEUTRAL_MODE = NeutralModeValue.Coast;
+  }
+  public static class Extruder {
+     // ID for extruder
+    public static final int EXTRUDER_ID = 0;
+
     // Neutral Mode for Extruder
     public static final NeutralModeValue EXTRUDER_NEUTRAL_MODE = NeutralModeValue.Brake;
 
@@ -76,5 +79,10 @@ public final class Constants {
     public static final double EXTRUDER_OUT_POSITION = 5;
     // Error thresh hold (current just a placeholder number before being tested)
     public static final double EXTRUDER_ERROR_THRESH_HOLD = .5;
+
+    // PID values for extruder
+    public static final double EXTRUDER_KP = 0;
+    public static final double EXTRUDER_KI = 0;
+    public static final double EXTRUDER_KD = 0;
   }
 }
