@@ -19,6 +19,7 @@ public interface VisionIO {
         new TargetObservation(Rotation2d.kZero, Rotation2d.kZero);
     public PoseObservation[] poseObservations = new PoseObservation[0];
     public int[] tagIds = new int[0];
+    public int bestTagId = -1; // -1 means no tag visible
   }
 
   /** Represents the angle to a simple target, not used for pose estimation. */

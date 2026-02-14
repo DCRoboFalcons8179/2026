@@ -68,17 +68,32 @@ public class DriveCommands {
           Translation2d linearVelocity =
               getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
 
-          var rads = vision.getTargetX(0).getRadians();
+          double omegaPercent = 0.0;
 
-          @SuppressWarnings("resource")
-          PIDController aimController = new PIDController(0.8, 0.0, 0.0);
-          aimController.enableContinuousInput(-Math.PI, Math.PI);
+          // Only calculate rotation if we have a valid target
+          if (vision.hasValidTarget(0)) {
+            var rads = vision.getTargetX(0).getRadians();
 
-          SmartDashboard.putNumber("Rads", rads);
+            @SuppressWarnings("resource")
+            PIDController aimController = new PIDController(0.8, 0.0, 0.1);
+            aimController.enableContinuousInput(-Math.PI, Math.PI);
 
-          var omegaPercent = -aimController.calculate(rads);
+            // Clamp output to prevent violent turns
+            aimController.setTolerance(0.02); // ~1 degree tolerance
 
-          SmartDashboard.putNumber("Omeag Percent Out", omegaPercent);
+            SmartDashboard.putNumber("Rads", rads);
+
+            omegaPercent = -aimController.calculate(rads);
+
+            // Limit max turning speed to 40% for smoother control
+            omegaPercent = MathUtil.clamp(omegaPercent, -0.4, 0.4);
+
+            SmartDashboard.putNumber("Omeag Percent Out", omegaPercent);
+          } else {
+            // No valid target, stop rotation
+            SmartDashboard.putNumber("Rads", 0.0);
+            SmartDashboard.putNumber("Omeag Percent Out", 0.0);
+          }
 
           // Convert to field relative speeds & send command
           ChassisSpeeds speeds =

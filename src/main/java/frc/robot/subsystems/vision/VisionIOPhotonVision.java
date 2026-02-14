@@ -41,6 +41,9 @@ public class VisionIOPhotonVision implements VisionIO {
     // Read new camera observations
     Set<Short> tagIds = new HashSet<>();
     List<PoseObservation> poseObservations = new LinkedList<>();
+    int bestTagId = -1;
+    double bestTagDistance = Double.POSITIVE_INFINITY;
+
     for (var result : camera.getAllUnreadResults()) {
       // Update latest target observation
       if (result.hasTargets()) {
@@ -48,6 +51,14 @@ public class VisionIOPhotonVision implements VisionIO {
             new TargetObservation(
                 Rotation2d.fromDegrees(result.getBestTarget().getYaw()),
                 Rotation2d.fromDegrees(result.getBestTarget().getPitch()));
+
+        // Track best (closest) tag
+        var bestTarget = result.getBestTarget();
+        double distance = bestTarget.bestCameraToTarget.getTranslation().getNorm();
+        if (distance < bestTagDistance) {
+          bestTagDistance = distance;
+          bestTagId = bestTarget.getFiducialId();
+        }
       } else {
         inputs.latestTargetObservation = new TargetObservation(Rotation2d.kZero, Rotation2d.kZero);
       }
@@ -121,5 +132,8 @@ public class VisionIOPhotonVision implements VisionIO {
     for (int id : tagIds) {
       inputs.tagIds[i++] = id;
     }
+
+    // Save best tag ID
+    inputs.bestTagId = bestTagId;
   }
 }
