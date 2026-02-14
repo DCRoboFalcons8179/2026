@@ -54,11 +54,25 @@ public class TunerConstants {
 
   // The stator current at which the wheels start to slip;
   // This needs to be tuned to your individual robot
-  private static final Current kSlipCurrent = Amps.of(60);
+  private static final Current kSlipCurrent = Amps.of(120);
 
   // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
   // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
-  private static final TalonFXConfiguration driveInitialConfigs = new TalonFXConfiguration();
+  private static final TalonFXConfiguration driveInitialConfigs =
+      new TalonFXConfiguration()
+          .withOpenLoopRamps(
+              new OpenLoopRampsConfigs()
+                  // Ramp rate limits how quickly output changes to prevent brownouts
+                  // 0.6 seconds from neutral to full throttle (increase if still browning out)
+                  .withDutyCycleOpenLoopRampPeriod(0.6)
+                  .withVoltageOpenLoopRampPeriod(0.6)
+                  .withTorqueOpenLoopRampPeriod(0.6))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  // Supply current limit protects the battery from brownouts
+                  // This limits total current draw per motor from the battery
+                  .withSupplyCurrentLimit(Amps.of(40))
+                  .withSupplyCurrentLimitEnable(true));
   private static final TalonFXConfiguration steerInitialConfigs =
       new TalonFXConfiguration()
           .withCurrentLimits(
