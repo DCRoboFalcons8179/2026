@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -73,7 +74,9 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(
-                    VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+                    VisionConstants.camera0Name, VisionConstants.robotToCamera0),
+                new VisionIOPhotonVision(
+                    VisionConstants.camera1Name, VisionConstants.robotToCamera1));
 
         turret = new Turret(new TurretIOReal(), vision);
 
@@ -110,7 +113,9 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
+                    VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose),
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose));
 
         turret = new Turret(new TurretIOSim(), vision);
         break;
@@ -125,7 +130,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
 
-        vision = new Vision(drive::addVisionMeasurement, new VisionIO() {});
+        vision = new Vision(drive::addVisionMeasurement, new VisionIO() {}, new VisionIO() {});
 
         turret = new Turret(new TurretIO() {}, vision);
         break;
@@ -152,6 +157,14 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    configureNamedCommands();
+  }
+
+  private void configureNamedCommands() {
+    NamedCommands.registerCommand(
+        "aimToTag",
+        DriveCommands.cameraDrive(
+            drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
   }
 
   /**
