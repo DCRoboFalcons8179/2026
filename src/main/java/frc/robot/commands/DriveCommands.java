@@ -75,7 +75,7 @@ public class DriveCommands {
             var rads = vision.getTargetX(0).getRadians();
 
             @SuppressWarnings("resource")
-            PIDController aimController = new PIDController(0.8, 0.0, 0.1);
+            PIDController aimController = new PIDController(0.8, 0.0, 0.01);
             aimController.enableContinuousInput(-Math.PI, Math.PI);
 
             // Clamp output to prevent violent turns
