@@ -63,10 +63,10 @@ public class TunerConstants {
           .withOpenLoopRamps(
               new OpenLoopRampsConfigs()
                   // Ramp rate limits how quickly output changes to prevent brownouts
-                  // 0.6 seconds from neutral to full throttle (increase if still browning out)
-                  .withDutyCycleOpenLoopRampPeriod(0.6)
-                  .withVoltageOpenLoopRampPeriod(0.6)
-                  .withTorqueOpenLoopRampPeriod(0.6))
+                  // 0.7 seconds from neutral to full throttle (increase if still browning out)
+                  .withDutyCycleOpenLoopRampPeriod(0.7)
+                  .withVoltageOpenLoopRampPeriod(0.7)
+                  .withTorqueOpenLoopRampPeriod(0.7))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   // Supply current limit protects the battery from brownouts
