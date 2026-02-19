@@ -25,8 +25,10 @@ public class ExtrudeIOReal implements ExtrudeIO {
   }
 
   private void configureMotors() {
+    extruder.getConfigurator().apply(Constants.Extruder.EXTRUDER_CURRENT_LIMIT);
     extruder.setNeutralMode(Constants.Extruder.EXTRUDER_NEUTRAL_MODE);
-    extruder.setPosition(0); // Reset encoder position to 0 on startup
+    // Reset encoder position to 0 on startup
+    extruder.setPosition(0); 
   }
 
   @Override

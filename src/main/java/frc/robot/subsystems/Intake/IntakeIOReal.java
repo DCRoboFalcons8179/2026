@@ -21,6 +21,7 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   private void configureMotors() {
+    feeder.getConfigurator().apply(Constants.Intake.FEEDER_CURRENT_LIMIT);
     feeder.setNeutralMode(Constants.Intake.FEEDER_NEUTRAL_MODE);
   }
 

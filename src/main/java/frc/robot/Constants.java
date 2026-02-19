@@ -66,6 +66,10 @@ public final class Constants {
 
     // Neutral Mode for feeder
     public static final NeutralModeValue FEEDER_NEUTRAL_MODE = NeutralModeValue.Coast;
+
+    public static final CurrentLimitsConfigs FEEDER_CURRENT_LIMIT =
+        new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
+
   }
   public static class Extruder {
      // ID for extruder
@@ -73,6 +77,9 @@ public final class Constants {
 
     // Neutral Mode for Extruder
     public static final NeutralModeValue EXTRUDER_NEUTRAL_MODE = NeutralModeValue.Brake;
+
+    public static final CurrentLimitsConfigs EXTRUDER_CURRENT_LIMIT =
+        new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
 
     public static final double EXTRUDER_IN_POSITION = 0;
 

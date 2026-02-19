@@ -182,17 +182,6 @@ public class RobotContainer {
     controller
         .x()
         .onTrue(new InstantCommand(() -> intake.transitionCommand(Intake.State.FEED_OUT)));
-
-    controller.y().onFalse(new InstantCommand(() -> intake.transitionCommand(Intake.State.IDLE)));
-
-    controller.x().onFalse(new InstantCommand(() -> intake.transitionCommand(Intake.State.IDLE)));
-
-    controller
-        .rightBumper()
-        .onTrue(new InstantCommand(() -> extrude.transitionCommand(Extrude.State.EXTRUDE_OUT)));
-    controller
-        .leftBumper()
-        .onTrue(new InstantCommand(() -> extrude.transitionCommand(Extrude.State.EXTRUDE_IN)));
   }
 
   /**
