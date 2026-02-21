@@ -12,7 +12,11 @@ import frc.robot.Constants;
 public class ExtrudeIOReal implements ExtrudeIO {
 
   // PID control
-  private PIDController ExtruderPID = new PIDController(Constants.Extruder.EXTRUDER_KP, Constants.Extruder.EXTRUDER_KI, Constants.Extruder.EXTRUDER_KD);
+  private PIDController ExtruderPID =
+      new PIDController(
+          Constants.Extruder.EXTRUDER_KP,
+          Constants.Extruder.EXTRUDER_KI,
+          Constants.Extruder.EXTRUDER_KD);
 
   // Motor
   protected final TalonFXS extruder = new TalonFXS(Constants.Extruder.EXTRUDER_ID);
@@ -28,7 +32,7 @@ public class ExtrudeIOReal implements ExtrudeIO {
     extruder.getConfigurator().apply(Constants.Extruder.EXTRUDER_CURRENT_LIMIT);
     extruder.setNeutralMode(Constants.Extruder.EXTRUDER_NEUTRAL_MODE);
     // Reset encoder position to 0 on startup
-    extruder.setPosition(0); 
+    extruder.setPosition(0);
   }
 
   @Override

@@ -86,6 +86,10 @@ public class RobotContainer {
 
         intake = new Intake(new IntakeIOReal());
         extrude = new Extrude(new ExtrudeIOReal());
+
+        // Enable state machines
+        intake.enable();
+        extrude.enable();
         break;
 
       case SIM:
@@ -100,6 +104,10 @@ public class RobotContainer {
 
         intake = new Intake(new IntakeIO() {});
         extrude = new Extrude(new ExtrudeIO() {});
+
+        // Enable state machines
+        intake.enable();
+        extrude.enable();
         break;
 
       default:
@@ -165,7 +173,7 @@ public class RobotContainer {
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Reset gyro to 0° when B button is pressed
+    // Reset gyro to 0° when B button is pressed
     controller
         .b()
         .onTrue(
@@ -176,12 +184,14 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    // Feeds intake in
-    controller.y().onTrue(new InstantCommand(() -> intake.transitionCommand(Intake.State.FEED_IN)));
-    // Feeds intake out
+    // Feeds intake in when Y button is pressed
     controller
-        .x()
-        .onTrue(new InstantCommand(() -> intake.transitionCommand(Intake.State.FEED_OUT)));
+        .y()
+        .onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
+    // Feeds intake out when right bumper is pressed
+    controller
+        .rightBumper()
+        .onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
   }
 
   /**

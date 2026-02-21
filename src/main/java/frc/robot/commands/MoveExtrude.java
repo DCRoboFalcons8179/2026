@@ -13,11 +13,13 @@ public class MoveExtrude extends Command {
   /** Creates a new MoveExtrude. */
   private Extrude extrude;
 
-  private Double currentPos = extrude.getPos();
-  private Double extrudeOutPos = extrude.getDesiredPos();
+  private Double currentPos;
+  private Double extrudeOutPos;
 
   public MoveExtrude(Extrude extrude) {
     this.extrude = extrude;
+    currentPos = extrude.getPos();
+    extrudeOutPos = extrude.getDesiredPos();
     addRequirements(extrude);
   }
 

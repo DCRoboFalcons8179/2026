@@ -61,18 +61,18 @@ public final class Constants {
     public static final int FEEDER_ID = 1;
 
     // motor velocity (current just a placeholder number before being tested)
-    public static final double FEEDER_SPEED_IN = 10;
-    public static final double FEEDER_SPEED_OUT = -10;
+    public static final double FEEDER_SPEED_IN = 5;
+    public static final double FEEDER_SPEED_OUT = -5;
 
     // Neutral Mode for feeder
     public static final NeutralModeValue FEEDER_NEUTRAL_MODE = NeutralModeValue.Coast;
 
     public static final CurrentLimitsConfigs FEEDER_CURRENT_LIMIT =
         new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
-
   }
+
   public static class Extruder {
-     // ID for extruder
+    // ID for extruder
     public static final int EXTRUDER_ID = 0;
 
     // Neutral Mode for Extruder

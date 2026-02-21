@@ -27,29 +27,34 @@ public class ExtruderIOSim implements ExtrudeIO {
   public ExtruderIOSim() {
 
     extruderSim =
-      new DCMotorSim(LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX44(1),
-                EXTRUDER_MOI,
-                EXTRUDER_GEARING),
+        new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(
+                DCMotor.getKrakenX44(1), EXTRUDER_MOI, EXTRUDER_GEARING),
             DCMotor.getKrakenX44(1));
 
     positionController =
-      new PIDController(Constants.Extruder.EXTRUDER_KP, Constants.Extruder.EXTRUDER_KI, Constants.Extruder.EXTRUDER_KD);
-    
+        new PIDController(
+            Constants.Extruder.EXTRUDER_KP,
+            Constants.Extruder.EXTRUDER_KI,
+            Constants.Extruder.EXTRUDER_KD);
+
     setPIDControl();
   }
 
   public void setPIDControl() {
-    positionController.setPID(Constants.Extruder.EXTRUDER_KP, Constants.Extruder.EXTRUDER_KI, Constants.Extruder.EXTRUDER_KD);
+    positionController.setPID(
+        Constants.Extruder.EXTRUDER_KP,
+        Constants.Extruder.EXTRUDER_KI,
+        Constants.Extruder.EXTRUDER_KD);
   }
 
-   @Override
+  @Override
   public void stop() {
     appliedVoltage = 0.0;
     positionController.reset();
   }
 
-   @Override
+  @Override
   public void updateInputs(ExtrudeInputs inputs) {
 
     // Update simulation with applied voltage
@@ -61,5 +66,5 @@ public class ExtruderIOSim implements ExtrudeIO {
     inputs.current = extruderSim.getCurrentDrawAmps();
     inputs.appliedVoltage = appliedVoltage;
     inputs.targetPosition = targetPosition;
-    }
+  }
 }
