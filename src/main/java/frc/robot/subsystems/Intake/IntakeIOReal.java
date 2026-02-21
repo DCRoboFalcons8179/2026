@@ -11,10 +11,12 @@ import frc.robot.Constants;
 public class IntakeIOReal implements IntakeIO {
 
   // PID control
-  private PIDController feederPID = new PIDController(0.2, 0, 0);
+  private PIDController feederPID = new PIDController(0.1, 0, 0);
 
   // Motor
   protected final TalonFXS feeder = new TalonFXS(Constants.Intake.FEEDER_ID);
+
+  private final double feederGearRatio = Constants.Intake.GEAR_RATIO;
 
   public IntakeIOReal() {
     configureMotors();
@@ -26,7 +28,7 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   public void setFeederVelocity(double velocity) {
-    feeder.set(velocity);
+    feeder.set(velocity * feederGearRatio);
   }
 
   public void stop() {

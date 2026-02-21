@@ -60,9 +60,11 @@ public final class Constants {
     // ID for feeder
     public static final int FEEDER_ID = 1;
 
+    public static final double GEAR_RATIO = 9.0 / 1.0;
+
     // motor velocity (current just a placeholder number before being tested)
-    public static final double FEEDER_SPEED_IN = 5;
-    public static final double FEEDER_SPEED_OUT = -5;
+    public static final double FEEDER_SPEED_IN = 1;
+    public static final double FEEDER_SPEED_OUT = -1;
 
     // Neutral Mode for feeder
     public static final NeutralModeValue FEEDER_NEUTRAL_MODE = NeutralModeValue.Coast;

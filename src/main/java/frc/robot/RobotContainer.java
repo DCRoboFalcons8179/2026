@@ -185,9 +185,7 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // Feeds intake in when Y button is pressed
-    controller
-        .y()
-        .onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
+    controller.y().onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
     // Feeds intake out when right bumper is pressed
     controller
         .rightBumper()
