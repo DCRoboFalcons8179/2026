@@ -58,7 +58,7 @@ public final class Constants {
 
   public static class Intake {
     // ID for feeder
-    public static final int FEEDER_ID = 1;
+    public static final int FEEDER_ID = 0;
 
     public static final double GEAR_RATIO = 9.0 / 1.0;
 
@@ -75,7 +75,7 @@ public final class Constants {
 
   public static class Extruder {
     // ID for extruder
-    public static final int EXTRUDER_ID = 0;
+    public static final int EXTRUDER_ID = 1;
 
     // Neutral Mode for Extruder
     public static final NeutralModeValue EXTRUDER_NEUTRAL_MODE = NeutralModeValue.Brake;
@@ -85,7 +85,7 @@ public final class Constants {
 
     public static final double EXTRUDER_IN_POSITION = 0;
 
-    public static final double EXTRUDER_OUT_POSITION = 5;
+    public static final double EXTRUDER_OUT_POSITION = 30;
     // Error thresh hold (current just a placeholder number before being tested)
     public static final double EXTRUDER_ERROR_THRESH_HOLD = .5;
 

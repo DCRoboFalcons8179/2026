@@ -185,11 +185,20 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // Feeds intake in when Y button is pressed
-    controller.y().onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
+    controller
+        .y()
+        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
     // Feeds intake out when right bumper is pressed
     controller
-        .rightBumper()
-        .onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
+        .y()
+        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
+
+    controller
+        .leftTrigger()
+        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+    controller
+        .leftBumper()
+        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
   }
 
   /**
