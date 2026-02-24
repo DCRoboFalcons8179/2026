@@ -352,6 +352,7 @@ public abstract class StateMachine<E extends Enum<E>> extends SubsystemBase {
    * @return the command to run
    */
   public final Command transitionCommand(E state) {
+    System.out.println("Creating transition command to state: " + state.name());
     return new FunctionalCommand(
         () -> requestTransition(state), () -> {}, (interrupted) -> {}, () -> getState() == state);
   }

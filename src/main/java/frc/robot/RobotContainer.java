@@ -131,6 +131,10 @@ public class RobotContainer {
         break;
     }
 
+    // Enable and initialize the turret state machine
+    turret.enable();
+    turret.determineState();
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -192,8 +196,23 @@ public class RobotContainer {
 
     controller
         .leftTrigger()
-        .onTrue(new InstantCommand(() -> turret.transitionCommand(Turret.State.AIM)))
-        .onFalse(new InstantCommand(() -> turret.transitionCommand(Turret.State.UNLOCKED)));
+        .onTrue(new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)))
+        .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+
+    controller
+        .leftBumper()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  turret.requestTransition(Turret.State.UNLOCKED);
+                  turret.setTurretPose(100);
+                }))
+        .onFalse(
+            new InstantCommand(
+                () -> {
+                  turret.requestTransition(Turret.State.UNLOCKED);
+                  turret.setTurretPose(0);
+                }));
   }
 
   /**

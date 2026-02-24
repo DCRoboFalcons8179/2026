@@ -1,9 +1,11 @@
 package frc.robot.subsystems.shooter.turret;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.C_Shooter.C_Turret;
 
 public class TurretIOReal implements TurretIO {
@@ -18,13 +20,21 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void setPIDControl() {
-    // Turret config
+    // Turret PID config
     Slot0Configs turretGain =
         new Slot0Configs()
             .withKP(C_Turret.TURRET_KP)
             .withKI(C_Turret.TURRET_KI)
             .withKD(C_Turret.TURRET_KD);
     turretMotor.getConfigurator().apply(turretGain);
+
+    // Motion Magic configuration - required for MotionMagicVoltage to work
+    MotionMagicConfigs mmConfigs =
+        new MotionMagicConfigs()
+            .withMotionMagicCruiseVelocity(80) // rotations per second
+            .withMotionMagicAcceleration(160) // rotations per second squared
+            .withMotionMagicJerk(1600); // rotations per second cubed
+    turretMotor.getConfigurator().apply(mmConfigs);
   }
 
   @Override
@@ -50,6 +60,12 @@ public class TurretIOReal implements TurretIO {
     } else {
       inputs.atTarget = false;
     }
+
+    // Add debugging info to SmartDashboard
+    SmartDashboard.putNumber("Turret Current Position", inputs.encoderPosition);
+    SmartDashboard.putNumber("Turret Current (A)", inputs.current);
+    SmartDashboard.putNumber("Turret Velocity", inputs.velocity);
+    SmartDashboard.putNumber("Turret Applied Voltage", inputs.appliedVoltage);
   }
 
   @Override
@@ -57,6 +73,8 @@ public class TurretIOReal implements TurretIO {
     targetPosition = position;
     usePositionControl = true;
     turretMotor.setControl(new MotionMagicVoltage(position));
+    SmartDashboard.putNumber("Turret Target Position", position);
+    SmartDashboard.putNumber("Turret Position", turretMotor.getPosition().getValueAsDouble());
   }
 
   @Override

@@ -34,12 +34,12 @@ public final class Constants {
 
   public static class C_Shooter {
     /// ID of Lead Shooter
-    public static final int LEAD_SHOOTER_ID = 1;
+    public static final int LEAD_SHOOTER_ID = 15;
     /// boolean for the Lead Shooter's invert
     public static final InvertedValue LEAD_SHOOTER_INVERT = InvertedValue.Clockwise_Positive;
 
     /// ID of Follower Shooter
-    public static final int FOLLOW_SHOOTER_ID = 2;
+    // public static final int FOLLOW_SHOOTER_ID = 2;
 
     /// Current to limit the motors to in amps
     public static final CurrentLimitsConfigs CURRENT_LIMIT =
@@ -57,13 +57,13 @@ public final class Constants {
 
     public static class C_Turret {
       /// ID of the turret motor
-      public static final int TURRET_ID = 3;
+      public static final int TURRET_ID = 14;
 
       /// ID of the y-axis controlling motor
       public static final int Y_AXIS_ID = 4;
 
       /// KP for moving to pos
-      public static final double TURRET_KP = 0;
+      public static final double TURRET_KP = 1;
       /// KI for moving to pos
       public static final double TURRET_KI = 0;
       /// KD for moving to pos
