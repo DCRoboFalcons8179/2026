@@ -25,13 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "upper collect neutral"
+            "pathName": "collect neutral depot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "upper neutral to hub"
+            "pathName": "depot neutral to hub"
           }
         }
       ]

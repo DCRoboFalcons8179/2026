@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "hub"
+            "pathName": "start hub"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "lower collect neutral"
+            "pathName": "collect neutral human"
           }
         },
         {

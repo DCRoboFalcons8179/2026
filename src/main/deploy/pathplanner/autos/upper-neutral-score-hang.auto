@@ -7,31 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "start to human"
+            "pathName": "start depot to neutral"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "human to hub"
+            "pathName": "collect neutral depot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "hub to neutral lower"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "collect neutral human"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "lower neutral to hub"
+            "pathName": "depot neutral to hub"
           }
         },
         {
