@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.484188888888889,
-        "y": 0.5562333333333322
+        "x": 3.027488888888889,
+        "y": 4.054488888888889
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3753646649762088,
-        "y": 2.117384950872239
+        "x": 1.8971333333333333,
+        "y": 1.9204555555555545
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.008,
-        "y": 4.0739777777777775
+        "x": 0.5134222222222222,
+        "y": 0.5659777777777777
       },
       "prevControl": {
-        "x": 1.7751160301531685,
-        "y": 2.8402404509991483
+        "x": 0.8934555555555557,
+        "y": 0.8972888888888884
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,18 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [
-    {
-      "fieldPosition": {
-        "x": 4.5,
-        "y": 4.0
-      },
-      "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.25,
-      "maxWaypointRelativePos": 0.75,
-      "name": "Point Towards hub"
-    }
-  ],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -56,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "human",
+  "folder": "hub",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
