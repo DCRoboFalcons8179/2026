@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.shooter.pitch.SetPitch;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -25,6 +26,13 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterIOReal;
+import frc.robot.subsystems.shooter.pitch.Pitch;
+import frc.robot.subsystems.shooter.pitch.PitchIO;
+import frc.robot.subsystems.shooter.pitch.PitchIOReal;
+import frc.robot.subsystems.shooter.pitch.PitchIOSim;
 import frc.robot.subsystems.shooter.turret.Turret;
 import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretIOReal;
@@ -47,6 +55,8 @@ public class RobotContainer {
   private final Drive drive;
   private final Vision vision;
   private final Turret turret;
+  private final Shooter shooter;
+  private final Pitch pitch;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -76,6 +86,10 @@ public class RobotContainer {
                     VisionConstants.camera0Name, VisionConstants.robotToCamera0));
 
         turret = new Turret(new TurretIOReal(), vision);
+
+        shooter = new Shooter(new ShooterIOReal());
+
+        pitch = new Pitch(new PitchIOReal());
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -113,6 +127,8 @@ public class RobotContainer {
                     VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose));
 
         turret = new Turret(new TurretIOSim(), vision);
+        shooter = null;
+        pitch = new Pitch(new PitchIOSim());
         break;
 
       default:
@@ -128,12 +144,20 @@ public class RobotContainer {
         vision = new Vision(drive::addVisionMeasurement, new VisionIO() {});
 
         turret = new Turret(new TurretIO() {}, vision);
+
+        shooter = new Shooter(new ShooterIO() {});
+
+        pitch = new Pitch(new PitchIO() {});
         break;
     }
 
     // Enable and initialize the turret state machine
     turret.enable();
     turret.determineState();
+
+    // Enable and initialize the pitch state machine
+    pitch.enable();
+    pitch.determineState();
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -204,15 +228,19 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  turret.requestTransition(Turret.State.UNLOCKED);
                   turret.setTurretPose(100);
                 }))
         .onFalse(
             new InstantCommand(
                 () -> {
-                  turret.requestTransition(Turret.State.UNLOCKED);
                   turret.setTurretPose(0);
                 }));
+
+    controller.rightBumper().whileTrue(new SetPitch(pitch, 100)).whileFalse(new SetPitch(pitch, 0));
+
+    controller
+        .povLeft()
+        .onTrue(new InstantCommand(() -> pitch.requestTransition(Pitch.State.UNLOCKED)));
   }
 
   /**

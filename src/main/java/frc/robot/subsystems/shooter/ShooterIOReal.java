@@ -5,19 +5,13 @@ import static frc.robot.Constants.C_Shooter.*;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants.C_Shooter.C_Turret;
 
 public class ShooterIOReal implements ShooterIO {
 
   private Timer timer = new Timer();
 
-  private PIDController pid = new PIDController(0.1, 0.0, 0.0);
-
   protected final TalonFXS leadShooter = new TalonFXS(LEAD_SHOOTER_ID);
-  protected final TalonFXS turretMotor = new TalonFXS(C_Turret.TURRET_ID);
-  protected final TalonFXS yAxisMotor = new TalonFXS(C_Turret.Y_AXIS_ID);
 
   public ShooterIOReal() {
     configureMotor();
@@ -29,15 +23,6 @@ public class ShooterIOReal implements ShooterIO {
     leadShooter.getConfigurator().apply(CURRENT_LIMIT);
     leadShooter.setNeutralMode(NEUTRAL_MODE);
     leadShooter.getConfigurator().apply(new MotorOutputConfigs().withInverted(LEAD_SHOOTER_INVERT));
-
-    // Y-Axis config
-    Slot0Configs yAxisGain =
-        new Slot0Configs()
-            .withKP(C_Turret.Y_AXIS_KP)
-            .withKI(C_Turret.Y_AXIS_KI)
-            .withKD(C_Turret.Y_AXIS_KD);
-
-    yAxisMotor.getConfigurator().apply(yAxisGain);
   }
 
   @Override
@@ -47,8 +32,11 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public void setPIDControl() {
-    pid.setSetpoint(2.0);
-    leadShooter.setVoltage(pid.calculate(leadShooter.getTorqueCurrent().getValueAsDouble()));
+    // Pitch config
+    Slot0Configs leadShooterConfig =
+        new Slot0Configs().withKP(LEAD_KP).withKI(LEAD_KI).withKD(LEAD_KD);
+
+    leadShooter.getConfigurator().apply(leadShooterConfig);
   }
 
   @Override

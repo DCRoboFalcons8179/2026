@@ -34,9 +34,16 @@ public final class Constants {
 
   public static class C_Shooter {
     /// ID of Lead Shooter
-    public static final int LEAD_SHOOTER_ID = 15;
+    public static final int LEAD_SHOOTER_ID = 95;
     /// boolean for the Lead Shooter's invert
     public static final InvertedValue LEAD_SHOOTER_INVERT = InvertedValue.Clockwise_Positive;
+
+    /// KP for Lead Shooter
+    public static final double LEAD_KP = 1;
+    /// KI for Lead Shooter
+    public static final double LEAD_KI = 0;
+    /// KD for Lead Shooter
+    public static final double LEAD_KD = 0;
 
     /// ID of Follower Shooter
     // public static final int FOLLOW_SHOOTER_ID = 2;
@@ -60,7 +67,7 @@ public final class Constants {
       public static final int TURRET_ID = 14;
 
       /// ID of the y-axis controlling motor
-      public static final int Y_AXIS_ID = 4;
+      public static final int PITCH_ID = 15;
 
       /// KP for moving to pos
       public static final double TURRET_KP = 1;
@@ -76,9 +83,11 @@ public final class Constants {
       /// KD for auto aim
       public static final double AIM_KD = 0;
 
-      public static final double Y_AXIS_KP = 0;
-      public static final double Y_AXIS_KI = 0;
-      public static final double Y_AXIS_KD = 0;
+      public static final double PITCH_KP = 1;
+      public static final double PITCH_KI = 0;
+      public static final double PITCH_KD = 0;
+
+      public static final NeutralModeValue PITCH_NEUTRAL_MODE = NeutralModeValue.Brake;
     }
   }
 }
