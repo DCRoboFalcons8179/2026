@@ -52,6 +52,7 @@ public class Intake extends StateMachine<Intake.State> {
   protected void update() {
     io.updateInputs(inputs);
     SmartDashboard.putString("Intake State", getState().toString());
+    SmartDashboard.putNumber("Feeder Speed", inputs.mechanismRotationsPerSecond);
   }
 
   public enum State {

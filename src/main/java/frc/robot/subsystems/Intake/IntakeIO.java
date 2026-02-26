@@ -9,6 +9,7 @@ public interface IntakeIO {
   public static class IntakeInputs {
     public double current = 0.0;
     public double encoderPosition = 0.0;
+    public double mechanismRotationsPerSecond = 0.0;
   }
 
   public default void updateInputs(IntakeInputs inputs) {}

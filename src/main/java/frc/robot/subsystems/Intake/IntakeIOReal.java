@@ -4,19 +4,23 @@
 
 package frc.robot.subsystems.Intake;
 
-import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
 
 public class IntakeIOReal implements IntakeIO {
 
   // PID control
-  private PIDController feederPID = new PIDController(0.1, 0, 0);
+  private PIDController feederPID = new PIDController(0.4, 0, 0);
 
   // Motor
-  protected final TalonFXS feeder = new TalonFXS(Constants.Intake.FEEDER_ID);
+  protected final TalonFX feeder = new TalonFX(Constants.Intake.FEEDER_ID);
 
   private final double feederGearRatio = Constants.Intake.GEAR_RATIO;
+
+  private final VelocityVoltage velocityRequest = new VelocityVoltage(0).withSlot(0);
 
   public IntakeIOReal() {
     configureMotors();
@@ -25,10 +29,25 @@ public class IntakeIOReal implements IntakeIO {
   private void configureMotors() {
     feeder.getConfigurator().apply(Constants.Intake.FEEDER_CURRENT_LIMIT);
     feeder.setNeutralMode(Constants.Intake.FEEDER_NEUTRAL_MODE);
+
+    // Configure feedforward gains for velocity control
+    Slot0Configs slot0Configs = new Slot0Configs();
+    slot0Configs.kS = 0.0; // Static friction feedforward (volts)
+    slot0Configs.kV = 0.12; // Velocity feedforward (volts per rotation per second)
+    slot0Configs.kA = 0.0; // Acceleration feedforward (volts per rotation per second^2)
+    slot0Configs.kP = 0.4; // Proportional gain
+    slot0Configs.kI = 0.0; // Integral gain
+    slot0Configs.kD = 0.0; // Derivative gain
+    feeder.getConfigurator().apply(slot0Configs);
   }
 
-  public void setFeederVelocity(double velocity) {
-    feeder.set(velocity * feederGearRatio);
+  public void setFeederVelocity(double mechanismRotationsPerSecond) {
+    double motorRotationsPerSecond = mechanismRotationsPerSecond / feederGearRatio;
+    feeder.setControl(
+        velocityRequest
+            .withVelocity(motorRotationsPerSecond)
+            .withAcceleration(40.0)
+            .withEnableFOC(false));
   }
 
   public void stop() {
@@ -44,5 +63,6 @@ public class IntakeIOReal implements IntakeIO {
   public void updateInputs(IntakeInputs inputs) {
     inputs.current = feeder.getTorqueCurrent().getValueAsDouble();
     inputs.encoderPosition = feeder.getPosition().getValueAsDouble();
+    inputs.mechanismRotationsPerSecond = feeder.getVelocity().getValueAsDouble() * feederGearRatio;
   }
 }
