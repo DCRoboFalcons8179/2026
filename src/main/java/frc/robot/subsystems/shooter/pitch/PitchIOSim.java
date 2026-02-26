@@ -28,10 +28,10 @@ public class PitchIOSim implements PitchIO {
     pitchSim =
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
-                DCMotor.getKrakenX60(1), // Or getFalcon500(1), getNEO(1), etc.
+                DCMotor.getKrakenX44(1), // Or getFalcon500(1), getNEO(1), etc.
                 PITCH_MOI,
                 PITCH_GEARING),
-            DCMotor.getKrakenX60(1) // Must match the motor above
+            DCMotor.getKrakenX44(1) // Must match the motor above
             );
 
     // Initialize PID controller with your real constants
@@ -86,5 +86,10 @@ public class PitchIOSim implements PitchIO {
     // Simulate MotionMagicVoltage control
     targetPosition = position;
     usePositionControl = true;
+  }
+
+  @Override
+  public double getPitchPosition() {
+    return pitchSim.getAngularPositionRotations();
   }
 }

@@ -56,7 +56,8 @@ public class Turret extends StateMachine<Turret.State> {
   protected void update() {
     io.updateInputs(inputs);
     SmartDashboard.putString("Turret State", getState().toString());
-    SmartDashboard.putNumber("Turret Desired Pose", desiredTurretPose);
+    SmartDashboard.putNumber("Turret Target Position", desiredTurretPose);
+    SmartDashboard.putNumber("Turret Position", io.getTurretPosition());
   }
 
   public void setTurretPose(double desiredTurretPose) {

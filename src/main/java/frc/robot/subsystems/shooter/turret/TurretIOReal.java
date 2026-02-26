@@ -73,13 +73,16 @@ public class TurretIOReal implements TurretIO {
     targetPosition = position;
     usePositionControl = true;
     turretMotor.setControl(new MotionMagicVoltage(position));
-    SmartDashboard.putNumber("Turret Target Position", position);
-    SmartDashboard.putNumber("Turret Position", turretMotor.getPosition().getValueAsDouble());
   }
 
   @Override
   public void moveTurretPO(double omegaPercent) {
     usePositionControl = false;
     turretMotor.setControl(new DutyCycleOut(omegaPercent));
+  }
+
+  @Override
+  public double getTurretPosition() {
+    return turretMotor.getPosition().getValueAsDouble();
   }
 }

@@ -96,4 +96,9 @@ public class TurretIOSim implements TurretIO {
     appliedVoltage = omegaPercent * 12.0;
     usePositionControl = false;
   }
+
+  @Override
+  public double getTurretPosition() {
+    return turretSim.getAngularPositionRotations();
+  }
 }

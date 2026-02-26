@@ -26,4 +26,8 @@ public interface PitchIO {
    * @param position - Position to move the pitch to
    */
   public default void movePitch(double position) {}
+
+  public default double getPitchPosition() {
+    return 0.0;
+  }
 }

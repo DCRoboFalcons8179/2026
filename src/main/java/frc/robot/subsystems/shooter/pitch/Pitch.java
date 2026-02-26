@@ -47,7 +47,8 @@ public class Pitch extends StateMachine<Pitch.State> {
   protected void update() {
     io.updateInputs(inputs);
     SmartDashboard.putString("Pitch State", getState().toString());
-    SmartDashboard.putNumber("Pitch Desired Pose", desiredPitchPose);
+    SmartDashboard.putNumber("Pitch Target Position", desiredPitchPose);
+    SmartDashboard.putNumber("Pitch Position", io.getPitchPosition());
   }
 
   public void setPitchPose(double desiredPitchPose) {

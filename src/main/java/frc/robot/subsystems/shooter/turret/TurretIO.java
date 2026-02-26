@@ -33,4 +33,8 @@ public interface TurretIO {
    * @param omegaPercent - Percent out to give to the turret
    */
   public default void moveTurretPO(double omegaPercent) {}
+
+  public default double getTurretPosition() {
+    return 0.0;
+  }
 }

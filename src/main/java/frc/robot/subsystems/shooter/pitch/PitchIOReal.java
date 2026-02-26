@@ -72,7 +72,10 @@ public class PitchIOReal implements PitchIO {
     targetPosition = position;
     usePositionControl = true;
     pitchMotor.setControl(new MotionMagicVoltage(position));
-    SmartDashboard.putNumber("Pitch Target Position", position);
-    SmartDashboard.putNumber("Pitch Position", pitchMotor.getPosition().getValueAsDouble());
+  }
+
+  @Override
+  public double getPitchPosition() {
+    return pitchMotor.getPosition().getValueAsDouble();
   }
 }
