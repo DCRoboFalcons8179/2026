@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.shooter.pitch.Pitch;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class GoToPitch extends Command {
+public class PitchToPose extends Command {
   private final Pitch pitch;
-  /** Creates a new GoToPitch. */
-  public GoToPitch(Pitch pitch) {
+  /** Creates a new PitchToPose. */
+  public PitchToPose(Pitch pitch) {
     this.pitch = pitch;
     addRequirements(pitch);
   }

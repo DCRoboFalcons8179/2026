@@ -15,12 +15,12 @@ public class PitchIOSim implements PitchIO {
 
   // Applied values
   private double appliedVoltage = 0.0;
-  private double pitch = 0.0;
+  private double targetPosition = 0.0;
   private boolean usePositionControl = false;
 
   // Simulation constants - ADJUST THESE TO MATCH YOUR ROBOT
-  private static final double TURRET_GEARING = 100.0; // Adjust based on your gearing ratio
-  private static final double TURRET_MOI = 0.001; // kg*m^2, adjust for your pitch mass
+  private static final double PITCH_GEARING = 100.0; // Adjust based on your gearing ratio
+  private static final double PITCH_MOI = 0.001; // kg*m^2, adjust for your pitch mass
 
   public PitchIOSim() {
     // Initialize pitch sim using LinearSystemId
@@ -29,13 +29,14 @@ public class PitchIOSim implements PitchIO {
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
                 DCMotor.getKrakenX60(1), // Or getFalcon500(1), getNEO(1), etc.
-                TURRET_MOI,
-                TURRET_GEARING),
+                PITCH_MOI,
+                PITCH_GEARING),
             DCMotor.getKrakenX60(1) // Must match the motor above
             );
 
     // Initialize PID controller with your real constants
-    positionController = new PIDController(C_Turret.PITCH_KP, C_Turret.PITCH_KI, C_Turret.PITCH_KD);
+    positionController =
+        new PIDController(C_Turret.PITCH_KP, C_Turret.PITCH_KI, C_Turret.PITCH_KD);
 
     setPIDControl();
   }
@@ -58,7 +59,7 @@ public class PitchIOSim implements PitchIO {
     // If using position control, calculate voltage from PID
     if (usePositionControl) {
       double currentPosition = pitchSim.getAngularPositionRotations();
-      double pidOutput = positionController.calculate(currentPosition, pitch);
+      double pidOutput = positionController.calculate(currentPosition, targetPosition);
 
       // Clamp to reasonable voltage limits
       appliedVoltage = Math.max(-12.0, Math.min(12.0, pidOutput));
@@ -71,14 +72,20 @@ public class PitchIOSim implements PitchIO {
     pitchSim.update(0.02);
 
     // Update inputs
+    inputs.current = pitchSim.getCurrentDrawAmps();
     inputs.encoderPosition = pitchSim.getAngularPositionRotations();
-    inputs.pitch = pitch;
+    inputs.velocity = pitchSim.getAngularVelocityRPM() / 60.0; // rotations per second
+    inputs.appliedVoltage = appliedVoltage;
+    inputs.targetPosition = targetPosition;
+    inputs.atTarget =
+        usePositionControl
+            && Math.abs(inputs.encoderPosition - targetPosition) < 0.01; // Within 0.01 rotations
   }
 
   @Override
-  public void tiltShooter(double position) {
+  public void movePitch(double position) {
     // Simulate MotionMagicVoltage control
-    pitch = position;
+    targetPosition = position;
     usePositionControl = true;
   }
 }

@@ -7,15 +7,14 @@ package frc.robot.subsystems.shooter.pitch;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.SMF.StateMachine;
-import frc.robot.commands.shooter.pitch.GoToPitch;
+import frc.robot.commands.shooter.pitch.PitchToPose;
 import frc.robot.subsystems.shooter.pitch.PitchIO.PitchInputs;
 
 public class Pitch extends StateMachine<Pitch.State> {
   private final PitchIO io;
-
   private final PitchInputs inputs = new PitchInputs();
 
-  private double pitchPosition = 0;
+  private double desiredPitchPose = 0;
 
   public Pitch(PitchIO io) {
     super("Pitch", State.UNDETERMINED, State.class);
@@ -28,8 +27,10 @@ public class Pitch extends StateMachine<Pitch.State> {
   }
 
   public void registerStateCommands() {
+
     registerStateCommand(State.LOCKED, new InstantCommand(io::stop));
-    registerStateCommand(State.UNLOCKED, new GoToPitch(this));
+
+    registerStateCommand(State.UNLOCKED, new PitchToPose(this));
   }
 
   public void registerStateTransitions() {
@@ -46,15 +47,15 @@ public class Pitch extends StateMachine<Pitch.State> {
   protected void update() {
     io.updateInputs(inputs);
     SmartDashboard.putString("Pitch State", getState().toString());
+    SmartDashboard.putNumber("Pitch Desired Pose", desiredPitchPose);
   }
 
-  public void setPitch(double position) {
-    this.pitchPosition = position;
+  public void setPitchPose(double desiredPitchPose) {
+    this.desiredPitchPose = desiredPitchPose;
   }
 
   public void movePitch() {
-    System.out.println("Moving pitch to position: " + pitchPosition);
-    io.tiltShooter(pitchPosition);
+    io.movePitch(desiredPitchPose);
   }
 
   public enum State {
