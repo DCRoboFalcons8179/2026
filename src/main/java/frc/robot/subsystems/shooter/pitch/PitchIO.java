@@ -25,7 +25,5 @@ public interface PitchIO {
    *
    * @param position - Position to move the pitch to
    */
-  public default void movePitch(double position) {
-    System.out.println("Fake IO: Moving pitch to position " + position);
-  }
+  public default void movePitch(double position) {}
 }

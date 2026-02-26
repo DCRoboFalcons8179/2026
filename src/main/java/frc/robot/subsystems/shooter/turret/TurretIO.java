@@ -25,9 +25,7 @@ public interface TurretIO {
    *
    * @param position - Position to move the turret to
    */
-  public default void moveTurret(double position) {
-    System.out.println("Fake IO: Moving turret to position " + position);
-  }
+  public default void moveTurret(double position) {}
 
   /**
    * Moves the turret using percent out

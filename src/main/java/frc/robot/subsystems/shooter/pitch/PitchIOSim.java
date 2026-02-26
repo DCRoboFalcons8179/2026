@@ -35,8 +35,7 @@ public class PitchIOSim implements PitchIO {
             );
 
     // Initialize PID controller with your real constants
-    positionController =
-        new PIDController(C_Turret.PITCH_KP, C_Turret.PITCH_KI, C_Turret.PITCH_KD);
+    positionController = new PIDController(C_Turret.PITCH_KP, C_Turret.PITCH_KI, C_Turret.PITCH_KD);
 
     setPIDControl();
   }

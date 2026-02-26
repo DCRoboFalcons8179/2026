@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.shooter.pitch.SetPitch;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -133,7 +132,7 @@ public class RobotContainer {
     }
 
     enableStateSubsystems();
-    
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -206,11 +205,18 @@ public class RobotContainer {
                   turret.setTurretPose(0);
                 }));
 
-    controller.rightBumper().whileTrue(new SetPitch(pitch, 100)).whileFalse(new SetPitch(pitch, 0));
+    controller
+        .rightBumper()
+        .onTrue(new InstantCommand(() -> pitch.setPitchPose(100)))
+        .onFalse(new InstantCommand(() -> pitch.setPitchPose(0)));
 
     controller
         .povLeft()
         .onTrue(new InstantCommand(() -> pitch.requestTransition(Pitch.State.UNLOCKED)));
+
+    controller
+        .povRight()
+        .onTrue(new InstantCommand(() -> pitch.requestTransition(Pitch.State.LOCKED)));
   }
 
   /**

@@ -313,8 +313,6 @@ public abstract class StateMachine<E extends Enum<E>> extends SubsystemBase {
    * @param state state to transition to
    */
   public final void requestTransition(E state) {
-    System.out.println("Requesting: " + state.toString());
-
     TransitionBase<E> transition = transitionGraph.getEdge(currentState, state);
     // Stop transitions to the same state from happening
     if (!isTransitioning() && transition != null && state != currentState) {
@@ -322,10 +320,8 @@ public abstract class StateMachine<E extends Enum<E>> extends SubsystemBase {
       cancelStateCommand();
       transition.execute();
       transitionTimer.start();
-      System.out.println("same state");
       /*updateTransitioning();*/
     } else if (state != currentState) {
-      System.out.println("transitioning");
       queuedTransition = transition;
     }
   }
@@ -355,7 +351,6 @@ public abstract class StateMachine<E extends Enum<E>> extends SubsystemBase {
    * @return the command to run
    */
   public final Command transitionCommand(E state) {
-    System.out.println("Creating transition command to state: " + state.name());
     return new FunctionalCommand(
         () -> requestTransition(state), () -> {}, (interrupted) -> {}, () -> getState() == state);
   }
