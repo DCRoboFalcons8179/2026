@@ -6,6 +6,7 @@ package frc.robot.subsystems.shooter.turret;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SMF.StateMachine;
 import frc.robot.commands.shooter.turret.AutoAim;
 import frc.robot.commands.shooter.turret.TurretToPose;
@@ -33,7 +34,11 @@ public class Turret extends StateMachine<Turret.State> {
 
   public void registerStateCommands() {
 
-    registerStateCommand(State.LOCKED, new InstantCommand(io::stop));
+    registerStateCommand(
+        State.LOCKED,
+        new SequentialCommandGroup(
+            new InstantCommand(() -> this.desiredTurretPose = io.getTurretPosition()),
+            new TurretToPose(this)));
 
     registerStateCommand(State.UNLOCKED, new TurretToPose(this));
 
@@ -61,7 +66,9 @@ public class Turret extends StateMachine<Turret.State> {
   }
 
   public void setTurretPose(double desiredTurretPose) {
-    this.desiredTurretPose = desiredTurretPose;
+    if (getState() != State.LOCKED) {
+      this.desiredTurretPose = desiredTurretPose;
+    }
   }
 
   public void moveTurret() {

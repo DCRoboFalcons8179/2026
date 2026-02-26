@@ -6,6 +6,7 @@ package frc.robot.subsystems.shooter.pitch;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SMF.StateMachine;
 import frc.robot.commands.shooter.pitch.PitchToPose;
 import frc.robot.subsystems.shooter.pitch.PitchIO.PitchInputs;
@@ -27,8 +28,11 @@ public class Pitch extends StateMachine<Pitch.State> {
   }
 
   public void registerStateCommands() {
-
-    registerStateCommand(State.LOCKED, new InstantCommand(io::stop));
+    registerStateCommand(
+        State.LOCKED,
+        new SequentialCommandGroup(
+            new InstantCommand(() -> this.desiredPitchPose = io.getPitchPosition()),
+            new PitchToPose(this)));
 
     registerStateCommand(State.UNLOCKED, new PitchToPose(this));
   }
@@ -52,7 +56,9 @@ public class Pitch extends StateMachine<Pitch.State> {
   }
 
   public void setPitchPose(double desiredPitchPose) {
-    this.desiredPitchPose = desiredPitchPose;
+    if (getState() != State.LOCKED) {
+      this.desiredPitchPose = desiredPitchPose;
+    }
   }
 
   public void movePitch() {

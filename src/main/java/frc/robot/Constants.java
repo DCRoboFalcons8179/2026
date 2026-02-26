@@ -66,8 +66,8 @@ public final class Constants {
       /// ID of the turret motor
       public static final int TURRET_ID = 14;
 
-      /// ID of the y-axis controlling motor
-      public static final int PITCH_ID = 15;
+      /// The mode for the turret motor when inactive
+      public static final NeutralModeValue TURRET_NEUTRAL_MODE = NeutralModeValue.Coast;
 
       /// KP for moving to pos
       public static final double TURRET_KP = 1;
@@ -82,6 +82,9 @@ public final class Constants {
       public static final double AIM_KI = 0;
       /// KD for auto aim
       public static final double AIM_KD = 0;
+
+      /// ID of the y-axis controlling motor
+      public static final int PITCH_ID = 15;
 
       public static final double PITCH_KP = 1;
       public static final double PITCH_KI = 0;

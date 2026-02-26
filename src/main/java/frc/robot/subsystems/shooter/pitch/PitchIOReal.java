@@ -26,6 +26,7 @@ public class PitchIOReal implements PitchIO {
             .withKI(C_Turret.PITCH_KI)
             .withKD(C_Turret.PITCH_KD);
     pitchMotor.getConfigurator().apply(pitchGain);
+    pitchMotor.setNeutralMode(C_Turret.PITCH_NEUTRAL_MODE);
 
     // Motion Magic configuration - required for MotionMagicVoltage to work
     MotionMagicConfigs mmConfigs =

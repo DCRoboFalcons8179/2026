@@ -35,6 +35,8 @@ public class TurretIOReal implements TurretIO {
             .withMotionMagicAcceleration(160) // rotations per second squared
             .withMotionMagicJerk(1600); // rotations per second cubed
     turretMotor.getConfigurator().apply(mmConfigs);
+
+    turretMotor.setNeutralMode(C_Turret.TURRET_NEUTRAL_MODE);
   }
 
   @Override
