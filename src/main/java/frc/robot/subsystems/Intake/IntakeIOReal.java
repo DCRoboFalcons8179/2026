@@ -7,14 +7,9 @@ package frc.robot.subsystems.Intake;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
 
 public class IntakeIOReal implements IntakeIO {
-
-  // PID control
-  private PIDController feederPID = new PIDController(0.4, 0, 0);
-
   // Motor
   protected final TalonFX feeder = new TalonFX(Constants.Intake.FEEDER_ID);
 
@@ -35,7 +30,7 @@ public class IntakeIOReal implements IntakeIO {
     slot0Configs.kS = 0.0; // Static friction feedforward (volts)
     slot0Configs.kV = 0.12; // Velocity feedforward (volts per rotation per second)
     slot0Configs.kA = 0.0; // Acceleration feedforward (volts per rotation per second^2)
-    slot0Configs.kP = 0.4; // Proportional gain
+    slot0Configs.kP = 0.2; // Proportional gain
     slot0Configs.kI = 0.0; // Integral gain
     slot0Configs.kD = 0.0; // Derivative gain
     feeder.getConfigurator().apply(slot0Configs);
@@ -53,10 +48,6 @@ public class IntakeIOReal implements IntakeIO {
   public void stop() {
     feeder.set(0);
     feeder.stopMotor();
-  }
-
-  public void setPIDControl() {
-    feeder.setVoltage(feederPID.calculate(feeder.getTorqueCurrent().getValueAsDouble()));
   }
 
   @Override

@@ -13,36 +13,40 @@ public class MoveExtrude extends Command {
   /** Creates a new MoveExtrude. */
   private Extrude extrude;
 
-  private Double currentPos;
-  private Double extrudeOutPos;
+  private double targetPosition;
 
   public MoveExtrude(Extrude extrude) {
     this.extrude = extrude;
-    currentPos = extrude.getPos();
-    extrudeOutPos = extrude.getDesiredPos();
     addRequirements(extrude);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    // Get the target position when the command starts
+    targetPosition = extrude.getDesiredPos();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Math.abs(extrudeOutPos - currentPos) < Constants.Extruder.EXTRUDER_ERROR_THRESH_HOLD) {
-      return;
-    }
+    // Nothing needed here - the motor is already moving via setExtruderPosition
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    // Transition to IDLE when movement is complete
+    if (!interrupted) {
+      extrude.transitionCommand(Extrude.State.IDLE);
+    }
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    extrude.transitionCommand(Extrude.State.IDLE);
-    return false;
+    // Check if we're within the error threshold of the target
+    double currentPos = extrude.getPos();
+    return Math.abs(targetPosition - currentPos) < Constants.Extruder.EXTRUDER_ERROR_THRESH_HOLD;
   }
 }
