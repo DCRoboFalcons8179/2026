@@ -8,16 +8,18 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Hanger.Hanger;
+import frc.robot.subsystems.Hanger.Hanger.State;
+import frc.robot.subsystems.Hanger.HangerIOReal;
+import frc.robot.subsystems.Hanger.HangerIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -35,7 +37,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-
+  private final Hanger hanger;
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
@@ -74,6 +76,8 @@ public class RobotContainer {
         // new ModuleIOTalonFXS(TunerConstants.FrontRight),
         // new ModuleIOTalonFXS(TunerConstants.BackLeft),
         // new ModuleIOTalonFXS(TunerConstants.BackRight));
+
+        hanger = new Hanger(new HangerIOReal());
         break;
 
       case SIM:
@@ -85,6 +89,8 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
+
+        hanger = new Hanger(new HangerIOSim());
         break;
 
       default:
@@ -96,6 +102,8 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+
+        hanger = new Hanger(new HangerIOReal());
         break;
     }
 
@@ -137,29 +145,15 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    // Lock to 0° when A button is held
+    // When A is pressed, request the hanger to transition to EXTEND (one-shot)
     controller
-        .a()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
-                () -> Rotation2d.kZero));
+        .button(0)
+        .whileTrue(new InstantCommand(() -> hanger.requestTransition(State.EXTEND), hanger));
 
-    // Switch to X pattern when X button is pressed
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-
-    // Reset gyro to 0° when B button is pressed
+    // When B is pressed, request the hanger to go back to IDLE (stop motor)
     controller
         .b()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
-                    drive)
-                .ignoringDisable(true));
+        .whileTrue(new InstantCommand(() -> hanger.requestTransition(State.IDLE), hanger));
   }
 
   /**

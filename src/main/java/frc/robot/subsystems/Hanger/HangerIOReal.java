@@ -2,6 +2,7 @@ package frc.robot.subsystems.Hanger;
 
 import static frc.robot.Constants.Hanger.*;
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -22,6 +23,7 @@ public class HangerIOReal implements HangerIO {
   private void configureMotor() {
     hangerMotor.getConfigurator().apply(CURRENT_LIMIT);
     hangerMotor.setNeutralMode(NEUTRAL_MODE);
+    hangerMotor.getConfigurator().apply(new MotorOutputConfigs());
   }
 
   @Override
@@ -50,6 +52,7 @@ public class HangerIOReal implements HangerIO {
     // update the inputs by reading from the motor's sensors
     inputs.current = hangerMotor.getTorqueCurrent().getValueAsDouble();
     inputs.encoderPosition = hangerMotor.getPosition().getValueAsDouble();
+    inputs.velocity = hangerMotor.get();
   }
 
   @Override

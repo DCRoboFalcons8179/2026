@@ -4,10 +4,9 @@
 
 package frc.robot.subsystems.Hanger;
 
-import static frc.robot.Constants.Hanger.maximum_height;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -20,7 +19,7 @@ public class Hanger extends StateMachine<Hanger.State> {
   private final HangerInputs inputs = new HangerInputs();
 
   public Hanger(HangerIO io) {
-    super("Hanger", State.UNDETERMINED, State.class);
+    super("Hanger", State.EXTEND, State.class);
     this.io = io;
 
     io.updateInputs(inputs);
@@ -36,14 +35,16 @@ public class Hanger extends StateMachine<Hanger.State> {
 
     // extend will move motor to maximum height, then hold it there until a new command is given
     // this is used for readying the hanger for use, and for lowering the robot down after hanging
-    registerStateCommand(
-        State.EXTEND,
-        new SequentialCommandGroup(
-            new InstantCommand(() -> io.setPIDControl(maximum_height)),
-            new WaitCommand(0.25),
-            new WaitUntilCommand(() -> io.isMaxHeight()),
-            new WaitCommand(0.1),
-            transitionCommand(State.HOLD)));
+    // registerStateCommand(
+    //     State.EXTEND,
+    //     new SequentialCommandGroup(
+    //         new InstantCommand(() -> io.setPIDControl(maximum_height)),
+    //         new WaitCommand(0.25),
+    //         new WaitUntilCommand(() -> io.isMaxHeight()),
+    //         new WaitCommand(0.1),
+    //         transitionCommand(State.HOLD)));
+    // EXTEND: run the motor while in this state (50% output)
+    registerStateCommand(State.EXTEND, new RunCommand(() -> io.setHangerTargetVelocity(0.5), this));
 
     // retract moves motor to minimum height, and sets motor to coast, so that power can be
     // preserved
