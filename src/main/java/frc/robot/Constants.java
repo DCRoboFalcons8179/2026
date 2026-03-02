@@ -62,9 +62,9 @@ public final class Constants {
 
     /// Current to limit the motors to in amps
     public static final CurrentLimitsConfigs CURRENT_LIMIT =
-        new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
+        new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(false);
 
-    public static final double OUTPUT_SPEED = 10;
+    public static final double OUTPUT_SPEED = 50;
 
     /// The modes for when motors when innactive
     // coast when hangers not in use

@@ -9,6 +9,7 @@ public interface HangerIO {
     public double current = 0.0;
     public double encoderPosition = 0.0;
     public double velocity = 0.0;
+    public double appliedVoltage = 0.0;
   }
 
   public default void setHangerTargetVelocity(double velocity) {}

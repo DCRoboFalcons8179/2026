@@ -6,12 +6,16 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class HangerIOReal implements HangerIO {
 
   private Timer timer = new Timer();
 
   private PIDController pid = new PIDController(0.1, 0.0, 0.0);
+
+  private double targetPosition = 0.0;
+  private boolean usePositionControl = false;
 
   protected final TalonFXS hangerMotor = new TalonFXS(Hanger_Motor_ID);
 
@@ -42,9 +46,10 @@ public class HangerIOReal implements HangerIO {
 
   @Override
   public void stop() {
-    // stop the motor by setting the output to 0
     hangerMotor.set(0);
     hangerMotor.stopMotor();
+    usePositionControl = false;
+    targetPosition = 0.0;
   }
 
   @Override
@@ -52,7 +57,10 @@ public class HangerIOReal implements HangerIO {
     // update the inputs by reading from the motor's sensors
     inputs.current = hangerMotor.getTorqueCurrent().getValueAsDouble();
     inputs.encoderPosition = hangerMotor.getPosition().getValueAsDouble();
-    inputs.velocity = hangerMotor.get();
+    inputs.velocity = hangerMotor.getVelocity().getValueAsDouble();
+    inputs.appliedVoltage = hangerMotor.getMotorVoltage().getValueAsDouble();
+
+    SmartDashboard.putNumber("hanger move", inputs.velocity);
   }
 
   @Override

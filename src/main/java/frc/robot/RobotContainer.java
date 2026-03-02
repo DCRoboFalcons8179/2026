@@ -128,6 +128,9 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+
+    hanger.enable();
+    hanger.determineState();
   }
 
   /**
@@ -146,14 +149,10 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     // When A is pressed, request the hanger to transition to EXTEND (one-shot)
-    controller
-        .button(0)
-        .whileTrue(new InstantCommand(() -> hanger.requestTransition(State.EXTEND), hanger));
+    controller.a().whileTrue(new InstantCommand(() -> hanger.requestTransition(State.EXTEND)));
 
     // When B is pressed, request the hanger to go back to IDLE (stop motor)
-    controller
-        .b()
-        .whileTrue(new InstantCommand(() -> hanger.requestTransition(State.IDLE), hanger));
+    controller.b().whileTrue(new InstantCommand(() -> hanger.requestTransition(State.IDLE)));
   }
 
   /**
