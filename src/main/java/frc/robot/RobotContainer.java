@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeIO;
+import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -40,6 +43,9 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.subsystems.extrude.Extrude;
+import frc.robot.subsystems.extrude.ExtrudeIO;
+import frc.robot.subsystems.extrude.ExtrudeIOReal;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -55,6 +61,8 @@ public class RobotContainer {
   private final Turret turret;
   private final Shooter shooter;
   private final Pitch pitch;
+  private Intake intake;
+  private Extrude extrude;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -88,6 +96,30 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOReal());
 
         pitch = new Pitch(new PitchIOReal());
+        // The ModuleIOTalonFXS implementation provides an example implementation for
+        // TalonFXS controller connected to a CANdi with a PWM encoder. The
+        // implementations
+        // of ModuleIOTalonFX, ModuleIOTalonFXS, and ModuleIOSpark (from the Spark
+        // swerve
+        // template) can be freely intermixed to support alternative hardware
+        // arrangements.
+        // Please see the AdvantageKit template documentation for more information:
+        // https://docs.advantagekit.org/getting-started/template-projects/talonfx-swerve-template#custom-module-implementations
+        //
+        // drive =
+        // new Drive(
+        // new GyroIOPigeon2(),
+        // new ModuleIOTalonFXS(TunerConstants.FrontLeft),
+        // new ModuleIOTalonFXS(TunerConstants.FrontRight),
+        // new ModuleIOTalonFXS(TunerConstants.BackLeft),
+        // new ModuleIOTalonFXS(TunerConstants.BackRight));
+
+        intake = new Intake(new IntakeIOReal());
+        extrude = new Extrude(new ExtrudeIOReal());
+
+        // Enable state machines
+        intake.enable();
+        extrude.enable();
         break;
 
       case SIM:
@@ -109,6 +141,12 @@ public class RobotContainer {
         turret = new Turret(new TurretIOSim(), vision);
         shooter = null;
         pitch = new Pitch(new PitchIOSim());
+        intake = new Intake(new IntakeIO() {});
+        extrude = new Extrude(new ExtrudeIO() {});
+
+        // Enable state machines
+        intake.enable();
+        extrude.enable();
         break;
 
       default:
@@ -176,7 +214,7 @@ public class RobotContainer {
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Reset gyro to 0° when B button is pressed
+    // Reset gyro to 0° when B button is pressed
     controller
         .y()
         .onTrue(
@@ -188,12 +226,12 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     controller
-        .leftTrigger()
+        .povDown()
         .onTrue(new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)))
         .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
 
     controller
-        .leftBumper()
+        .povRight()
         .onTrue(
             new InstantCommand(
                 () -> {
@@ -217,6 +255,21 @@ public class RobotContainer {
     controller
         .povRight()
         .onTrue(new InstantCommand(() -> pitch.requestTransition(Pitch.State.LOCKED)));
+    // Feeds intake in when Y button is pressed
+    controller
+        .y()
+        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
+    // Feeds intake out when right bumper is pressed
+    controller
+        .y()
+        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
+
+    controller
+        .leftTrigger()
+        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+    controller
+        .leftBumper()
+        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
   }
 
   /**
