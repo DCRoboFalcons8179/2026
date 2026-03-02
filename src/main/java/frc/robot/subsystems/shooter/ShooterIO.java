@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Shooter;
+package frc.robot.subsystems.shooter;
 
 import org.littletonrobotics.junction.AutoLog;
 
@@ -8,6 +8,7 @@ public interface ShooterIO {
   public static class ShooterInputs {
     public double current = 0.0;
     public double encoderPosition = 0.0;
+    public double velocity = 0.0;
   }
 
   public default void setShooterTargetVelocity(double velocity) {}
@@ -21,4 +22,6 @@ public interface ShooterIO {
   public default boolean isCharged() {
     return false;
   }
+
+  public default void tiltShooter(double position) {}
 }
