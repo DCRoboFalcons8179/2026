@@ -52,6 +52,7 @@ public class Extrude extends StateMachine<Extrude.State> {
     addOmniTransition(State.IDLE);
     addOmniTransition(State.EXTRUDE_OUT);
     addOmniTransition(State.EXTRUDE_IN);
+    addOmniTransition(State.MANUAL_EXTRUDE_OUT);
   }
 
   @Override
