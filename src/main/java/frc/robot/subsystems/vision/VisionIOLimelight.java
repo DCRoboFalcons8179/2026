@@ -72,10 +72,23 @@ public class VisionIOLimelight implements VisionIO {
     // Read new pose observations from NetworkTables
     Set<Integer> tagIds = new HashSet<>();
     List<PoseObservation> poseObservations = new LinkedList<>();
+    int bestTagId = -1;
+    double bestTagDistance = Double.POSITIVE_INFINITY;
+
     for (var rawSample : megatag1Subscriber.readQueue()) {
       if (rawSample.value.length == 0) continue;
       for (int i = 11; i < rawSample.value.length; i += 7) {
-        tagIds.add((int) rawSample.value[i]);
+        int tagId = (int) rawSample.value[i];
+        tagIds.add(tagId);
+
+        // Track closest tag (best tag) - distance is at index i+1
+        if (i + 1 < rawSample.value.length) {
+          double distance = rawSample.value[i + 1];
+          if (distance < bestTagDistance) {
+            bestTagDistance = distance;
+            bestTagId = tagId;
+          }
+        }
       }
       poseObservations.add(
           new PoseObservation(
@@ -101,7 +114,17 @@ public class VisionIOLimelight implements VisionIO {
     for (var rawSample : megatag2Subscriber.readQueue()) {
       if (rawSample.value.length == 0) continue;
       for (int i = 11; i < rawSample.value.length; i += 7) {
-        tagIds.add((int) rawSample.value[i]);
+        int tagId = (int) rawSample.value[i];
+        tagIds.add(tagId);
+
+        // Track closest tag (best tag) - distance is at index i+1
+        if (i + 1 < rawSample.value.length) {
+          double distance = rawSample.value[i + 1];
+          if (distance < bestTagDistance) {
+            bestTagDistance = distance;
+            bestTagId = tagId;
+          }
+        }
       }
       poseObservations.add(
           new PoseObservation(
@@ -136,6 +159,9 @@ public class VisionIOLimelight implements VisionIO {
     for (int id : tagIds) {
       inputs.tagIds[i++] = id;
     }
+
+    // Save best tag ID
+    inputs.bestTagId = bestTagId;
   }
 
   /** Parses the 3D pose from a Limelight botpose array. */

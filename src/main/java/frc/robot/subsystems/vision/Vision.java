@@ -59,6 +59,25 @@ public class Vision extends SubsystemBase {
     return inputs[cameraIndex].latestTargetObservation.tx();
   }
 
+  /**
+   * Returns whether the camera is connected and has valid target data.
+   *
+   * @param cameraIndex The index of the camera to check.
+   */
+  public boolean hasValidTarget(int cameraIndex) {
+    return inputs[cameraIndex].connected && inputs[cameraIndex].tagIds.length > 0;
+  }
+
+  /**
+   * Returns the ID of the best (closest/most reliable) AprilTag currently visible.
+   *
+   * @param cameraIndex The index of the camera to use.
+   * @return The tag ID, or -1 if no tag is visible
+   */
+  public int getBestTagId(int cameraIndex) {
+    return inputs[cameraIndex].bestTagId;
+  }
+
   @Override
   public void periodic() {
     for (int i = 0; i < io.length; i++) {
@@ -154,6 +173,9 @@ public class Vision extends SubsystemBase {
       Logger.recordOutput(
           "Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPosesRejected",
           robotPosesRejected.toArray(new Pose3d[0]));
+      Logger.recordOutput(
+          "Vision/Camera" + Integer.toString(cameraIndex) + "/BestTagId",
+          inputs[cameraIndex].bestTagId);
       allTagPoses.addAll(tagPoses);
       allRobotPoses.addAll(robotPoses);
       allRobotPosesAccepted.addAll(robotPosesAccepted);
