@@ -28,6 +28,9 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.extrude.Extrude;
+import frc.robot.subsystems.extrude.ExtrudeIO;
+import frc.robot.subsystems.extrude.ExtrudeIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
@@ -44,9 +47,6 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
-import frc.robot.subsystems.extrude.Extrude;
-import frc.robot.subsystems.extrude.ExtrudeIO;
-import frc.robot.subsystems.extrude.ExtrudeIOReal;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**

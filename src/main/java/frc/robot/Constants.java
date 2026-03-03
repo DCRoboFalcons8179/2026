@@ -34,7 +34,7 @@ public final class Constants {
 
   public static class C_Shooter {
     /// ID of Lead Shooter
-    public static final int LEAD_SHOOTER_ID = 95;
+    public static final int LEAD_SHOOTER_ID = 2;
     /// boolean for the Lead Shooter's invert
     public static final InvertedValue LEAD_SHOOTER_INVERT = InvertedValue.Clockwise_Positive;
 
@@ -84,7 +84,7 @@ public final class Constants {
       public static final double AIM_KD = 0;
 
       /// ID of the y-axis controlling motor
-      public static final int PITCH_ID = 15;
+      public static final int PITCH_ID = 5;
 
       public static final double PITCH_KP = 1;
       public static final double PITCH_KI = 0;
@@ -96,7 +96,7 @@ public final class Constants {
 
   public static class Intake {
     // ID for feeder
-    public static final int FEEDER_ID = 0;
+    public static final int FEEDER_ID = 6;
 
     public static final double GEAR_RATIO = 1.0 / 1.0;
 
@@ -113,7 +113,7 @@ public final class Constants {
 
   public static class Extruder {
     // ID for extruder
-    public static final int EXTRUDER_ID = 14;
+    public static final int EXTRUDER_ID = 7;
 
     // Neutral Mode for Extruder
     public static final NeutralModeValue EXTRUDER_NEUTRAL_MODE = NeutralModeValue.Brake;
