@@ -13,25 +13,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "hub to human"
+            "pathName": "hub to depot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "human to hub"
+            "pathName": "depot to hub"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "hub to hang"
+            "pathName": "hub to neutral upper"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "collect neutral depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "depot neutral to hub"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Hang",
+  "folder": "No Hang",
   "choreoAuto": false
 }

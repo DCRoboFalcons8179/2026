@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "start hub"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "hub to human"
+            "pathName": "start to human"
           }
         },
         {
@@ -25,13 +19,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "hub to hang"
+            "pathName": "hub to depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "depot to hub"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Hang",
+  "folder": "No Hang",
   "choreoAuto": false
 }

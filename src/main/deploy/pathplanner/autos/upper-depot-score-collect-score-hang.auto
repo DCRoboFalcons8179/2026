@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "line to depot"
+            "pathName": "start depot"
           }
         },
         {
@@ -38,6 +38,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Hang",
   "choreoAuto": false
 }
