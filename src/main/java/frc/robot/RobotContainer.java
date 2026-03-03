@@ -113,21 +113,21 @@ public class RobotContainer {
 
     //these are the autons that do not have any hanging at the end of the process
     autoChooser.addOption(
-        "01: Depot Score Human Score", new PathPlannerAuto("depot-score-human-score"));
+        "01: Depot Score Human Score", new PathPlannerAuto("1-depot-score-human-score"));
     autoChooser.addOption(
-        "02: Human Score Depot Score", new PathPlannerAuto("human-score-depot-score"));
+        "02: Human Score Depot Score", new PathPlannerAuto("2-human-score-depot-score"));
     autoChooser.addOption(
-        "03: Depot Hub Score Neutral Hub Score", new PathPlannerAuto("depot-hub-score-neutral-hub-score"));
+        "03: Depot Hub Score Neutral Hub Score", new PathPlannerAuto("3-depot-hub-score-neutral-hub-score"));
     autoChooser.addOption(
-        "04: Human Hub Score Neutral Hub Score", new PathPlannerAuto("human-hub-score-neutral-hub-score"));
+        "04: Human Hub Score Neutral Hub Score", new PathPlannerAuto("4-human-hub-score-neutral-hub-score"));
     autoChooser.addOption(
-        "05: Hub Depot Score Neutral Score", new PathPlannerAuto("hub-depot-score-neutral-score"));
+        "05: Hub Depot Score Neutral Score", new PathPlannerAuto("5-hub-depot-score-neutral-score"));
     autoChooser.addOption(
-        "06: Hub Human Score Neutral Score", new PathPlannerAuto("hub-human-score-neutral-score"));
+        "06: Hub Human Score Neutral Score", new PathPlannerAuto("6-hub-human-score-neutral-score"));
     autoChooser.addOption(
-        "07: Loop Depot", new PathPlannerAuto("hub-neutral-high-sweep-score"));
+        "07: Hub Neutral (Depot) Collect All Score", new PathPlannerAuto("7-hub-neutral-high-sweep-score"));
     autoChooser.addOption(
-        "08: Loop Human", new PathPlannerAuto("hub-neutral-low-sweep-score"));
+        "08: Hub Neutral (Human) Collect All Score", new PathPlannerAuto("8-hub-neutral-low-sweep-score"));
     
 
     // Configure the button bindings
