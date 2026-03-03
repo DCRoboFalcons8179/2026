@@ -27,6 +27,9 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.extrude.Extrude;
+import frc.robot.subsystems.extrude.ExtrudeIO;
+import frc.robot.subsystems.extrude.ExtrudeIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
@@ -43,9 +46,6 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
-import frc.robot.subsystems.extrude.Extrude;
-import frc.robot.subsystems.extrude.ExtrudeIO;
-import frc.robot.subsystems.extrude.ExtrudeIOReal;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -142,7 +142,10 @@ public class RobotContainer {
         shooter = null;
         pitch = new Pitch(new PitchIOSim());
         intake = new Intake(new IntakeIO() {});
-        extrude = new Extrude(new ExtrudeIO() {});
+        extrude = new Extrude(new ExtrudeIO() {
+          @Override
+          public void addExtruderPosition(double position) {}
+        });
 
         // Enable state machines
         intake.enable();
@@ -270,6 +273,9 @@ public class RobotContainer {
     controller
         .leftBumper()
         .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
+    controller
+        .rightTrigger()
+        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.MANUAL_EXTRUDE_OUT)));
   }
 
   /**

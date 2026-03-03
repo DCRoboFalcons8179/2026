@@ -67,4 +67,10 @@ public class ExtruderIOSim implements ExtrudeIO {
     inputs.appliedVoltage = appliedVoltage;
     inputs.targetPosition = targetPosition;
   }
+
+  @Override
+  public void addExtruderPosition(double extruderManalDelta) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'addExtruderPosition'");
+  }
 }

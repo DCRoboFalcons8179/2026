@@ -18,4 +18,6 @@ public interface ExtrudeIO {
   public default void setExtruderPosition(double position) {}
 
   public default void stop() {}
+
+  public void addExtruderPosition(double extruderManalDelta);
 }

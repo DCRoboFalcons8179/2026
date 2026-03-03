@@ -41,6 +41,10 @@ public class Extrude extends StateMachine<Extrude.State> {
             new InstantCommand(
                 () -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_OUT_POSITION)),
             new MoveExtrude(this)));
+    registerStateCommand(
+      State.MANUAL_EXTRUDE_OUT,
+      new InstantCommand(() -> io.addExtruderPosition(Constants.Extruder.EXTRUDER_MANAL_DELTA))
+    );
   }
 
   public void registerStateTransition() {
@@ -80,5 +84,6 @@ public class Extrude extends StateMachine<Extrude.State> {
     IDLE,
     EXTRUDE_IN,
     EXTRUDE_OUT,
+    MANUAL_EXTRUDE_OUT;
   }
 }

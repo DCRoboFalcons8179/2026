@@ -58,6 +58,12 @@ public class ExtrudeIOReal implements ExtrudeIO {
   }
 
   @Override
+  public void addExtruderPosition(double Delta) {
+    double newPosition = extruder.getPosition().getValueAsDouble() + Delta;
+    setExtruderPosition(newPosition);
+  }
+
+  @Override
   public void stop() {
     extruder.stopMotor();
   }
