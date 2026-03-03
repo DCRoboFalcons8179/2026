@@ -123,7 +123,7 @@ public final class Constants {
 
     public static final double EXTRUDER_IN_POSITION = 0;
     public static final double EXTRUDER_OUT_POSITION = 15;
-    public static final double EXTRUDER_MANAL_DELTA = 0.5;
+    public static final double EXTRUDER_MANAL_DELTA = 3;
     // Error thresh hold (current just a placeholder number before being tested)
     public static final double EXTRUDER_ERROR_THRESH_HOLD = .2;
 
