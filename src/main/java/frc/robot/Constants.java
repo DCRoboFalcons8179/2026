@@ -101,8 +101,8 @@ public final class Constants {
     public static final double GEAR_RATIO = 1.0 / 1.0;
 
     // motor velocity (current just a placeholder number before being tested)
-    public static final double FEEDER_SPEED_IN = 5.0;
-    public static final double FEEDER_SPEED_OUT = -5.0;
+    public static final double FEEDER_SPEED_IN = -5.0;
+    public static final double FEEDER_SPEED_OUT = 11.0;
 
     // Neutral Mode for feeder
     public static final NeutralModeValue FEEDER_NEUTRAL_MODE = NeutralModeValue.Coast;
@@ -122,8 +122,8 @@ public final class Constants {
         new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
 
     public static final double EXTRUDER_IN_POSITION = 0;
-    public static final double EXTRUDER_OUT_POSITION = 15;
-    public static final double EXTRUDER_MANAL_DELTA = 3;
+    public static final double EXTRUDER_OUT_POSITION = -15;
+    public static final double EXTRUDER_MANAL_DELTA = -3;
     // Error thresh hold (current just a placeholder number before being tested)
     public static final double EXTRUDER_ERROR_THRESH_HOLD = .2;
 
@@ -134,7 +134,7 @@ public final class Constants {
 
     // Motion profiling constraints to control speed
     // Maximum velocity in rotations per second (adjust lower to slow down)
-    public static final double EXTRUDER_MAX_VELOCITY = 24.0; // 24 rotations/sec - adjust as needed
+    public static final double EXTRUDER_MAX_VELOCITY = 48.0; // 24 rotations/sec - adjust as needed
     // Maximum acceleration in rotations per second squared
     public static final double EXTRUDER_MAX_ACCELERATION = 21.0; // Smooth acceleration
     // Jerk control for even smoother motion (rotations per second cubed)

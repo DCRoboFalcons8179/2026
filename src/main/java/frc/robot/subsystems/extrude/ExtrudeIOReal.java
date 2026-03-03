@@ -15,6 +15,8 @@ public class ExtrudeIOReal implements ExtrudeIO {
   // Motor
   protected final TalonFXS extruder = new TalonFXS(Constants.Extruder.EXTRUDER_ID);
 
+  private double targetPosition = 0;
+
   // Control request for Motion Magic position control (smoother than basic position control)
   private final MotionMagicVoltage motionMagicControl = new MotionMagicVoltage(0);
 
@@ -59,8 +61,13 @@ public class ExtrudeIOReal implements ExtrudeIO {
 
   @Override
   public void addExtruderPosition(double Delta) {
-    double newPosition = extruder.getPosition().getValueAsDouble() + Delta;
-    setExtruderPosition(newPosition);
+    targetPosition = extruder.getPosition().getValueAsDouble() + Delta;
+    setExtruderPosition(targetPosition);
+  }
+
+  @Override
+  public double getTargetPosition() {
+    return targetPosition;
   }
 
   @Override

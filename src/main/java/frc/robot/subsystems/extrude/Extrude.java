@@ -41,10 +41,11 @@ public class Extrude extends StateMachine<Extrude.State> {
             new InstantCommand(
                 () -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_OUT_POSITION)),
             new MoveExtrude(this)));
-    registerStateCommand(
-      State.MANUAL_EXTRUDE_OUT,
-      new InstantCommand(() -> io.addExtruderPosition(Constants.Extruder.EXTRUDER_MANAL_DELTA))
-    );
+    registerStateCommand(State.MANUAL_EXTRUDE_OUT, new MoveExtrude(this));
+  }
+
+  public void addExtruderPosition(double delta) {
+    io.addExtruderPosition(delta);
   }
 
   public void registerStateTransition() {
@@ -69,6 +70,8 @@ public class Extrude extends StateMachine<Extrude.State> {
       desiredPos = Constants.Extruder.EXTRUDER_IN_POSITION;
     } else if (getState().equals(State.EXTRUDE_OUT)) {
       desiredPos = Constants.Extruder.EXTRUDER_OUT_POSITION;
+    } else if (getState().equals(State.MANUAL_EXTRUDE_OUT)) {
+      desiredPos = io.getTargetPosition();
     }
     return desiredPos;
   }
@@ -77,7 +80,8 @@ public class Extrude extends StateMachine<Extrude.State> {
   protected void update() {
     io.updateInputs(inputs);
     SmartDashboard.putString("Extrude State", getState().toString());
-    SmartDashboard.putNumber("Extruder Position", getPos());
+    SmartDashboard.putNumber("Extrude Desired Pos", getDesiredPos());
+    SmartDashboard.putNumber("Extruder Position", getDesiredPos());
   }
 
   public enum State {

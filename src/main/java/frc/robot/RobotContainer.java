@@ -148,10 +148,12 @@ public class RobotContainer {
         shooter = null;
         pitch = new Pitch(new PitchIOSim());
         intake = new Intake(new IntakeIO() {});
-        extrude = new Extrude(new ExtrudeIO() {
-          @Override
-          public void addExtruderPosition(double position) {}
-        });
+        extrude =
+            new Extrude(
+                new ExtrudeIO() {
+                  @Override
+                  public void addExtruderPosition(double position) {}
+                });
 
         // Enable state machines
         intake.enable();
@@ -289,7 +291,9 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
     controller
         .rightTrigger()
-        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.MANUAL_EXTRUDE_OUT)));
+        .onTrue(
+            new InstantCommand(
+                () -> extrude.addExtruderPosition(Constants.Extruder.EXTRUDER_MANAL_DELTA)));
   }
 
   /**

@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.extrude.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -46,7 +45,8 @@ public class MoveExtrude extends Command {
   @Override
   public boolean isFinished() {
     // Check if we're within the error threshold of the target
-    double currentPos = extrude.getPos();
-    return Math.abs(targetPosition - currentPos) < Constants.Extruder.EXTRUDER_ERROR_THRESH_HOLD;
+    // double currentPos = extrude.getPos();
+    // return Math.abs(targetPosition - currentPos) < Constants.Extruder.EXTRUDER_ERROR_THRESH_HOLD;
+    return false;
   }
 }
