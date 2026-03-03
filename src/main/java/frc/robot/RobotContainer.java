@@ -107,6 +107,11 @@ public class RobotContainer {
     // Set up auton routines for the selector. make sure that the auton names match the option names to avoid confusion and typos
     //an improperly set up routine will not work and we will be very sad
     //auton names are uniform and follow what they will do to avoid potential confusion
+
+    autoChooser.addOption(
+        "00: Stupid", new PathPlannerAuto("Stupid"));
+
+    //these are the autons that do not have any hanging at the end of the process
     autoChooser.addOption(
         "01: Depot Score Human Score", new PathPlannerAuto("depot-score-human-score"));
     autoChooser.addOption(
@@ -115,6 +120,15 @@ public class RobotContainer {
         "03: Depot Hub Score Neutral Hub Score", new PathPlannerAuto("depot-hub-score-neutral-hub-score"));
     autoChooser.addOption(
         "04: Human Hub Score Neutral Hub Score", new PathPlannerAuto("human-hub-score-neutral-hub-score"));
+    autoChooser.addOption(
+        "05: Hub Depot Score Neutral Score", new PathPlannerAuto("hub-depot-score-neutral-score"));
+    autoChooser.addOption(
+        "06: Hub Human Score Neutral Score", new PathPlannerAuto("hub-human-score-neutral-score"));
+    autoChooser.addOption(
+        "07: Loop Depot", new PathPlannerAuto("hub-neutral-high-sweep-score"));
+    autoChooser.addOption(
+        "08: Loop Human", new PathPlannerAuto("hub-neutral-low-sweep-score"));
+    
 
     // Configure the button bindings
     configureButtonBindings();
