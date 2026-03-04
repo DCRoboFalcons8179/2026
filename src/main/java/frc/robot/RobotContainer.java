@@ -108,6 +108,7 @@ public class RobotContainer {
     //an improperly set up routine will not work and we will be very sad
     //auton names are uniform and follow what they will do to avoid potential confusion
 
+    autoChooser.addOption("///CLEAR AREA///", getAutonomousCommand());
     //these 4 autons will be used in the event a team requests we have our robot do nothing for auton, just in case
     autoChooser.addOption(
         "A: Straight forward", new PathPlannerAuto("A-straight-out"));
@@ -118,10 +119,13 @@ public class RobotContainer {
     autoChooser.addOption(
         "D: Hub backward", new PathPlannerAuto("D-hub-back"));
 
+    
     //this auton goes into the middle and messes up balls
     autoChooser.addOption(
         "00: Stupid", new PathPlannerAuto("Stupid"));
 
+    
+    autoChooser.addOption("///NO HANGING///", getAutonomousCommand());
     //these are the autons that do not have any hanging at the end of the process
     //these two stay in our end
     autoChooser.addOption(
@@ -142,6 +146,29 @@ public class RobotContainer {
         "07: Hub Neutral (Depot) Collect All Score", new PathPlannerAuto("7-hub-neutral-high-sweep-score"));
     autoChooser.addOption(
         "08: Hub Neutral (Human) Collect All Score", new PathPlannerAuto("8-hub-neutral-low-sweep-score"));
+
+    autoChooser.addOption("///HANGING///", getAutonomousCommand());
+    //these autons have hagning at the end
+    //these two cycle between the hub and refill station
+    autoChooser.addOption(
+        "09: Hub Score Depot Score Hang", new PathPlannerAuto("9-hub-score-depot-score-hang"));
+    autoChooser.addOption(
+        "10: Hub Score Human Score Hang", new PathPlannerAuto("10-hub-score-human-score-hang"));
+    //these go straight to neutral before scoring
+    autoChooser.addOption(
+        "11: Lower Neutral Score Hang", new PathPlannerAuto("11-lower-neutral-score-hang"));
+    autoChooser.addOption(
+        "12: Upper Neutral Score Hang", new PathPlannerAuto("12-upper-neutral-score-hang"));
+    //these two go to filling station and then score, refill in neutral, and then score again before hanging
+    autoChooser.addOption(
+        "13: Lower Human Score Collect Score Hang", new PathPlannerAuto("13-lower-human-score-collect-score-hang"));
+    autoChooser.addOption(
+        "14: Upper Depot Score Collect Score Hang", new PathPlannerAuto("14-upper-depot-score-collect-score-hang"));
+    //these two start at the hub, score, go to neutral, score again, then hang
+    autoChooser.addOption(
+        "15: Lower Hub Score Collect Score Hang", new PathPlannerAuto("15-lower-hub-score-collect-score-hang"));
+    autoChooser.addOption(
+        "16: Upper Hub Score Collect Score Hang", new PathPlannerAuto("16-upper-hub-score-collect-score-hang"));
     
 
     // Configure the button bindings
