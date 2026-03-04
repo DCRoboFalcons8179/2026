@@ -108,14 +108,27 @@ public class RobotContainer {
     //an improperly set up routine will not work and we will be very sad
     //auton names are uniform and follow what they will do to avoid potential confusion
 
+    //these 4 autons will be used in the event a team requests we have our robot do nothing for auton, just in case
+    autoChooser.addOption(
+        "A: Straight forward", new PathPlannerAuto("A-straight-out"));
+    autoChooser.addOption(
+        "B: Straight backward", new PathPlannerAuto("B-straight-back"));
+    autoChooser.addOption(
+        "C: Hub forward", new PathPlannerAuto("C-hub-out"));
+    autoChooser.addOption(
+        "D: Hub backward", new PathPlannerAuto("D-hub-back"));
+
+    //this auton goes into the middle and messes up balls
     autoChooser.addOption(
         "00: Stupid", new PathPlannerAuto("Stupid"));
 
     //these are the autons that do not have any hanging at the end of the process
+    //these two stay in our end
     autoChooser.addOption(
         "01: Depot Score Human Score", new PathPlannerAuto("1-depot-score-human-score"));
     autoChooser.addOption(
         "02: Human Score Depot Score", new PathPlannerAuto("2-human-score-depot-score"));
+    //these four stay on one side and travel to neutral for collection
     autoChooser.addOption(
         "03: Depot Hub Score Neutral Hub Score", new PathPlannerAuto("3-depot-hub-score-neutral-hub-score"));
     autoChooser.addOption(
@@ -124,6 +137,7 @@ public class RobotContainer {
         "05: Hub Depot Score Neutral Score", new PathPlannerAuto("5-hub-depot-score-neutral-score"));
     autoChooser.addOption(
         "06: Hub Human Score Neutral Score", new PathPlannerAuto("6-hub-human-score-neutral-score"));
+    //these two will have the robot go in a big loop across neutral to maximize collection
     autoChooser.addOption(
         "07: Hub Neutral (Depot) Collect All Score", new PathPlannerAuto("7-hub-neutral-high-sweep-score"));
     autoChooser.addOption(
