@@ -34,7 +34,7 @@ public final class Constants {
 
   public static class C_Shooter {
     /// ID of Lead Shooter
-    public static final int LEAD_SHOOTER_ID = 2;
+    public static final int LEAD_SHOOTER_ID = 4;
     /// boolean for the Lead Shooter's invert
     public static final InvertedValue LEAD_SHOOTER_INVERT = InvertedValue.Clockwise_Positive;
 
@@ -64,7 +64,7 @@ public final class Constants {
 
     public static class C_Turret {
       /// ID of the turret motor
-      public static final int TURRET_ID = 14;
+      public static final int TURRET_ID = 3;
 
       /// The mode for the turret motor when inactive
       public static final NeutralModeValue TURRET_NEUTRAL_MODE = NeutralModeValue.Coast;
