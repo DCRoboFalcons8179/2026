@@ -22,6 +22,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeIO;
 import frc.robot.subsystems.Intake.IntakeIOReal;
+import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -31,6 +32,7 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.extrude.Extrude;
 import frc.robot.subsystems.extrude.ExtrudeIO;
 import frc.robot.subsystems.extrude.ExtrudeIOReal;
+import frc.robot.subsystems.extrude.ExtrudeIOSim;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
@@ -92,7 +94,7 @@ public class RobotContainer {
                 new VisionIOPhotonVision(
                     VisionConstants.camera0Name, VisionConstants.robotToCamera0)
                 // new VisionIOPhotonVision(
-                //     VisionConstants.camera1Name, VisionConstants.robotToCamera1));
+                // VisionConstants.camera1Name, VisionConstants.robotToCamera1));
                 );
 
         turret = new Turret(new TurretIOReal(), vision);
@@ -147,13 +149,8 @@ public class RobotContainer {
         turret = new Turret(new TurretIOSim(), vision);
         shooter = new Shooter(new ShooterIO() {});
         pitch = new Pitch(new PitchIOSim());
-        intake = new Intake(new IntakeIO() {});
-        extrude =
-            new Extrude(
-                new ExtrudeIO() {
-                  @Override
-                  public void addExtruderPosition(double position) {}
-                });
+        intake = new Intake(new IntakeIOSim() {});
+        extrude = new Extrude(new ExtrudeIOSim() {});
 
         break;
 

@@ -5,10 +5,12 @@
 package frc.robot.subsystems.extrude;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import frc.robot.Constants;
+import org.littletonrobotics.junction.Logger;
 
 public class ExtrudeIOReal implements ExtrudeIO {
 
@@ -27,10 +29,14 @@ public class ExtrudeIOReal implements ExtrudeIO {
   private void configureMotors() {
     // Configure PID gains for the TalonFX's built-in position control
     Slot0Configs slot0Configs = new Slot0Configs();
-    slot0Configs.kP = Constants.Extruder.EXTRUDER_KP;
-    slot0Configs.kI = Constants.Extruder.EXTRUDER_KI;
-    slot0Configs.kD = Constants.Extruder.EXTRUDER_KD;
+    slot0Configs.kP = Constants.Extruder.KP;
+    slot0Configs.kI = Constants.Extruder.KI;
+    slot0Configs.kD = Constants.Extruder.KD;
+
     extruder.getConfigurator().apply(slot0Configs);
+    extruder
+        .getConfigurator()
+        .apply(new MotorOutputConfigs().withInverted(Constants.Extruder.INVERT));
 
     // Configure Motion Magic for smooth, controlled movement
     MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
@@ -48,20 +54,24 @@ public class ExtrudeIOReal implements ExtrudeIO {
   }
 
   @Override
-  public void updateInputs(ExtrudeInputs inputs) {
+  public void updateInputs(ExtrudeInputsAutoLogged inputs) {
     inputs.encoderPosition = extruder.getPosition().getValueAsDouble();
     inputs.current = extruder.getSupplyCurrent().getValueAsDouble();
+    inputs.appliedVoltage = extruder.getMotorVoltage().getValueAsDouble();
+    inputs.targetPosition = targetPosition;
+    Logger.processInputs("Extrude", inputs);
   }
 
   @Override
   public void setExtruderPosition(double position) {
+    targetPosition = position;
     // Use Motion Magic for smooth, velocity-limited movement
     extruder.setControl(motionMagicControl.withPosition(position));
   }
 
   @Override
   public void addExtruderPosition(double Delta) {
-    targetPosition = extruder.getPosition().getValueAsDouble() + Delta;
+    targetPosition += Delta;
     setExtruderPosition(targetPosition);
   }
 

@@ -6,18 +6,16 @@ package frc.robot.subsystems.shooter;
 
 import static frc.robot.Constants.C_Shooter.OUTPUT_SPEED;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.SMF.StateMachine;
-import frc.robot.subsystems.shooter.ShooterIO.ShooterInputs;
 
 public class Shooter extends StateMachine<Shooter.State> {
   private final ShooterIO io;
 
-  private final ShooterInputs inputs = new ShooterInputs();
+  private final ShooterInputsAutoLogged inputs = new ShooterInputsAutoLogged();
 
   public Shooter(ShooterIO io) {
     super("Shooter", State.UNDETERMINED, State.class);
@@ -56,8 +54,8 @@ public class Shooter extends StateMachine<Shooter.State> {
 
   @Override
   protected void update() {
+    inputs.state = this.getState();
     io.updateInputs(inputs);
-    SmartDashboard.putString("Shooter State", getState().toString());
   }
 
   public enum State {

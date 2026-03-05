@@ -9,8 +9,9 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.Constants;
+import org.littletonrobotics.junction.Logger;
 
-public class ExtruderIOSim implements ExtrudeIO {
+public class ExtrudeIOSim implements ExtrudeIO {
 
   private final DCMotorSim extruderSim;
 
@@ -24,7 +25,7 @@ public class ExtruderIOSim implements ExtrudeIO {
   private static final double EXTRUDER_GEARING = 100.0; // Adjust based on your gearing ratio
   private static final double EXTRUDER_MOI = 0.001; // kg*m^2, adjust for your turret mass
 
-  public ExtruderIOSim() {
+  public ExtrudeIOSim() {
 
     extruderSim =
         new DCMotorSim(
@@ -33,19 +34,13 @@ public class ExtruderIOSim implements ExtrudeIO {
             DCMotor.getKrakenX44(1));
 
     positionController =
-        new PIDController(
-            Constants.Extruder.EXTRUDER_KP,
-            Constants.Extruder.EXTRUDER_KI,
-            Constants.Extruder.EXTRUDER_KD);
+        new PIDController(Constants.Extruder.KP, Constants.Extruder.KI, Constants.Extruder.KD);
 
     setPIDControl();
   }
 
   public void setPIDControl() {
-    positionController.setPID(
-        Constants.Extruder.EXTRUDER_KP,
-        Constants.Extruder.EXTRUDER_KI,
-        Constants.Extruder.EXTRUDER_KD);
+    positionController.setPID(Constants.Extruder.KP, Constants.Extruder.KI, Constants.Extruder.KD);
   }
 
   @Override
@@ -55,7 +50,14 @@ public class ExtruderIOSim implements ExtrudeIO {
   }
 
   @Override
-  public void updateInputs(ExtrudeInputs inputs) {
+  public void setExtruderPosition(double position) {
+    targetPosition = position;
+    // Use Motion Magic for smooth, velocity-limited movement
+    extruderSim.setAngularVelocity(positionController.calculate(position));
+  }
+
+  @Override
+  public void updateInputs(ExtrudeInputsAutoLogged inputs) {
 
     // Update simulation with applied voltage
     extruderSim.setInputVoltage(appliedVoltage);
@@ -66,11 +68,12 @@ public class ExtruderIOSim implements ExtrudeIO {
     inputs.current = extruderSim.getCurrentDrawAmps();
     inputs.appliedVoltage = appliedVoltage;
     inputs.targetPosition = targetPosition;
+
+    Logger.processInputs("Extrude", inputs);
   }
 
   @Override
   public void addExtruderPosition(double extruderManalDelta) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'addExtruderPosition'");
+    targetPosition += extruderManalDelta;
   }
 }

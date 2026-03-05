@@ -4,19 +4,17 @@
 
 package frc.robot.subsystems.extrude;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.SMF.StateMachine;
 import frc.robot.commands.MoveExtrude;
-import frc.robot.subsystems.extrude.ExtrudeIO.ExtrudeInputs;
 
 public class Extrude extends StateMachine<Extrude.State> {
   /** Creates a new Intake. */
   public final ExtrudeIO io;
 
-  public final ExtrudeInputs inputs = new ExtrudeInputs();
+  public final ExtrudeInputsAutoLogged inputs = new ExtrudeInputsAutoLogged();
 
   public double desiredPos;
 
@@ -39,9 +37,8 @@ public class Extrude extends StateMachine<Extrude.State> {
         State.EXTRUDE_OUT,
         new SequentialCommandGroup(
             new InstantCommand(
-                () -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_OUT_POSITION)),
-            new MoveExtrude(this)));
-    registerStateCommand(State.MANUAL_EXTRUDE_OUT, new MoveExtrude(this));
+                () -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_OUT_POSITION))));
+    registerStateCommand(State.MANUAL_EXTRUDE, new MoveExtrude(this));
   }
 
   public void addExtruderPosition(double delta) {
@@ -53,7 +50,7 @@ public class Extrude extends StateMachine<Extrude.State> {
     addOmniTransition(State.IDLE);
     addOmniTransition(State.EXTRUDE_OUT);
     addOmniTransition(State.EXTRUDE_IN);
-    addOmniTransition(State.MANUAL_EXTRUDE_OUT);
+    addOmniTransition(State.MANUAL_EXTRUDE);
   }
 
   @Override
@@ -70,7 +67,7 @@ public class Extrude extends StateMachine<Extrude.State> {
       desiredPos = Constants.Extruder.EXTRUDER_IN_POSITION;
     } else if (getState().equals(State.EXTRUDE_OUT)) {
       desiredPos = Constants.Extruder.EXTRUDER_OUT_POSITION;
-    } else if (getState().equals(State.MANUAL_EXTRUDE_OUT)) {
+    } else if (getState().equals(State.MANUAL_EXTRUDE)) {
       desiredPos = io.getTargetPosition();
     }
     return desiredPos;
@@ -78,10 +75,9 @@ public class Extrude extends StateMachine<Extrude.State> {
 
   @Override
   protected void update() {
+    // Update the state of the subsystem
+    inputs.state = this.getState();
     io.updateInputs(inputs);
-    SmartDashboard.putString("Extrude State", getState().toString());
-    SmartDashboard.putNumber("Extrude Desired Pos", getDesiredPos());
-    SmartDashboard.putNumber("Extruder Position", getDesiredPos());
   }
 
   public enum State {
@@ -89,6 +85,6 @@ public class Extrude extends StateMachine<Extrude.State> {
     IDLE,
     EXTRUDE_IN,
     EXTRUDE_OUT,
-    MANUAL_EXTRUDE_OUT;
+    MANUAL_EXTRUDE;
   }
 }

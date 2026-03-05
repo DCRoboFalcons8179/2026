@@ -12,11 +12,12 @@ public interface TurretIO {
     public double appliedVoltage = 0.0;
     public double targetPosition = 0.0;
     public boolean atTarget = false;
+    public Turret.State state = Turret.State.UNDETERMINED;
   }
 
   public default void stop() {}
 
-  public default void updateInputs(TurretInputs inputs) {}
+  public default void updateInputs(TurretInputsAutoLogged inputs) {}
 
   public default void setPIDControl() {}
 
@@ -36,5 +37,9 @@ public interface TurretIO {
 
   public default double getTurretPosition() {
     return 0.0;
+  }
+
+  public default boolean atTarget() {
+    return false;
   }
 }

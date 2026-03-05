@@ -5,8 +5,8 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.C_Shooter.C_Turret;
+import org.littletonrobotics.junction.Logger;
 
 public class TurretIOReal implements TurretIO {
   protected final TalonFXS turretMotor = new TalonFXS(C_Turret.TURRET_ID);
@@ -48,7 +48,7 @@ public class TurretIOReal implements TurretIO {
   }
 
   @Override
-  public void updateInputs(TurretInputs inputs) {
+  public void updateInputs(TurretInputsAutoLogged inputs) {
     inputs.current = turretMotor.getTorqueCurrent().getValueAsDouble();
     inputs.encoderPosition = turretMotor.getPosition().getValueAsDouble();
     inputs.velocity = turretMotor.getVelocity().getValueAsDouble();
@@ -63,11 +63,7 @@ public class TurretIOReal implements TurretIO {
       inputs.atTarget = false;
     }
 
-    // Add debugging info to SmartDashboard
-    SmartDashboard.putNumber("Turret Current Position", inputs.encoderPosition);
-    SmartDashboard.putNumber("Turret Current (A)", inputs.current);
-    SmartDashboard.putNumber("Turret Velocity", inputs.velocity);
-    SmartDashboard.putNumber("Turret Applied Voltage", inputs.appliedVoltage);
+    Logger.processInputs("Turret", inputs);
   }
 
   @Override
