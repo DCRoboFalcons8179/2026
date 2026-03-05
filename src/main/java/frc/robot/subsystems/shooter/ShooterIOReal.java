@@ -6,7 +6,6 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import edu.wpi.first.wpilibj.Timer;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterIOReal implements ShooterIO {
@@ -36,10 +35,8 @@ public class ShooterIOReal implements ShooterIO {
     shooter.setControl(
         shootVelocityRequest.withVelocity(velocity).withAcceleration(5.0).withEnableFOC(false));
 
-    // shooter.set(1);
-
     // If the shooter is charged, run the feeder
-    if (true) {
+    if (isCharged()) {
       shootFeed.set(SHOOT_FEED_OUTPUT_SPEED);
     }
   }
@@ -87,7 +84,8 @@ public class ShooterIOReal implements ShooterIO {
   public boolean isCharged() {
     double omega = shooter.getVelocity().getValueAsDouble();
 
-    return omega >= OUTPUT_SPEED - ERROR_MARGIN;
+    // Removes the gear ratio from the charge math
+    return omega >= ((OUTPUT_SPEED / (1 / GEAR_RATIO)) - ERROR_MARGIN);
   }
 
   @Override

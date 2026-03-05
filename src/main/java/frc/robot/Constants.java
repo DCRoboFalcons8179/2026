@@ -54,7 +54,7 @@ public final class Constants {
     public static final CurrentLimitsConfigs CURRENT_LIMIT =
         new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
 
-    private static final double GEAR_RATIO = 1.0 / 2.0;
+    public static final double GEAR_RATIO = 1.0 / 3.0;
 
     /// Velocity for the motors to set rot/s (will be calculated in later versions,
     /// setting up to get something working rn)
@@ -88,37 +88,6 @@ public final class Constants {
     /// setting up to get something working rn)
     /// Multiply by 1/GEAR_RATIO to convert from output shaft speed to motor speed
     public static final double SHOOT_FEED_OUTPUT_SPEED = 15 * 1 / SHOOT_FEED_GEAR_RATIO;
-
-    public static class C_Turret {
-      /// ID of the turret motor
-      public static final int TURRET_ID = 3;
-
-      /// The mode for the turret motor when inactive
-      public static final NeutralModeValue TURRET_NEUTRAL_MODE = NeutralModeValue.Coast;
-
-      /// KP for moving to pos
-      public static final double TURRET_KP = 1;
-      /// KI for moving to pos
-      public static final double TURRET_KI = 0;
-      /// KD for moving to pos
-      public static final double TURRET_KD = 0;
-
-      /// KP for auto aim
-      public static final double AIM_KP = 0;
-      /// KI for auto aim
-      public static final double AIM_KI = 0;
-      /// KD for auto aim
-      public static final double AIM_KD = 0;
-
-      /// ID of the y-axis controlling motor
-      public static final int PITCH_ID = 5;
-
-      public static final double PITCH_KP = 1;
-      public static final double PITCH_KI = 0;
-      public static final double PITCH_KD = 0;
-
-      public static final NeutralModeValue PITCH_NEUTRAL_MODE = NeutralModeValue.Brake;
-    }
   }
 
   public static class Extruder {

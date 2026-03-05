@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.Constants.C_Shooter.C_Turret;
 import org.littletonrobotics.junction.Logger;
 
 public class TurretIOSim implements TurretIO {
@@ -37,7 +36,8 @@ public class TurretIOSim implements TurretIO {
 
     // Initialize PID controller with your real constants
     positionController =
-        new PIDController(C_Turret.TURRET_KP, C_Turret.TURRET_KI, C_Turret.TURRET_KD);
+        new PIDController(
+            TurretConstants.TURRET_KP, TurretConstants.TURRET_KI, TurretConstants.TURRET_KD);
 
     setPIDControl();
   }
@@ -45,7 +45,8 @@ public class TurretIOSim implements TurretIO {
   @Override
   public void setPIDControl() {
     // Update PID gains if needed
-    positionController.setPID(C_Turret.TURRET_KP, C_Turret.TURRET_KI, C_Turret.TURRET_KD);
+    positionController.setPID(
+        TurretConstants.TURRET_KP, TurretConstants.TURRET_KI, TurretConstants.TURRET_KD);
   }
 
   @Override

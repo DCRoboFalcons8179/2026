@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.Constants.C_Shooter.C_Turret;
 import org.littletonrobotics.junction.Logger;
 
 public class PitchIOSim implements PitchIO {
@@ -36,7 +35,9 @@ public class PitchIOSim implements PitchIO {
             );
 
     // Initialize PID controller with your real constants
-    positionController = new PIDController(C_Turret.PITCH_KP, C_Turret.PITCH_KI, C_Turret.PITCH_KD);
+    positionController =
+        new PIDController(
+            PitchConstants.PITCH_KP, PitchConstants.PITCH_KI, PitchConstants.PITCH_KD);
 
     setPIDControl();
   }
@@ -44,7 +45,8 @@ public class PitchIOSim implements PitchIO {
   @Override
   public void setPIDControl() {
     // Update PID gains if needed
-    positionController.setPID(C_Turret.PITCH_KP, C_Turret.PITCH_KI, C_Turret.PITCH_KD);
+    positionController.setPID(
+        PitchConstants.PITCH_KP, PitchConstants.PITCH_KI, PitchConstants.PITCH_KD);
   }
 
   @Override
@@ -81,7 +83,7 @@ public class PitchIOSim implements PitchIO {
         usePositionControl
             && Math.abs(inputs.encoderPosition - targetPosition) < 0.01; // Within 0.01 rotations
 
-     Logger.processInputs("Pitch", inputs);
+    Logger.processInputs("Pitch", inputs);
   }
 
   @Override

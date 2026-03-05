@@ -4,11 +4,10 @@
 
 package frc.robot.commands.shooter.turret;
 
-import static frc.robot.Constants.C_Shooter.C_Turret.*;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.shooter.turret.Turret;
+import frc.robot.subsystems.shooter.turret.TurretConstants;
 import frc.robot.subsystems.vision.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -21,7 +20,8 @@ public class AutoAim extends Command {
   public AutoAim(Vision vision, Turret turret) {
     this.vision = vision;
     this.turret = turret;
-    pidController = new PIDController(AIM_KP, AIM_KI, AIM_KD);
+    pidController =
+        new PIDController(TurretConstants.AIM_KP, TurretConstants.AIM_KI, TurretConstants.AIM_KD);
     pidController.enableContinuousInput(-Math.PI, Math.PI);
 
     addRequirements(vision, turret);

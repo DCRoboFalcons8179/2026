@@ -260,7 +260,7 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  turret.setTurretPose(100);
+                  turret.setTurretPose(1);
                 }))
         .onFalse(
             new InstantCommand(

@@ -4,11 +4,10 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import frc.robot.Constants.C_Shooter.C_Turret;
 import org.littletonrobotics.junction.Logger;
 
 public class PitchIOReal implements PitchIO {
-  protected final TalonFXS pitchMotor = new TalonFXS(C_Turret.PITCH_ID);
+  protected final TalonFXS pitchMotor = new TalonFXS(PitchConstants.PITCH_ID);
 
   private double targetPosition = 0.0;
   private boolean usePositionControl = false;
@@ -22,12 +21,11 @@ public class PitchIOReal implements PitchIO {
     // Pitch PID config
     Slot0Configs pitchGain =
         new Slot0Configs()
-            .withKP(C_Turret.PITCH_KP)
-            .withKI(C_Turret.PITCH_KI)
-            .withKD(C_Turret.PITCH_KD);
+            .withKP(PitchConstants.PITCH_KP)
+            .withKI(PitchConstants.PITCH_KI)
+            .withKD(PitchConstants.PITCH_KD);
     pitchMotor.getConfigurator().apply(pitchGain);
-    pitchMotor.setNeutralMode(C_Turret.PITCH_NEUTRAL_MODE);
-
+    pitchMotor.setNeutralMode(PitchConstants.PITCH_NEUTRAL_MODE);
     // Motion Magic configuration - required for MotionMagicVoltage to work
     MotionMagicConfigs mmConfigs =
         new MotionMagicConfigs()

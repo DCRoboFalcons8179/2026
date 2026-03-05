@@ -5,11 +5,10 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import frc.robot.Constants.C_Shooter.C_Turret;
 import org.littletonrobotics.junction.Logger;
 
 public class TurretIOReal implements TurretIO {
-  protected final TalonFXS turretMotor = new TalonFXS(C_Turret.TURRET_ID);
+  protected final TalonFXS turretMotor = new TalonFXS(TurretConstants.TURRET_ID);
 
   private double targetPosition = 0.0;
   private boolean usePositionControl = false;
@@ -23,10 +22,12 @@ public class TurretIOReal implements TurretIO {
     // Turret PID config
     Slot0Configs turretGain =
         new Slot0Configs()
-            .withKP(C_Turret.TURRET_KP)
-            .withKI(C_Turret.TURRET_KI)
-            .withKD(C_Turret.TURRET_KD);
+            .withKP(TurretConstants.TURRET_KP)
+            .withKI(TurretConstants.TURRET_KI)
+            .withKD(TurretConstants.TURRET_KD);
     turretMotor.getConfigurator().apply(turretGain);
+
+    turretMotor.setPosition(0);
 
     // Motion Magic configuration - required for MotionMagicVoltage to work
     MotionMagicConfigs mmConfigs =
@@ -36,7 +37,7 @@ public class TurretIOReal implements TurretIO {
             .withMotionMagicJerk(1600); // rotations per second cubed
     turretMotor.getConfigurator().apply(mmConfigs);
 
-    turretMotor.setNeutralMode(C_Turret.TURRET_NEUTRAL_MODE);
+    turretMotor.setNeutralMode(TurretConstants.TURRET_NEUTRAL_MODE);
   }
 
   @Override
