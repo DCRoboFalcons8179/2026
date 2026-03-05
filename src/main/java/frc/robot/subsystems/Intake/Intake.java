@@ -4,17 +4,14 @@
 
 package frc.robot.subsystems.Intake;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants;
 import frc.robot.SMF.StateMachine;
-import frc.robot.subsystems.Intake.IntakeIO.IntakeInputs;
 
 public class Intake extends StateMachine<Intake.State> {
   /** Creates a new Intake. */
   public final IntakeIO io;
 
-  public final IntakeInputs inputs = new IntakeInputs();
+  public final IntakeInputsAutoLogged inputs = new IntakeInputsAutoLogged();
 
   public Intake(IntakeIO io) {
     super("Intake", State.UNDETERMINED, State.class);
@@ -30,10 +27,10 @@ public class Intake extends StateMachine<Intake.State> {
     registerStateCommand(State.IDLE, new InstantCommand(io::stop));
     registerStateCommand(
         State.FEED_IN,
-        new InstantCommand(() -> io.setFeederVelocity(Constants.Intake.FEEDER_SPEED_IN)));
+        new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.FEEDER_SPEED_IN)));
     registerStateCommand(
         State.FEED_OUT,
-        new InstantCommand(() -> io.setFeederVelocity(Constants.Intake.FEEDER_SPEED_OUT)));
+        new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.FEEDER_SPEED_OUT)));
   }
 
   public void registerStateTransition() {
@@ -50,9 +47,8 @@ public class Intake extends StateMachine<Intake.State> {
 
   @Override
   protected void update() {
+    inputs.state = this.getState();
     io.updateInputs(inputs);
-    SmartDashboard.putString("Intake State", getState().toString());
-    SmartDashboard.putNumber("Feeder Speed", inputs.mechanismRotationsPerSecond);
   }
 
   public enum State {

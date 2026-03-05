@@ -12,11 +12,12 @@ public interface PitchIO {
     public double appliedVoltage = 0.0;
     public double targetPosition = 0.0;
     public boolean atTarget = false;
+    public Pitch.State state = Pitch.State.UNDETERMINED;
   }
 
   public default void stop() {}
 
-  public default void updateInputs(PitchInputs inputs) {}
+  public default void updateInputs(PitchInputsAutoLogged inputs) {}
 
   public default void setPIDControl() {}
 

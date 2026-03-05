@@ -5,6 +5,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.Constants.C_Shooter.C_Turret;
+import org.littletonrobotics.junction.Logger;
 
 public class TurretIOSim implements TurretIO {
   // Simulation object
@@ -55,7 +56,7 @@ public class TurretIOSim implements TurretIO {
   }
 
   @Override
-  public void updateInputs(TurretInputs inputs) {
+  public void updateInputs(TurretInputsAutoLogged inputs) {
     // If using position control, calculate voltage from PID
     if (usePositionControl) {
       double currentPosition = turretSim.getAngularPositionRotations();
@@ -80,6 +81,8 @@ public class TurretIOSim implements TurretIO {
     inputs.atTarget =
         usePositionControl
             && Math.abs(inputs.encoderPosition - targetPosition) < 0.01; // Within 0.01 rotations
+
+    Logger.processInputs("Turret", inputs);
   }
 
   @Override
@@ -95,6 +98,7 @@ public class TurretIOSim implements TurretIO {
     // Convert percent (-1 to 1) to voltage (-12 to 12)
     appliedVoltage = omegaPercent * 12.0;
     usePositionControl = false;
+    turretSim.setAngularVelocity(omegaPercent);
   }
 
   @Override

@@ -5,6 +5,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.Constants.C_Shooter.C_Turret;
+import org.littletonrobotics.junction.Logger;
 
 public class PitchIOSim implements PitchIO {
   // Simulation object
@@ -54,7 +55,7 @@ public class PitchIOSim implements PitchIO {
   }
 
   @Override
-  public void updateInputs(PitchInputs inputs) {
+  public void updateInputs(PitchInputsAutoLogged inputs) {
     // If using position control, calculate voltage from PID
     if (usePositionControl) {
       double currentPosition = pitchSim.getAngularPositionRotations();
@@ -79,6 +80,8 @@ public class PitchIOSim implements PitchIO {
     inputs.atTarget =
         usePositionControl
             && Math.abs(inputs.encoderPosition - targetPosition) < 0.01; // Within 0.01 rotations
+
+     Logger.processInputs("Pitch", inputs);
   }
 
   @Override

@@ -6,6 +6,8 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import edu.wpi.first.wpilibj.Timer;
+import org.littletonrobotics.junction.Logger;
 
 public class ShooterIOReal implements ShooterIO {
   protected final TalonFXS shooter = new TalonFXS(LEAD_SHOOTER_ID);
@@ -72,9 +74,13 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
-  public void updateInputs(ShooterInputs inputs) {
+  public void updateInputs(ShooterInputsAutoLogged inputs) {
     inputs.current = shooter.getTorqueCurrent().getValueAsDouble();
+    inputs.appliedVoltage = shooter.getMotorVoltage().getValueAsDouble();
+    inputs.velocity = shooter.getVelocity().getValueAsDouble();
     inputs.encoderPosition = shooter.getPosition().getValueAsDouble();
+
+    Logger.processInputs("Shooter", inputs);
   }
 
   @Override

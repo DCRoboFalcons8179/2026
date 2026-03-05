@@ -4,18 +4,16 @@
 
 package frc.robot.subsystems.shooter.turret;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SMF.StateMachine;
 import frc.robot.commands.shooter.turret.AutoAim;
 import frc.robot.commands.shooter.turret.TurretToPose;
-import frc.robot.subsystems.shooter.turret.TurretIO.TurretInputs;
 import frc.robot.subsystems.vision.Vision;
 
 public class Turret extends StateMachine<Turret.State> {
   private final TurretIO io;
-  private final TurretInputs inputs = new TurretInputs();
+  private final TurretInputsAutoLogged inputs = new TurretInputsAutoLogged();
 
   private final Vision vision;
 
@@ -59,10 +57,8 @@ public class Turret extends StateMachine<Turret.State> {
 
   @Override
   protected void update() {
+    inputs.state = this.getState();
     io.updateInputs(inputs);
-    SmartDashboard.putString("Turret State", getState().toString());
-    SmartDashboard.putNumber("Turret Target Position", desiredTurretPose);
-    SmartDashboard.putNumber("Turret Position", io.getTurretPosition());
   }
 
   public void setTurretPose(double desiredTurretPose) {

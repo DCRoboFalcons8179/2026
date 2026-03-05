@@ -121,23 +121,6 @@ public final class Constants {
     }
   }
 
-  public static class Intake {
-    // ID for feeder
-    public static final int FEEDER_ID = 6;
-
-    public static final double GEAR_RATIO = 1.0 / 3.0;
-
-    // motor velocity (current just a placeholder number before being tested)
-    public static final double FEEDER_SPEED_IN = -18.5;
-    public static final double FEEDER_SPEED_OUT = 18.5;
-
-    // Neutral Mode for feeder
-    public static final NeutralModeValue FEEDER_NEUTRAL_MODE = NeutralModeValue.Coast;
-
-    public static final CurrentLimitsConfigs FEEDER_CURRENT_LIMIT =
-        new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
-  }
-
   public static class Extruder {
     // ID for extruder
     public static final int EXTRUDER_ID = 7;
@@ -149,15 +132,17 @@ public final class Constants {
         new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
 
     public static final double EXTRUDER_IN_POSITION = 0;
-    public static final double EXTRUDER_OUT_POSITION = -33;
-    public static final double EXTRUDER_MANAL_DELTA = -3;
+    public static final double EXTRUDER_OUT_POSITION = 33;
+    public static final double EXTRUDER_MANAL_DELTA = 3;
+
+    public static final InvertedValue INVERT = InvertedValue.CounterClockwise_Positive;
     // Error thresh hold (current just a placeholder number before being tested)
     public static final double EXTRUDER_ERROR_THRESH_HOLD = .2;
 
     // PID values for extruder - These need tuning
-    public static final double EXTRUDER_KP = 26;
-    public static final double EXTRUDER_KI = 0;
-    public static final double EXTRUDER_KD = 0.1;
+    public static final double KP = 26;
+    public static final double KI = 0;
+    public static final double KD = 0.1;
 
     // Motion profiling constraints to control speed
     // Maximum velocity in rotations per second (adjust lower to slow down)

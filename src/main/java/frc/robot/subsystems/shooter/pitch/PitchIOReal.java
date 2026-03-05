@@ -4,8 +4,8 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.C_Shooter.C_Turret;
+import org.littletonrobotics.junction.Logger;
 
 public class PitchIOReal implements PitchIO {
   protected final TalonFXS pitchMotor = new TalonFXS(C_Turret.PITCH_ID);
@@ -46,7 +46,7 @@ public class PitchIOReal implements PitchIO {
   }
 
   @Override
-  public void updateInputs(PitchInputs inputs) {
+  public void updateInputs(PitchInputsAutoLogged inputs) {
     inputs.current = pitchMotor.getTorqueCurrent().getValueAsDouble();
     inputs.encoderPosition = pitchMotor.getPosition().getValueAsDouble();
     inputs.velocity = pitchMotor.getVelocity().getValueAsDouble();
@@ -61,11 +61,7 @@ public class PitchIOReal implements PitchIO {
       inputs.atTarget = false;
     }
 
-    // Add debugging info to SmartDashboard
-    SmartDashboard.putNumber("Pitch Current Position", inputs.encoderPosition);
-    SmartDashboard.putNumber("Pitch Current (A)", inputs.current);
-    SmartDashboard.putNumber("Pitch Velocity", inputs.velocity);
-    SmartDashboard.putNumber("Pitch Applied Voltage", inputs.appliedVoltage);
+    Logger.processInputs("Pitch", inputs);
   }
 
   @Override
