@@ -62,8 +62,8 @@ public class RobotContainer {
   private final Turret turret;
   private final Shooter shooter;
   private final Pitch pitch;
-  private Intake intake;
-  private Extrude extrude;
+  private final Intake intake;
+  private final Extrude extrude;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -145,7 +145,7 @@ public class RobotContainer {
                     VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose));
 
         turret = new Turret(new TurretIOSim(), vision);
-        shooter = null;
+        shooter = new Shooter(new ShooterIO() {});
         pitch = new Pitch(new PitchIOSim());
         intake = new Intake(new IntakeIO() {});
         extrude =
@@ -155,9 +155,6 @@ public class RobotContainer {
                   public void addExtruderPosition(double position) {}
                 });
 
-        // Enable state machines
-        intake.enable();
-        extrude.enable();
         break;
 
       default:
@@ -177,6 +174,10 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
 
         pitch = new Pitch(new PitchIO() {});
+
+        intake = new Intake(new IntakeIO() {});
+
+        extrude = new Extrude(new ExtrudeIO() {});
         break;
     }
 
@@ -206,6 +207,12 @@ public class RobotContainer {
 
     pitch.enable();
     pitch.determineState();
+
+    intake.enable();
+    intake.determineSelf();
+
+    extrude.enable();
+    extrude.determineSelf();
   }
 
   /**
