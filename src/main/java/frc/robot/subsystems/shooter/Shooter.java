@@ -40,7 +40,10 @@ public class Shooter extends StateMachine<Shooter.State> {
             new WaitCommand(0.25),
             new WaitUntilCommand(() -> io.isCharged()),
             new WaitCommand(0.1),
-            transitionCommand(State.SHOOT)));
+            new InstantCommand(() -> requestTransition(State.SHOOT))));
+
+    registerStateCommand(
+        State.SHOOT, new InstantCommand(() -> io.setShooterTargetVelocity(OUTPUT_SPEED)));
   }
 
   public void registerStateTransitions() {
@@ -58,6 +61,7 @@ public class Shooter extends StateMachine<Shooter.State> {
   protected void update() {
     io.updateInputs(inputs);
     SmartDashboard.putString("Shooter State", getState().toString());
+    SmartDashboard.putNumber("Shooter Velocity", io.getVelocity());
   }
 
   public enum State {

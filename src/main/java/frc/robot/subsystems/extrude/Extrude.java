@@ -81,7 +81,7 @@ public class Extrude extends StateMachine<Extrude.State> {
     io.updateInputs(inputs);
     SmartDashboard.putString("Extrude State", getState().toString());
     SmartDashboard.putNumber("Extrude Desired Pos", getDesiredPos());
-    SmartDashboard.putNumber("Extruder Position", getDesiredPos());
+    SmartDashboard.putNumber("Extruder Position", getPos());
   }
 
   public enum State {

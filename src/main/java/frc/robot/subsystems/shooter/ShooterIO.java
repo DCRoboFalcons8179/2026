@@ -9,6 +9,7 @@ public interface ShooterIO {
     public double current = 0.0;
     public double encoderPosition = 0.0;
     public double velocity = 0.0;
+    public boolean charged = false;
   }
 
   public default void setShooterTargetVelocity(double velocity) {}
@@ -24,4 +25,8 @@ public interface ShooterIO {
   }
 
   public default void tiltShooter(double position) {}
+
+  public default double getVelocity() {
+    return 0;
+  }
 }

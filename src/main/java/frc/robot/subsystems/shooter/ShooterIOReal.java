@@ -4,57 +4,88 @@ import static frc.robot.Constants.C_Shooter.*;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import edu.wpi.first.wpilibj.Timer;
 
 public class ShooterIOReal implements ShooterIO {
-
-  private Timer timer = new Timer();
-
-  protected final TalonFXS leadShooter = new TalonFXS(LEAD_SHOOTER_ID);
+  protected final TalonFXS shooter = new TalonFXS(LEAD_SHOOTER_ID);
+  private final VelocityVoltage shootVelocityRequest = new VelocityVoltage(0).withSlot(0);
+  protected final TalonFXS shootFeed = new TalonFXS(SHOOT_FEED_ID);
 
   public ShooterIOReal() {
     configureMotor();
-    timer.reset();
   }
 
   private void configureMotor() {
     // Lead configuration
-    leadShooter.getConfigurator().apply(CURRENT_LIMIT);
-    leadShooter.setNeutralMode(NEUTRAL_MODE);
-    leadShooter.getConfigurator().apply(new MotorOutputConfigs().withInverted(LEAD_SHOOTER_INVERT));
+    shooter.getConfigurator().apply(CURRENT_LIMIT);
+    shooter.setNeutralMode(NEUTRAL_MODE);
+    shooter.getConfigurator().apply(new MotorOutputConfigs().withInverted(LEAD_SHOOTER_INVERT));
+
+    shootFeed.getConfigurator().apply(CURRENT_LIMIT);
+    shootFeed.setNeutralMode(NEUTRAL_MODE);
+    shootFeed.getConfigurator().apply(new MotorOutputConfigs().withInverted(SHOOT_FEED_INVERT));
+
+    setPIDControl();
   }
 
   @Override
   public void setShooterTargetVelocity(double velocity) {
-    leadShooter.set(velocity);
+    shooter.setControl(
+        shootVelocityRequest.withVelocity(velocity).withAcceleration(5.0).withEnableFOC(false));
+
+    // shooter.set(1);
+
+    // If the shooter is charged, run the feeder
+    if (true) {
+      shootFeed.set(SHOOT_FEED_OUTPUT_SPEED);
+    }
   }
 
   @Override
   public void setPIDControl() {
     // Pitch config
     Slot0Configs leadShooterConfig =
-        new Slot0Configs().withKP(LEAD_KP).withKI(LEAD_KI).withKD(LEAD_KD);
+        new Slot0Configs()
+            .withKP(SHOOTER_KP)
+            .withKI(SHOOTER_KI)
+            .withKD(SHOOTER_KD)
+            .withKV(SHOOTER_KV);
 
-    leadShooter.getConfigurator().apply(leadShooterConfig);
+    shooter.getConfigurator().apply(leadShooterConfig);
+
+    Slot0Configs shootFeedConfig =
+        new Slot0Configs().withKP(SHOOT_FEED_KP).withKI(SHOOT_FEED_KI).withKD(SHOOT_FEED_KD);
+
+    shootFeed.getConfigurator().apply(shootFeedConfig);
   }
 
   @Override
   public void stop() {
-    leadShooter.set(0);
-    leadShooter.stopMotor();
+    // shooter.set(0);
+    shooter.setControl(
+        shootVelocityRequest.withVelocity(0).withAcceleration(1.0).withEnableFOC(false));
+    shooter.stopMotor();
+
+    shootFeed.set(0);
+    shootFeed.stopMotor();
   }
 
   @Override
   public void updateInputs(ShooterInputs inputs) {
-    inputs.current = leadShooter.getTorqueCurrent().getValueAsDouble();
-    inputs.encoderPosition = leadShooter.getPosition().getValueAsDouble();
+    inputs.current = shooter.getTorqueCurrent().getValueAsDouble();
+    inputs.encoderPosition = shooter.getPosition().getValueAsDouble();
   }
 
   @Override
   public boolean isCharged() {
-    double omega = leadShooter.getVelocity().getValueAsDouble();
+    double omega = shooter.getVelocity().getValueAsDouble();
 
     return omega >= OUTPUT_SPEED - ERROR_MARGIN;
+  }
+
+  @Override
+  public double getVelocity() {
+    return shooter.getVelocity().getValueAsDouble();
   }
 }

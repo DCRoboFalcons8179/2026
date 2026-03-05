@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
@@ -62,11 +63,12 @@ public class RobotContainer {
   private final Turret turret;
   private final Shooter shooter;
   private final Pitch pitch;
-  private Intake intake;
-  private Extrude extrude;
+  private final Intake intake;
+  private final Extrude extrude;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandJoystick box = new CommandJoystick(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -177,6 +179,10 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
 
         pitch = new Pitch(new PitchIO() {});
+
+        intake = new Intake(new IntakeIO() {});
+
+        extrude = new Extrude(new ExtrudeIO() {});
         break;
     }
 
@@ -274,13 +280,13 @@ public class RobotContainer {
     controller
         .povRight()
         .onTrue(new InstantCommand(() -> pitch.requestTransition(Pitch.State.LOCKED)));
-    // Feeds intake in when Y button is pressed
+    // Feeds intake in when b button is pressed
     controller
-        .y()
+        .b()
         .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
     // Feeds intake out when right bumper is pressed
     controller
-        .y()
+        .b()
         .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
 
     controller
@@ -294,6 +300,10 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> extrude.addExtruderPosition(Constants.Extruder.EXTRUDER_MANAL_DELTA)));
+
+    box.button(1)
+        .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
+        .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
   }
 
   /**
