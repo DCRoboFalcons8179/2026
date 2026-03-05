@@ -7,11 +7,11 @@ public class IntakeConstants {
   // ID for feeder
   public static final int FEEDER_ID = 6;
 
-  public static final double GEAR_RATIO = 1.0 / 1.0;
+  public static final double GEAR_RATIO = 1.0 / 3.0;
 
   // motor velocity (current just a placeholder number before being tested)
-  public static final double FEEDER_SPEED_IN = -5.0;
-  public static final double FEEDER_SPEED_OUT = 11.0;
+  public static final double FEEDER_SPEED_IN = -18.5;
+  public static final double FEEDER_SPEED_OUT = 18.5;
 
   // Neutral Mode for feeder
   public static final NeutralModeValue FEEDER_NEUTRAL_MODE = NeutralModeValue.Coast;
