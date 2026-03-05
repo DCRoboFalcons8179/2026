@@ -256,11 +256,20 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
 
     controller
+        .povLeft()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  turret.setTurretPose(-3);
+                }))
+        .onFalse(new InstantCommand(() -> turret.setTurretPose(0)));
+
+    controller
         .povRight()
         .onTrue(
             new InstantCommand(
                 () -> {
-                  turret.setTurretPose(1);
+                  turret.setTurretPose(3);
                 }))
         .onFalse(
             new InstantCommand(
@@ -273,13 +282,6 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> pitch.setPitchPose(100)))
         .onFalse(new InstantCommand(() -> pitch.setPitchPose(0)));
 
-    controller
-        .povLeft()
-        .onTrue(new InstantCommand(() -> pitch.requestTransition(Pitch.State.UNLOCKED)));
-
-    controller
-        .povRight()
-        .onTrue(new InstantCommand(() -> pitch.requestTransition(Pitch.State.LOCKED)));
     // Feeds intake in when b button is pressed
     controller
         .b()

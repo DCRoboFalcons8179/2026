@@ -69,9 +69,16 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void moveTurret(double position) {
-    targetPosition = position;
+    if (position > TurretConstants.MAX_MOTOR_ROT) {
+      targetPosition = TurretConstants.MAX_MOTOR_ROT;
+    } else if (position < TurretConstants.MIN_MOTOR_ROT) {
+      targetPosition = TurretConstants.MIN_MOTOR_ROT;
+    } else {
+      targetPosition = position;
+    }
+
     usePositionControl = true;
-    turretMotor.setControl(new MotionMagicVoltage(position));
+    turretMotor.setControl(new MotionMagicVoltage(targetPosition));
   }
 
   @Override
