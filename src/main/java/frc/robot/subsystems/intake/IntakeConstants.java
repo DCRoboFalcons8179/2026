@@ -1,4 +1,4 @@
-package frc.robot.subsystems.intakes;
+package frc.robot.subsystems.intake;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.signals.NeutralModeValue;
