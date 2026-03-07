@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.027488888888889,
-        "y": 4.054488888888889
+        "x": 2.978766666666667,
+        "y": 4.083722222222222
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8971333333333333,
-        "y": 1.9204555555555545
+        "x": 1.8484111111111112,
+        "y": 1.9496888888888875
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "hub shoot"
     },
     {
       "anchor": {
-        "x": 0.5134222222222222,
-        "y": 0.5659777777777777
+        "x": 0.5913777777777778,
+        "y": 0.6341888888888878
       },
       "prevControl": {
-        "x": 0.8934555555555557,
-        "y": 0.8972888888888884
+        "x": 0.9714111111111112,
+        "y": 0.9654999999999985
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "leave human station"
     }
   ],
   "rotationTargets": [],

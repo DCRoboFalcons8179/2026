@@ -25,6 +25,12 @@
         {
           "type": "path",
           "data": {
+            "pathName": "start depot pt2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "depot to hub"
           }
         }

@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 6.506,
-        "y": 5.555
+        "x": 6.496511111111111,
+        "y": 5.584366666666666
       },
       "prevControl": {
-        "x": 5.506,
-        "y": 5.555
+        "x": 5.496511111111111,
+        "y": 5.584366666666666
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "neutral collect end depot"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "depot",

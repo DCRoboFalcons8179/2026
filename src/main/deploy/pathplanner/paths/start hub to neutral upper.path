@@ -4,15 +4,15 @@
     {
       "anchor": {
         "x": 3.55,
-        "y": 4.064233333333333
+        "y": 4.0739777777777775
       },
       "prevControl": null,
       "nextControl": {
         "x": 3.290588888888889,
-        "y": 4.795066666666667
+        "y": 4.804811111111111
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "start hub"
     },
     {
       "anchor": {

@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.510342368045648,
-        "y": 2.5405848787446508
+        "x": 6.484465049928673,
+        "y": 2.566462196861627
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.420944444444444,
-        "y": 2.427166666666666
+        "x": 4.395067126327469,
+        "y": 2.4530439847836423
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "neutral collect end human"
     },
     {
       "anchor": {
@@ -32,16 +32,16 @@
     },
     {
       "anchor": {
-        "x": 2.988511111111111,
-        "y": 4.0739777777777775
+        "x": 2.978766666666667,
+        "y": 4.083722222222222
       },
       "prevControl": {
-        "x": 2.6182222222222227,
-        "y": 3.6159888888888894
+        "x": 2.608477777777779,
+        "y": 3.6257333333333337
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "hub shoot"
     }
   ],
   "rotationTargets": [
@@ -80,7 +80,7 @@
   "folder": "human",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 0.5913777777777778,
-        "y": 0.673166666666666
+        "y": 0.6341888888888878
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.4825535538650976,
-        "y": 2.234318284205573
+        "y": 2.1953405064277947
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "leave human station"
     },
     {
       "anchor": {
-        "x": 3.008,
-        "y": 4.0739777777777775
+        "x": 2.978766666666667,
+        "y": 4.083722222222222
       },
       "prevControl": {
-        "x": 1.7751160301531685,
-        "y": 2.8402404509991483
+        "x": 1.7458826968198355,
+        "y": 2.8499848954435927
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "hub shoot"
     }
   ],
   "rotationTargets": [],

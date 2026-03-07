@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.001933333333334,
-        "y": 7.504022222222222
+        "x": 4.0,
+        "y": 7.5527444444444445
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.558655555555555,
-        "y": 7.406577777777777
+        "x": 7.556722222222222,
+        "y": 7.455299999999999
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "start depot side"
     },
     {
       "anchor": {

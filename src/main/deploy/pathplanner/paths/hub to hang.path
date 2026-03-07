@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9982555555555557,
-        "y": 4.0739777777777775
+        "x": 2.978766666666667,
+        "y": 4.083722222222222
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7482555555555557,
-        "y": 4.0739777777777775
+        "x": 2.728766666666667,
+        "y": 4.083722222222222
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "hub shoot"
     },
     {
       "anchor": {

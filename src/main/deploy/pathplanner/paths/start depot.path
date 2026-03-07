@@ -3,48 +3,69 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.011677777777778,
-        "y": 7.542999999999999
+        "x": 4.0,
+        "y": 7.5527444444444445
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.799688888888889,
-        "y": 7.309133333333333
+        "x": 2.4359256459017424,
+        "y": 7.324694515778975
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "start depot side"
     },
     {
       "anchor": {
-        "x": 0.9,
-        "y": 6.051
+        "x": 0.7914550641930722,
+        "y": 7.172624821691163
       },
       "prevControl": {
-        "x": 1.5171000000000001,
-        "y": 6.022866666666666
+        "x": 1.1955333333333331,
+        "y": 7.416322222222221
       },
       "nextControl": {
-        "x": 0.42232206906496994,
-        "y": 6.072777138967708
+        "x": 0.5411622542747747,
+        "y": 7.021674592968195
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.147,
+        "x": 0.5524,
         "y": 6.061844444444444
       },
       "prevControl": {
-        "x": 0.45514444444444435,
-        "y": 6.061844444444444
+        "x": 0.49296339811644485,
+        "y": 6.3046762594039665
+      },
+      "nextControl": {
+        "x": 0.6118366018835552,
+        "y": 5.819012629484921
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.2345111111111111,
+        "y": 5.564877777777777
+      },
+      "prevControl": {
+        "x": 0.8447333333333333,
+        "y": 5.633088888888889
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -58,7 +79,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "start",

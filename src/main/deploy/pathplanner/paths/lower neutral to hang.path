@@ -12,7 +12,7 @@
         "y": 2.658343563321162
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "neutral collect end human"
     },
     {
       "anchor": {
@@ -69,7 +69,7 @@
   "folder": "human",
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }
