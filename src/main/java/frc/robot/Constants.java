@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -28,4 +29,11 @@ public final class Constants {
     /** Replaying from a log file. */
     REPLAY
   }
+
+  public static Translation2d[] tagsToHubs = {
+    // Tags 1
+    new Translation2d(0,0),
+    // Tags 2
+    new Translation2d(1,2)
+  };
 }
