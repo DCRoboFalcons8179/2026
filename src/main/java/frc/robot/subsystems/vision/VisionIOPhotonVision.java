@@ -12,6 +12,7 @@ import static frc.robot.subsystems.vision.VisionConstants.*;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,10 +48,14 @@ public class VisionIOPhotonVision implements VisionIO {
     for (var result : camera.getAllUnreadResults()) {
       // Update latest target observation
       if (result.hasTargets()) {
+        var xDistance = result.getBestTarget().bestCameraToTarget.getMeasureX();
+        var yDistance = result.getBestTarget().bestCameraToTarget.getMeasureY();
+
         inputs.latestTargetObservation =
             new TargetObservation(
                 Rotation2d.fromDegrees(result.getBestTarget().getYaw()),
-                Rotation2d.fromDegrees(result.getBestTarget().getPitch()));
+                Rotation2d.fromDegrees(result.getBestTarget().getPitch()),
+                new Translation2d(xDistance, yDistance));
 
         // Track best (closest) tag
         var bestTarget = result.getBestTarget();
@@ -60,7 +65,8 @@ public class VisionIOPhotonVision implements VisionIO {
           bestTagId = bestTarget.getFiducialId();
         }
       } else {
-        inputs.latestTargetObservation = new TargetObservation(Rotation2d.kZero, Rotation2d.kZero);
+        inputs.latestTargetObservation =
+            new TargetObservation(Rotation2d.kZero, Rotation2d.kZero, Translation2d.kZero);
       }
 
       // Add pose observation

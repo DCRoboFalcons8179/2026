@@ -23,7 +23,9 @@ public class ShooterIOReal implements ShooterIO {
 
     feeder.getConfigurator().apply(ShooterConstants.CURRENT_LIMIT);
     feeder.setNeutralMode(ShooterConstants.NEUTRAL_MODE);
-    feeder.getConfigurator().apply(new MotorOutputConfigs().withInverted(ShooterConstants.FEED_INVERT));
+    feeder
+        .getConfigurator()
+        .apply(new MotorOutputConfigs().withInverted(ShooterConstants.FEED_INVERT));
 
     setPIDControl();
   }
@@ -52,7 +54,10 @@ public class ShooterIOReal implements ShooterIO {
     shooter.getConfigurator().apply(leadShooterConfig);
 
     Slot0Configs shootFeedConfig =
-        new Slot0Configs().withKP(ShooterConstants.FEED_KP).withKI(ShooterConstants.FEED_KI).withKD(ShooterConstants.FEED_KD);
+        new Slot0Configs()
+            .withKP(ShooterConstants.FEED_KP)
+            .withKI(ShooterConstants.FEED_KI)
+            .withKD(ShooterConstants.FEED_KD);
 
     feeder.getConfigurator().apply(shootFeedConfig);
   }
@@ -83,7 +88,9 @@ public class ShooterIOReal implements ShooterIO {
     double omega = shooter.getVelocity().getValueAsDouble();
 
     // Removes the gear ratio from the charge math
-    return omega >= ((ShooterConstants.OUTPUT_SPEED * ShooterConstants.GEAR_RATIO) - ShooterConstants.ERROR_MARGIN);
+    return omega
+        >= ((ShooterConstants.OUTPUT_SPEED * ShooterConstants.GEAR_RATIO)
+            - ShooterConstants.ERROR_MARGIN);
   }
 
   @Override

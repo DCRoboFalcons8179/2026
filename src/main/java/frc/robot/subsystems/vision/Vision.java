@@ -15,6 +15,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
@@ -56,7 +57,11 @@ public class Vision extends SubsystemBase {
    * @param cameraIndex The index of the camera to use.
    */
   public Rotation2d getTargetX(int cameraIndex) {
-    return inputs[cameraIndex].latestTargetObservation.tx();
+    return inputs[cameraIndex].latestTargetObservation.rx();
+  }
+
+  public Translation2d getTargetDistance(int cameraIndex) {
+    return inputs[cameraIndex].latestTargetObservation.translation();
   }
 
   /**
@@ -197,6 +202,18 @@ public class Vision extends SubsystemBase {
         Pose2d visionRobotPoseMeters,
         double timestampSeconds,
         Matrix<N3, N1> visionMeasurementStdDevs);
+  }
+
+  public double getYDistance(int cameraIndex) {
+    return getTargetDistance(cameraIndex).getY();
+  }
+
+  public double getXDistance(int cameraIndex) {
+    return getTargetDistance(cameraIndex).getX();
+  }
+
+  public double getOffsetAngleDegrees() {
+    return getTargetX(0).getDegrees();
   }
 
   public double getOmegaPercentOut(PIDController pidController) {

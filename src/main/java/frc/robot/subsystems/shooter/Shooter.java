@@ -39,7 +39,8 @@ public class Shooter extends StateMachine<Shooter.State> {
             new InstantCommand(() -> requestTransition(State.SHOOT))));
 
     registerStateCommand(
-        State.SHOOT, new InstantCommand(() -> io.setShooterTargetVelocity(ShooterConstants.OUTPUT_SPEED)));
+        State.SHOOT,
+        new InstantCommand(() -> io.setShooterTargetVelocity(ShooterConstants.OUTPUT_SPEED)));
   }
 
   public void registerStateTransitions() {

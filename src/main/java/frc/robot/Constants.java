@@ -7,9 +7,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**

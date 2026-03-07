@@ -34,9 +34,20 @@ public class AutoAim extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double omegaPercent = vision.getOmegaPercentOut(pidController);
+    double xDistance = vision.getXDistance(1);
+    double yDistance = vision.getYDistance(1) * -1;
 
-    turret.aimPercentOut(omegaPercent);
+    double rads = Math.tan(yDistance / xDistance);
+    double degrees = (rads) * (180 / Math.PI);
+
+    System.out.println("Degrees: " + degrees);
+
+    double turretPos = degrees == 0 ? 0 : degrees / 30;
+
+    System.out.println("Turret Pos: " + turretPos);
+
+    turret.setTurretPose(turretPos);
+    turret.moveTurret();
   }
 
   // Called once the command ends or is interrupted.

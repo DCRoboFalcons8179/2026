@@ -59,7 +59,7 @@ public class TurretIOReal implements TurretIO {
     // Check if at target (within tolerance when using position control)
     if (usePositionControl) {
       inputs.atTarget =
-          Math.abs(inputs.encoderPosition - targetPosition) < 0.01; // 0.01 rotations tolerance
+          Math.abs(inputs.encoderPosition - targetPosition) < 0.1; // 0.01 rotations tolerance
     } else {
       inputs.atTarget = false;
     }

@@ -26,5 +26,5 @@ public class TurretConstants {
   /// KD for auto aim
   public static final double AIM_KD = 0;
 
-  public static final double GEAR_RATIO = 12.5 / 1.0;
+  public static final double GEAR_RATIO = 10 / 1.0;
 }

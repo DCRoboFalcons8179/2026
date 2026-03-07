@@ -35,8 +35,7 @@ public class Extrude extends StateMachine<Extrude.State> {
     registerStateCommand(
         State.EXTRUDE_OUT,
         new SequentialCommandGroup(
-            new InstantCommand(
-                () -> io.setExtruderPosition(ExtrudeConstants.OUT_POSITION))));
+            new InstantCommand(() -> io.setExtruderPosition(ExtrudeConstants.OUT_POSITION))));
     registerStateCommand(State.MANUAL_EXTRUDE, new MoveExtrude(this));
   }
 
