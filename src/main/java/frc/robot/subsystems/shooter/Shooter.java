@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.C_Shooter.OUTPUT_SPEED;
-
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -34,14 +32,14 @@ public class Shooter extends StateMachine<Shooter.State> {
     registerStateCommand(
         State.CHARGE,
         new SequentialCommandGroup(
-            new InstantCommand(() -> io.setShooterTargetVelocity(OUTPUT_SPEED)),
+            new InstantCommand(() -> io.setShooterTargetVelocity(ShooterConstants.OUTPUT_SPEED)),
             new WaitCommand(0.25),
             new WaitUntilCommand(() -> io.isCharged()),
             new WaitCommand(0.1),
             new InstantCommand(() -> requestTransition(State.SHOOT))));
 
     registerStateCommand(
-        State.SHOOT, new InstantCommand(() -> io.setShooterTargetVelocity(OUTPUT_SPEED)));
+        State.SHOOT, new InstantCommand(() -> io.setShooterTargetVelocity(ShooterConstants.OUTPUT_SPEED)));
   }
 
   public void registerStateTransitions() {

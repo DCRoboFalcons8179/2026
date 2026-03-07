@@ -9,13 +9,12 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
 public class ExtrudeIOReal implements ExtrudeIO {
 
   // Motor
-  protected final TalonFXS extruder = new TalonFXS(Constants.Extruder.EXTRUDER_ID);
+  protected final TalonFXS extruder = new TalonFXS(ExtrudeConstants.ID);
 
   private double targetPosition = 0;
 
@@ -29,26 +28,26 @@ public class ExtrudeIOReal implements ExtrudeIO {
   private void configureMotors() {
     // Configure PID gains for the TalonFX's built-in position control
     Slot0Configs slot0Configs = new Slot0Configs();
-    slot0Configs.kP = Constants.Extruder.KP;
-    slot0Configs.kI = Constants.Extruder.KI;
-    slot0Configs.kD = Constants.Extruder.KD;
+    slot0Configs.kP = ExtrudeConstants.KP;
+    slot0Configs.kI = ExtrudeConstants.KI;
+    slot0Configs.kD = ExtrudeConstants.KD;
 
     extruder.getConfigurator().apply(slot0Configs);
     extruder
         .getConfigurator()
-        .apply(new MotorOutputConfigs().withInverted(Constants.Extruder.INVERT));
+        .apply(new MotorOutputConfigs().withInverted(ExtrudeConstants.INVERT));
 
     // Configure Motion Magic for smooth, controlled movement
     MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
-    motionMagicConfigs.MotionMagicCruiseVelocity = Constants.Extruder.EXTRUDER_MAX_VELOCITY;
-    motionMagicConfigs.MotionMagicAcceleration = Constants.Extruder.EXTRUDER_MAX_ACCELERATION;
-    motionMagicConfigs.MotionMagicJerk = Constants.Extruder.EXTRUDER_JERK;
+    motionMagicConfigs.MotionMagicCruiseVelocity = ExtrudeConstants.MAX_VELOCITY;
+    motionMagicConfigs.MotionMagicAcceleration = ExtrudeConstants.MAX_ACCELERATION;
+    motionMagicConfigs.MotionMagicJerk = ExtrudeConstants.JERK;
     extruder.getConfigurator().apply(motionMagicConfigs);
 
     // gives a current limit
-    extruder.getConfigurator().apply(Constants.Extruder.EXTRUDER_CURRENT_LIMIT);
+    extruder.getConfigurator().apply(ExtrudeConstants.CURRENT_LIMIT);
     // sets desirded neutral state
-    extruder.setNeutralMode(Constants.Extruder.EXTRUDER_NEUTRAL_MODE);
+    extruder.setNeutralMode(ExtrudeConstants.NEUTRAL_MODE);
     // Reset encoder position to 0 on startup
     extruder.setPosition(0);
   }

@@ -2,10 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.Intake;
+package frc.robot.subsystems.intakes;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.SMF.StateMachine;
+import frc.robot.subsystems.Intake.IntakeInputsAutoLogged;
 
 public class Intake extends StateMachine<Intake.State> {
   /** Creates a new Intake. */

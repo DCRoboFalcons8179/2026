@@ -6,7 +6,6 @@ package frc.robot.subsystems.extrude;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
 import frc.robot.SMF.StateMachine;
 import frc.robot.commands.MoveExtrude;
 
@@ -32,12 +31,12 @@ public class Extrude extends StateMachine<Extrude.State> {
     registerStateCommand(State.IDLE, new InstantCommand(io::stop));
     registerStateCommand(
         State.EXTRUDE_IN,
-        new InstantCommand(() -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_IN_POSITION)));
+        new InstantCommand(() -> io.setExtruderPosition(ExtrudeConstants.IN_POSITION)));
     registerStateCommand(
         State.EXTRUDE_OUT,
         new SequentialCommandGroup(
             new InstantCommand(
-                () -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_OUT_POSITION))));
+                () -> io.setExtruderPosition(ExtrudeConstants.OUT_POSITION))));
     registerStateCommand(State.MANUAL_EXTRUDE, new MoveExtrude(this));
   }
 
@@ -64,9 +63,9 @@ public class Extrude extends StateMachine<Extrude.State> {
 
   public double getDesiredPos() {
     if (getState().equals(State.EXTRUDE_IN)) {
-      desiredPos = Constants.Extruder.EXTRUDER_IN_POSITION;
+      desiredPos = ExtrudeConstants.IN_POSITION;
     } else if (getState().equals(State.EXTRUDE_OUT)) {
-      desiredPos = Constants.Extruder.EXTRUDER_OUT_POSITION;
+      desiredPos = ExtrudeConstants.OUT_POSITION;
     } else if (getState().equals(State.MANUAL_EXTRUDE)) {
       desiredPos = io.getTargetPosition();
     }

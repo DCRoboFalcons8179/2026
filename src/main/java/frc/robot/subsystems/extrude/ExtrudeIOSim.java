@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
 public class ExtrudeIOSim implements ExtrudeIO {
@@ -34,13 +33,13 @@ public class ExtrudeIOSim implements ExtrudeIO {
             DCMotor.getKrakenX44(1));
 
     positionController =
-        new PIDController(Constants.Extruder.KP, Constants.Extruder.KI, Constants.Extruder.KD);
+        new PIDController(ExtrudeConstants.KP, ExtrudeConstants.KI, ExtrudeConstants.KD);
 
     setPIDControl();
   }
 
   public void setPIDControl() {
-    positionController.setPID(Constants.Extruder.KP, Constants.Extruder.KI, Constants.Extruder.KD);
+    positionController.setPID(ExtrudeConstants.KP, ExtrudeConstants.KI, ExtrudeConstants.KD);
   }
 
   @Override

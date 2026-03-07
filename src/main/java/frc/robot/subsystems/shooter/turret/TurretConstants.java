@@ -7,7 +7,7 @@ public class TurretConstants {
   public static final int TURRET_ID = 3;
 
   /// The mode for the turret motor when inactive
-  public static final NeutralModeValue TURRET_NEUTRAL_MODE = NeutralModeValue.Coast;
+  public static final NeutralModeValue TURRET_NEUTRAL_MODE = NeutralModeValue.Brake;
 
   /// KP for moving to pos
   public static final double TURRET_KP = 1.3;

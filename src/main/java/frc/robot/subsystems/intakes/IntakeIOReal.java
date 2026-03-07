@@ -2,11 +2,14 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.Intake;
+package frc.robot.subsystems.intakes;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+
+import frc.robot.subsystems.Intake.IntakeInputsAutoLogged;
+
 import org.littletonrobotics.junction.Logger;
 
 public class IntakeIOReal implements IntakeIO {
@@ -40,7 +43,7 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   public void setFeederVelocity(double mechanismRotationsPerSecond) {
-    double motorRotationsPerSecond = mechanismRotationsPerSecond / IntakeConstants.GEAR_RATIO ;
+    double motorRotationsPerSecond = mechanismRotationsPerSecond / IntakeConstants.GEAR_RATIO;
 
     desiredMotorRPS = motorRotationsPerSecond;
 

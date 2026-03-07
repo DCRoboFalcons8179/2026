@@ -20,10 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Intake.Intake;
-import frc.robot.subsystems.Intake.IntakeIO;
-import frc.robot.subsystems.Intake.IntakeIOReal;
-import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -31,9 +27,14 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.extrude.Extrude;
+import frc.robot.subsystems.extrude.ExtrudeConstants;
 import frc.robot.subsystems.extrude.ExtrudeIO;
 import frc.robot.subsystems.extrude.ExtrudeIOReal;
 import frc.robot.subsystems.extrude.ExtrudeIOSim;
+import frc.robot.subsystems.intakes.Intake;
+import frc.robot.subsystems.intakes.IntakeIO;
+import frc.robot.subsystems.intakes.IntakeIOReal;
+import frc.robot.subsystems.intakes.IntakeIOSim;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
@@ -252,7 +253,7 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
 
     controller
-        .povLeft()
+        .leftBumper()
         .onTrue(
             new InstantCommand(
                 () -> {
@@ -261,7 +262,7 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> turret.setTurretPose(0)));
 
     controller
-        .povRight()
+        .rightBumper()
         .onTrue(
             new InstantCommand(
                 () -> {
@@ -272,11 +273,6 @@ public class RobotContainer {
                 () -> {
                   turret.setTurretPose(0);
                 }));
-
-    controller
-        .rightBumper()
-        .onTrue(new InstantCommand(() -> pitch.setPitchPose(100)))
-        .onFalse(new InstantCommand(() -> pitch.setPitchPose(0)));
 
     // Feeds intake in when b button is pressed
     controller
@@ -299,16 +295,12 @@ public class RobotContainer {
         .povUp()
         .onTrue(
             new InstantCommand(
-                () -> extrude.addExtruderPosition(Constants.Extruder.EXTRUDER_MANAL_DELTA)));
+                () -> extrude.addExtruderPosition(ExtrudeConstants.MANUAL_DELTA)));
 
     controller
         .rightTrigger()
         .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
-
-    //     box.button(1)
-    //         .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
-    //         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
   }
 
   /**
