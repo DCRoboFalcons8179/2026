@@ -26,11 +26,9 @@ public class Intake extends StateMachine<Intake.State> {
   public void registerStateCommand() {
     registerStateCommand(State.IDLE, new InstantCommand(io::stop));
     registerStateCommand(
-        State.FEED_IN,
-        new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.FEEDER_SPEED_IN)));
+        State.FEED_IN, new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.SPEED_IN)));
     registerStateCommand(
-        State.FEED_OUT,
-        new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.FEEDER_SPEED_OUT)));
+        State.FEED_OUT, new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.SPEED_OUT)));
   }
 
   public void registerStateTransition() {

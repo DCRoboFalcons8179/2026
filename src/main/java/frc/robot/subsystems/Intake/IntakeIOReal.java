@@ -11,46 +11,52 @@ import org.littletonrobotics.junction.Logger;
 
 public class IntakeIOReal implements IntakeIO {
   // Motor
-  protected final TalonFX feeder = new TalonFX(IntakeConstants.FEEDER_ID);
+  protected final TalonFX intake = new TalonFX(IntakeConstants.ID);
 
   private final double feederGearRatio = IntakeConstants.GEAR_RATIO;
 
   private final VelocityVoltage velocityRequest = new VelocityVoltage(0).withSlot(0);
+
+  private double desiredMotorRPS = 0;
 
   public IntakeIOReal() {
     configureMotors();
   }
 
   private void configureMotors() {
-    feeder.getConfigurator().apply(IntakeConstants.FEEDER_CURRENT_LIMIT);
-    feeder.setNeutralMode(IntakeConstants.FEEDER_NEUTRAL_MODE);
+    intake.getConfigurator().apply(IntakeConstants.CURRENT_LIMIT);
+    intake.setNeutralMode(IntakeConstants.NEUTRAL_MODE);
 
     // Configure feedforward gains for velocity control
     Slot0Configs slot0Configs = new Slot0Configs();
 
-    feeder.getConfigurator().apply(slot0Configs);
+    intake.getConfigurator().apply(slot0Configs);
   }
 
   public void setFeederVelocity(double mechanismRotationsPerSecond) {
     double motorRotationsPerSecond = mechanismRotationsPerSecond / feederGearRatio;
-    feeder.setControl(
+
+    desiredMotorRPS = motorRotationsPerSecond;
+
+    intake.setControl(
         velocityRequest
             .withVelocity(motorRotationsPerSecond)
             .withAcceleration(40.0)
-            .withEnableFOC(false));
+            .withEnableFOC(true));
   }
 
   public void stop() {
-    feeder.set(0);
-    feeder.stopMotor();
+    intake.set(0);
+    intake.stopMotor();
   }
 
   @Override
   public void updateInputs(IntakeInputsAutoLogged inputs) {
-    inputs.current = feeder.getTorqueCurrent().getValueAsDouble();
-    inputs.appliedVoltage = feeder.getMotorVoltage().getValueAsDouble();
-    inputs.motorRotationsPerSecond = feeder.getVelocity().getValueAsDouble();
-    inputs.mechanismRotationsPerSecond = feeder.getVelocity().getValueAsDouble() * feederGearRatio;
+    inputs.current = intake.getTorqueCurrent().getValueAsDouble();
+    inputs.appliedVoltage = intake.getMotorVoltage().getValueAsDouble();
+    inputs.motorRotationsPerSecond = intake.getVelocity().getValueAsDouble();
+    inputs.mechanismRotationsPerSecond = intake.getVelocity().getValueAsDouble() * feederGearRatio;
+    inputs.desiredMotorRPS = desiredMotorRPS;
 
     Logger.processInputs("Intake", inputs);
   }

@@ -231,13 +231,13 @@ public class RobotContainer {
 
     // Lock on to tag
     controller
-        .a()
+        .rightTrigger()
         .whileTrue(
             DriveCommands.cameraDrive(
                 drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
 
     // Switch to X pattern when X button is pressed
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    controller.b().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Reset gyro to 0° when B button is pressed
     controller
@@ -251,7 +251,7 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     controller
-        .povDown()
+        .leftTrigger()
         .onTrue(new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)))
         .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
 
@@ -284,28 +284,35 @@ public class RobotContainer {
 
     // Feeds intake in when b button is pressed
     controller
-        .b()
+        .a()
         .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
     // Feeds intake out when right bumper is pressed
     controller
-        .b()
+        .a()
         .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
 
     controller
-        .leftTrigger()
-        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+        .x()
+        .toggleOnTrue(
+            new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
     controller
-        .leftBumper()
-        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
+        .x()
+        .toggleOnTrue(
+            new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
     controller
-        .rightTrigger()
+        .povUp()
         .onTrue(
             new InstantCommand(
                 () -> extrude.addExtruderPosition(Constants.Extruder.EXTRUDER_MANAL_DELTA)));
 
-    box.button(1)
+    controller
+        .rightTrigger()
         .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+
+    //     box.button(1)
+    //         .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
+    //         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
   }
 
   /**

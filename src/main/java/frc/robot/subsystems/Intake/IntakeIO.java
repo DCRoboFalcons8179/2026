@@ -14,6 +14,7 @@ public interface IntakeIO {
     public double appliedVoltage = 0.0;
     public double motorRotationsPerSecond = 0.0;
     public double mechanismRotationsPerSecond = 0.0;
+    public double desiredMotorRPS = 0;
     public Intake.State state = Intake.State.UNDETERMINED;
   }
 
