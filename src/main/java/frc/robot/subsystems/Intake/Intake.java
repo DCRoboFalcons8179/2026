@@ -24,7 +24,7 @@ public class Intake extends StateMachine<Intake.State> {
   }
 
   public void registerStateCommand() {
-    registerStateCommand(State.IDLE, new InstantCommand(io::stop));
+    registerStateCommand(State.IDLE, new InstantCommand(() -> io.setFeederVelocity(0)));
     registerStateCommand(
         State.FEED_IN, new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.SPEED_IN)));
     registerStateCommand(
@@ -32,7 +32,6 @@ public class Intake extends StateMachine<Intake.State> {
   }
 
   public void registerStateTransition() {
-    addOmniTransition(State.UNDETERMINED);
     addOmniTransition(State.IDLE);
     addOmniTransition(State.FEED_IN);
     addOmniTransition(State.FEED_OUT);

@@ -28,13 +28,19 @@ public class IntakeIOReal implements IntakeIO {
     intake.setNeutralMode(IntakeConstants.NEUTRAL_MODE);
 
     // Configure feedforward gains for velocity control
-    Slot0Configs slot0Configs = new Slot0Configs();
+    Slot0Configs slot0Configs =
+        new Slot0Configs()
+            .withKP(IntakeConstants.KP)
+            .withKI(IntakeConstants.KI)
+            .withKD(IntakeConstants.KD)
+            .withKV(IntakeConstants.KV)
+            .withKA(IntakeConstants.KA);
 
     intake.getConfigurator().apply(slot0Configs);
   }
 
   public void setFeederVelocity(double mechanismRotationsPerSecond) {
-    double motorRotationsPerSecond = mechanismRotationsPerSecond / feederGearRatio;
+    double motorRotationsPerSecond = mechanismRotationsPerSecond / IntakeConstants.GEAR_RATIO ;
 
     desiredMotorRPS = motorRotationsPerSecond;
 
@@ -42,7 +48,7 @@ public class IntakeIOReal implements IntakeIO {
         velocityRequest
             .withVelocity(motorRotationsPerSecond)
             .withAcceleration(40.0)
-            .withEnableFOC(true));
+            .withEnableFOC(false));
   }
 
   public void stop() {

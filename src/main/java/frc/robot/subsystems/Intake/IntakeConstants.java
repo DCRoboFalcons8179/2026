@@ -9,7 +9,7 @@ public class IntakeConstants {
 
   public static final double GEAR_RATIO = 1.0 / 3.0;
 
-  // motor velocity (current just a placeholder number before being tested)
+  // motor velocity
   public static final double SPEED_IN = -18.5;
   public static final double SPEED_OUT = 18.5;
 

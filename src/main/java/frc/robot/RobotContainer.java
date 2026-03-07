@@ -124,10 +124,6 @@ public class RobotContainer {
 
         intake = new Intake(new IntakeIOReal());
         extrude = new Extrude(new ExtrudeIOReal());
-
-        // Enable state machines
-        intake.enable();
-        extrude.enable();
         break;
 
       case SIM:
