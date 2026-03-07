@@ -29,12 +29,16 @@ public class Intake extends StateMachine<Intake.State> {
         State.FEED_IN, new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.SPEED_IN)));
     registerStateCommand(
         State.FEED_OUT, new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.SPEED_OUT)));
+    registerStateCommand(
+        State.EXTRUDE_IN,
+        new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.EXTRUDE_IN_SPEED)));
   }
 
   public void registerStateTransition() {
     addOmniTransition(State.IDLE);
     addOmniTransition(State.FEED_IN);
     addOmniTransition(State.FEED_OUT);
+    addOmniTransition(State.EXTRUDE_IN);
   }
 
   @Override
@@ -53,5 +57,6 @@ public class Intake extends StateMachine<Intake.State> {
     IDLE,
     FEED_IN,
     FEED_OUT,
+    EXTRUDE_IN
   }
 }

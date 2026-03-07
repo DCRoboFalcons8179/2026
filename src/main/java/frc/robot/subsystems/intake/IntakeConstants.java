@@ -13,6 +13,8 @@ public class IntakeConstants {
   public static final double SPEED_IN = -18.5;
   public static final double SPEED_OUT = 18.5;
 
+  public static final double EXTRUDE_IN_SPEED = -6;
+
   // Neutral Mode for feeder
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
 

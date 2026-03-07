@@ -75,6 +75,11 @@ public class ExtrudeIOReal implements ExtrudeIO {
   }
 
   @Override
+  public double getPosition() {
+    return extruder.getPosition().getValueAsDouble();
+  }
+
+  @Override
   public double getTargetPosition() {
     return targetPosition;
   }

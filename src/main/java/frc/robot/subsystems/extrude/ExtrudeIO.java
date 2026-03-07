@@ -31,4 +31,8 @@ public interface ExtrudeIO {
   public default double getTargetPosition() {
     return 0;
   }
+
+  public default double getPosition() {
+    return 0;
+  }
 }

@@ -75,4 +75,9 @@ public class ExtrudeIOSim implements ExtrudeIO {
   public void addExtruderPosition(double extruderManalDelta) {
     targetPosition += extruderManalDelta;
   }
+
+  @Override
+  public double getPosition() {
+    return extruderSim.getAngularPositionRotations();
+  }
 }

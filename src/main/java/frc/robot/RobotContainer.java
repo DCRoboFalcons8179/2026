@@ -123,7 +123,7 @@ public class RobotContainer {
         // new ModuleIOTalonFXS(TunerConstants.BackRight));
 
         intake = new Intake(new IntakeIOReal());
-        extrude = new Extrude(new ExtrudeIOReal());
+        extrude = new Extrude(new ExtrudeIOReal(), intake);
         break;
 
       case SIM:
@@ -148,7 +148,7 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
         pitch = new Pitch(new PitchIOSim());
         intake = new Intake(new IntakeIOSim() {});
-        extrude = new Extrude(new ExtrudeIOSim() {});
+        extrude = new Extrude(new ExtrudeIOSim() {}, intake);
 
         break;
 
@@ -172,7 +172,7 @@ public class RobotContainer {
 
         intake = new Intake(new IntakeIO() {});
 
-        extrude = new Extrude(new ExtrudeIO() {});
+        extrude = new Extrude(new ExtrudeIO() {}, intake);
         break;
     }
 
