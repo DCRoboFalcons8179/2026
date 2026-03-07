@@ -68,6 +68,7 @@ public class Turret extends StateMachine<Turret.State> {
   }
 
   public void moveTurret() {
+    System.out.println("Moving to: " + desiredTurretPose);
     io.moveTurret(desiredTurretPose);
   }
 

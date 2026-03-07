@@ -30,14 +30,71 @@ public final class Constants {
     REPLAY
   }
 
-  ///for Tags 10, 2, 4, 5, 26, 18, 20, 21
-  private static final Translation2d TAG_SET_1 = new Translation2d(23.25, 0);
-  private static final int[] TAG_SET_1_IDS = {2,4,5,10,18,20,21,26};
+  /// for Tags 2, 4, 5, 10, 18, 20, 21, 26
+  private static final Translation2d TAG_SET_1 = new Translation2d(0.59055, 0);
 
-  ///for Tags 3, 11, 9, 19, 27, 25
-  private static final Translation2d TAG_SET_2 = new Translation2d(14.25, 23.25);
-  private static final int[] TAG_SET_2_IDS = {3,9,11,19,25,27};
+  /// for Tags 3, 9, 11, 19, 25, 27
+  private static final Translation2d TAG_SET_2 = new Translation2d(0.36195, -0.59055);
+
   /// for Tags 8, 24
-  private static final Translation2d TAG_SET_3 = new Translation2d(-14.25, 23.25);
-  private static final int[] TAG_SET_3_IDS = {8,24};
+  private static final Translation2d TAG_SET_3 = new Translation2d(-0.36195, 0.59055);
+
+  private static final Translation2d BLANK_TRANSLATION = new Translation2d(0, 0);
+
+  public static final Translation2d[] tagsToHub = {
+    // 1
+    BLANK_TRANSLATION,
+    // 2
+    TAG_SET_1,
+    // 3
+    TAG_SET_2,
+    // 4
+    TAG_SET_1,
+    // 5
+    TAG_SET_1,
+    // 6
+    BLANK_TRANSLATION,
+    // 7
+    BLANK_TRANSLATION,
+    // 8
+    TAG_SET_3,
+    // 9
+    TAG_SET_2,
+    // 10
+    TAG_SET_1,
+    // 11
+    TAG_SET_2,
+    // 12
+    BLANK_TRANSLATION,
+    // 13
+    BLANK_TRANSLATION,
+    // 14
+    BLANK_TRANSLATION,
+    // 15
+    BLANK_TRANSLATION,
+    // 16
+    BLANK_TRANSLATION,
+    // 17
+    BLANK_TRANSLATION,
+    // 18
+    TAG_SET_1,
+    // 19
+    TAG_SET_2,
+    // 20
+    TAG_SET_1,
+    // 21
+    TAG_SET_1,
+    // 22
+    BLANK_TRANSLATION,
+    // 23
+    BLANK_TRANSLATION,
+    // 24
+    TAG_SET_3,
+    // 25
+    TAG_SET_2,
+    // 26
+    TAG_SET_1,
+    // 27
+    TAG_SET_2
+  };
 }

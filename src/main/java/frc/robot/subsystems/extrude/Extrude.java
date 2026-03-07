@@ -20,6 +20,9 @@ public class Extrude extends StateMachine<Extrude.State> {
 
   private final Intake intake;
 
+  /// Tracks if we already used auto intake on
+  private boolean autoIntake = false;
+
   public Extrude(ExtrudeIO io, Intake intake) {
     super("Extruder", State.UNDETERMINED, State.class);
     this.io = io;
@@ -85,6 +88,10 @@ public class Extrude extends StateMachine<Extrude.State> {
 
     if (io.getPosition() > -3) {
       intake.requestTransition(Intake.State.IDLE);
+      autoIntake = false;
+    } else if (io.getPosition() < -23 && !autoIntake) {
+      autoIntake = true;
+      intake.requestTransition(Intake.State.FEED_IN);
     }
   }
 

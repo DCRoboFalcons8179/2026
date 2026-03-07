@@ -11,13 +11,15 @@ import frc.robot.math.Translations;
 import frc.robot.subsystems.shooter.turret.Turret;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
 import frc.robot.subsystems.vision.Vision;
-import frc.robot.subsystems.vision.VisionConstants;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoAim extends Command {
   private final Vision vision;
   private final Turret turret;
   private final PIDController pidController;
+
+  /// Used to account for tags being dedeteced and undetected
+  private Translation2d lastTranslation = new Translation2d();
 
   /** Creates a new AutoAim. */
   public AutoAim(Vision vision, Turret turret) {
@@ -37,22 +39,25 @@ public class AutoAim extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xDistance = vision.getXDistance(1);
-    double yDistance = vision.getYDistance(1) * -1;
     int tagID = vision.getBestTagId(1);
 
-    Translation2d translation = new Translation2d(xDistance, yDistance);
+    if (tagID != -1) {
+      double xDistance = vision.getXDistance(1);
+      double yDistance = vision.getYDistance(1) * -1;
 
-    Translation2d robotToHub = Translations.tagToHub(tagID, translation);
-    
-    double rads = Math.tan(robotToHub.getY() / robotToHub.getX());
+      Translation2d translation = new Translation2d(xDistance, yDistance);
+
+      Translation2d robotToHub = Translations.tagToHub(tagID, translation);
+
+      lastTranslation = robotToHub;
+    }
+
+    double rads = Math.tan(lastTranslation.getY() / lastTranslation.getX());
     double degrees = (rads) * (180 / Math.PI);
-
-    System.out.println("Degrees: " + degrees);
 
     double turretPos = degrees == 0 ? 0 : degrees / 30;
 
-    System.out.println("Turret Pos: " + turretPos);
+    System.out.println("Degrees: " + degrees);
 
     turret.setTurretPose(turretPos);
     turret.moveTurret();

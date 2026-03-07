@@ -2,7 +2,6 @@ package frc.robot.subsystems.shooter.turret;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import org.littletonrobotics.junction.Logger;
@@ -59,7 +58,7 @@ public class TurretIOReal implements TurretIO {
     // Check if at target (within tolerance when using position control)
     if (usePositionControl) {
       inputs.atTarget =
-          Math.abs(inputs.encoderPosition - targetPosition) < 0.1; // 0.01 rotations tolerance
+          Math.abs(inputs.encoderPosition - targetPosition) < 0.01; // 0.01 rotations tolerance
     } else {
       inputs.atTarget = false;
     }
@@ -79,12 +78,6 @@ public class TurretIOReal implements TurretIO {
 
     usePositionControl = true;
     turretMotor.setControl(new MotionMagicVoltage(targetPosition));
-  }
-
-  @Override
-  public void moveTurretPO(double omegaPercent) {
-    usePositionControl = false;
-    turretMotor.setControl(new DutyCycleOut(omegaPercent));
   }
 
   @Override

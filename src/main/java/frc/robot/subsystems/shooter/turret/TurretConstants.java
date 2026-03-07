@@ -10,9 +10,9 @@ public class TurretConstants {
   public static final NeutralModeValue TURRET_NEUTRAL_MODE = NeutralModeValue.Brake;
 
   /// KP for moving to pos
-  public static final double TURRET_KP = 1.3;
+  public static final double TURRET_KP = 5;
   /// KI for moving to pos
-  public static final double TURRET_KI = 0;
+  public static final double TURRET_KI = 0.001;
   /// KD for moving to pos
   public static final double TURRET_KD = 0;
 
