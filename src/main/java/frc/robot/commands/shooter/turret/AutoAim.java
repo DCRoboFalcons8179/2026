@@ -5,10 +5,13 @@
 package frc.robot.commands.shooter.turret;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.math.Translations;
 import frc.robot.subsystems.shooter.turret.Turret;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
 import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionConstants;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoAim extends Command {
@@ -36,8 +39,13 @@ public class AutoAim extends Command {
   public void execute() {
     double xDistance = vision.getXDistance(1);
     double yDistance = vision.getYDistance(1) * -1;
+    int tagID = vision.getBestTagId(1);
 
-    double rads = Math.tan(yDistance / xDistance);
+    Translation2d translation = new Translation2d(xDistance, yDistance);
+
+    Translation2d robotToHub = Translations.tagToHub(tagID, translation);
+    
+    double rads = Math.tan(robotToHub.getY() / robotToHub.getX());
     double degrees = (rads) * (180 / Math.PI);
 
     System.out.println("Degrees: " + degrees);
