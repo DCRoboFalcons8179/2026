@@ -2,9 +2,31 @@ package frc.robot;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeIO;
+import frc.robot.subsystems.Intake.IntakeIOReal;
+import frc.robot.subsystems.Intake.IntakeIOSim;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.extrude.Extrude;
+import frc.robot.subsystems.extrude.ExtrudeIO;
+import frc.robot.subsystems.extrude.ExtrudeIOReal;
+import frc.robot.subsystems.extrude.ExtrudeIOSim;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterIOReal;
+import frc.robot.subsystems.shooter.pitch.Pitch;
+import frc.robot.subsystems.shooter.pitch.PitchIO;
+import frc.robot.subsystems.shooter.pitch.PitchIOReal;
+import frc.robot.subsystems.shooter.pitch.PitchIOSim;
+import frc.robot.subsystems.shooter.turret.Turret;
+import frc.robot.subsystems.shooter.turret.TurretIO;
+import frc.robot.subsystems.shooter.turret.TurretIOReal;
+import frc.robot.subsystems.shooter.turret.TurretIOSim;
 
 public class AutonContainer {
     public static void CreateAutonChooser(LoggedDashboardChooser<Command> chooser){
@@ -20,7 +42,7 @@ public class AutonContainer {
     chooser.addOption(
         "B: Straight backward", new PathPlannerAuto("B-straight-back"));
     chooser.addOption(
-        "C: Hub forward", new PathPlannerAuto("C-hub-out"));
+        "C: Simple Shot", new PathPlannerAuto("C-simple-shot"));
     chooser.addOption(
         "D: Hub backward", new PathPlannerAuto("D-hub-back"));
 
@@ -76,5 +98,4 @@ public class AutonContainer {
         "16: Upper Hub Score Collect Score Hang", new PathPlannerAuto("16-upper-hub-score-collect-score-hang"));
 
     }
-
 }

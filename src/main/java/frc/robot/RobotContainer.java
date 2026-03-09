@@ -200,6 +200,14 @@ public class RobotContainer {
         "aimToTag",
         DriveCommands.cameraDrive(
             drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
+
+    NamedCommands.registerCommand("Shooter Charge", new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)));
+    NamedCommands.registerCommand("Extrude Out", new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));    NamedCommands.registerCommand("Extrude Out", new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+    NamedCommands.registerCommand("Extrude In", new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
+
+    NamedCommands.registerCommand("Turret Aim Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)));
+    NamedCommands.registerCommand("Turret Aim Disable", new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+
   }
 
   private void enableStateSubsystems() {
