@@ -32,10 +32,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -226,6 +228,13 @@ public class Drive extends SubsystemBase {
     // Send setpoints to modules
     for (int i = 0; i < 4; i++) {
       modules[i].runSetpoint(setpointStates[i]);
+      SmartDashboard.putNumber(
+          "Model " + i + "Desired Speed", setpointStates[i].speedMetersPerSecond);
+      SmartDashboard.putNumber(
+          "Model " + i + "Desired Angle", setpointStates[i].angle.getDegrees());
+
+      SmartDashboard.putNumber(
+          "Model " + i + " Velocity m-s", modules[i].getVelocityMetersPerSec());
     }
 
     // Log optimized setpoints (runSetpoint mutates each state)
@@ -333,8 +342,8 @@ public class Drive extends SubsystemBase {
       Pose2d visionRobotPoseMeters,
       double timestampSeconds,
       Matrix<N3, N1> visionMeasurementStdDevs) {
-    poseEstimator.addVisionMeasurement(
-        visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+    // poseEstimator.addVisionMeasurement(
+    //     visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
   }
 
   /** Returns the maximum linear speed in meters per sec. */
@@ -344,7 +353,9 @@ public class Drive extends SubsystemBase {
 
   /** Returns the maximum angular speed in radians per sec. */
   public double getMaxAngularSpeedRadPerSec() {
-    return getMaxLinearSpeedMetersPerSec() / DRIVE_BASE_RADIUS;
+    LinearVelocity rotSpeed = MetersPerSecond.of(3);
+
+    return rotSpeed.in(MetersPerSecond) / DRIVE_BASE_RADIUS;
   }
 
   /** Returns an array of module translations. */

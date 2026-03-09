@@ -25,7 +25,8 @@ public class DirectionalEnumGraph<V extends Enum<V>, T extends TransitionBase<? 
     setEdge(transition);
   }
 
-  public void addEdges(T... transitions) {
+  @SafeVarargs
+  public final void addEdges(T... transitions) {
     for (T transition : transitions) {
       addEdge(transition);
     }

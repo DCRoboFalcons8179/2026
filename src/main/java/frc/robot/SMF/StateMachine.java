@@ -320,7 +320,6 @@ public abstract class StateMachine<E extends Enum<E>> extends SubsystemBase {
       cancelStateCommand();
       transition.execute();
       transitionTimer.start();
-
       /*updateTransitioning();*/
     } else if (state != currentState) {
       queuedTransition = transition;
@@ -352,6 +351,7 @@ public abstract class StateMachine<E extends Enum<E>> extends SubsystemBase {
    * @return the command to run
    */
   public final Command transitionCommand(E state) {
+    System.out.println("TRANSITIONING TO SOMETHING");
     return new FunctionalCommand(
         () -> requestTransition(state), () -> {}, (interrupted) -> {}, () -> getState() == state);
   }
@@ -528,6 +528,8 @@ public abstract class StateMachine<E extends Enum<E>> extends SubsystemBase {
     currentState = state;
     clearFlags();
     if (stateCommands.containsKey(state)) {
+      // Update to comply with deprecations
+      // CommandScheduler.getInstance().schedule(stateCommands.get(state));
       stateCommands.get(state).schedule();
     }
   }

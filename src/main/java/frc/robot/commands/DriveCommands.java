@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -20,9 +21,11 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.vision.Vision;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
@@ -57,6 +60,59 @@ public class DriveCommands {
         .getTranslation();
   }
 
+  public static Command cameraDrive(
+      Drive drive, Vision vision, DoubleSupplier xSupplier, DoubleSupplier ySupplier) {
+    return Commands.run(
+        () -> {
+          // Get linear velocity
+          Translation2d linearVelocity =
+              getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+
+          double omegaPercent = 0.0;
+
+          // Only calculate rotation if we have a valid target
+          if (vision.hasValidTarget(0)) {
+            var rads = vision.getTargetX(0).getRadians();
+
+            @SuppressWarnings("resource")
+            PIDController aimController = new PIDController(0.8, 0.0, 0.01);
+            aimController.enableContinuousInput(-Math.PI, Math.PI);
+
+            // Clamp output to prevent violent turns
+            aimController.setTolerance(0.02); // ~1 degree tolerance
+
+            SmartDashboard.putNumber("Rads", rads);
+
+            omegaPercent = -aimController.calculate(rads);
+
+            // Limit max turning speed to 40% for smoother control
+            omegaPercent = MathUtil.clamp(omegaPercent, -0.4, 0.4);
+
+            SmartDashboard.putNumber("Omeag Percent Out", omegaPercent);
+          } else {
+            // No valid target, stop rotation
+            SmartDashboard.putNumber("Rads", 0.0);
+            SmartDashboard.putNumber("Omeag Percent Out", 0.0);
+          }
+
+          // Convert to field relative speeds & send command
+          ChassisSpeeds speeds =
+              new ChassisSpeeds(
+                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                  omegaPercent * drive.getMaxAngularSpeedRadPerSec());
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          drive.runVelocity(
+              ChassisSpeeds.fromFieldRelativeSpeeds(
+                  speeds,
+                  isFlipped
+                      ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                      : drive.getRotation()));
+        });
+  }
+
   /**
    * Field relative drive command using two joysticks (controlling linear and angular velocities).
    */
@@ -67,12 +123,21 @@ public class DriveCommands {
       DoubleSupplier omegaSupplier) {
     return Commands.run(
         () -> {
+          double xPow = xSupplier.getAsDouble();
+          double yPow = ySupplier.getAsDouble();
+
+          var x = Math.copySign(Math.pow(xPow, 3), xPow);
+          var y = Math.copySign(Math.pow(yPow, 3), yPow);
+
           // Get linear velocity
-          Translation2d linearVelocity =
-              getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+          Translation2d linearVelocity = getLinearVelocityFromJoysticks(x, y);
 
           // Apply rotation deadband
           double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
+
+          omega = Math.copySign(omega * omega * omega, omega);
+
+          SmartDashboard.putNumber("Real Omega", omega);
 
           // Square rotation value for more precise control
           omega = Math.copySign(omega * omega, omega);
