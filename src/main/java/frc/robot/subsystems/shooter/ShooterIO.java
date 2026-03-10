@@ -11,6 +11,7 @@ public interface ShooterIO {
     public double appliedVoltage = 0.0;
     public double encoderPosition = 0.0;
     public double velocity = 0.0;
+    public double targetVelocity = 0;
     public Shooter.State state = Shooter.State.UNDETERMINED;
   }
 

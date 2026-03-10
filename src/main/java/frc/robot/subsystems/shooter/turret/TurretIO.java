@@ -42,4 +42,6 @@ public interface TurretIO {
   public default boolean atTarget() {
     return false;
   }
+
+  public default void incrementTurret(double increment) {}
 }

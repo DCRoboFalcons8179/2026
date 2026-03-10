@@ -42,6 +42,7 @@ import frc.robot.subsystems.shooter.pitch.PitchIO;
 import frc.robot.subsystems.shooter.pitch.PitchIOReal;
 import frc.robot.subsystems.shooter.pitch.PitchIOSim;
 import frc.robot.subsystems.shooter.turret.Turret;
+import frc.robot.subsystems.shooter.turret.TurretConstants;
 import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretIOReal;
 import frc.robot.subsystems.shooter.turret.TurretIOSim;
@@ -99,7 +100,7 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIOReal(), vision);
 
-        shooter = new Shooter(new ShooterIOReal());
+        shooter = new Shooter(new ShooterIOReal(), vision);
 
         pitch = new Pitch(new PitchIOReal());
 
@@ -126,7 +127,7 @@ public class RobotContainer {
                     VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose));
 
         turret = new Turret(new TurretIOSim(), vision);
-        shooter = new Shooter(new ShooterIO() {});
+        shooter = new Shooter(new ShooterIO() {}, vision);
         pitch = new Pitch(new PitchIOSim());
         intake = new Intake(new IntakeIOSim() {});
         extrude = new Extrude(new ExtrudeIOSim() {}, intake);
@@ -147,7 +148,7 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIO() {}, vision);
 
-        shooter = new Shooter(new ShooterIO() {});
+        shooter = new Shooter(new ShooterIO() {}, vision);
 
         pitch = new Pitch(new PitchIO() {});
 
@@ -206,13 +207,6 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    // Lock on to tag
-    controller
-        .rightTrigger()
-        .whileTrue(
-            DriveCommands.cameraDrive(
-                drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
-
     // Switch to X pattern when X button is pressed
     controller.b().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
@@ -233,48 +227,35 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
 
     controller
-        .leftBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  turret.setTurretPose(-3);
-                }))
-        .onFalse(new InstantCommand(() -> turret.setTurretPose(0)));
-
+        .rightBumper()
+        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
     controller
         .rightBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  turret.setTurretPose(3);
-                }))
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  turret.setTurretPose(0);
-                }));
-
-    // Feeds intake in when b button is pressed
-    controller
-        .a()
-        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
-    // Feeds intake out when right bumper is pressed
-    controller
-        .a()
         .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
 
     controller
-        .x()
+        .leftBumper()
         .toggleOnTrue(
             new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
     controller
-        .x()
+        .leftBumper()
         .toggleOnTrue(
             new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
     controller
         .povUp()
         .onTrue(
             new InstantCommand(() -> extrude.addExtruderPosition(ExtrudeConstants.MANUAL_DELTA)));
+
+    // Turret Manual Bump
+    controller
+        .povLeft()
+        .onTrue(new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
+    controller
+        .povRight()
+        .onTrue(new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
+
+    // Turret Reset to Zero
+    controller.a().onTrue(new InstantCommand(() -> turret.setTurretPose(0)));
 
     controller
         .rightTrigger()

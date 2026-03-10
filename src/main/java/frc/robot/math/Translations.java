@@ -5,7 +5,7 @@ import frc.robot.Constants;
 
 public class Translations {
   public static Translation2d tagToHub(int tagID, Translation2d robotToTag) {
-    if (tagID == -1) {
+    if (tagID == -1 || tagID > 27) {
       System.out.println("Invalid tag ID" + tagID);
       return Translation2d.kZero;
     }

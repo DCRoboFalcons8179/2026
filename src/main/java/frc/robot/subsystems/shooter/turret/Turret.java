@@ -38,7 +38,7 @@ public class Turret extends StateMachine<Turret.State> {
             new InstantCommand(() -> this.desiredTurretPose = io.getTurretPosition()),
             new TurretToPose(this)));
 
-    registerStateCommand(State.UNLOCKED, new TurretToPose(this));
+    registerStateCommand(State.UNLOCKED, new InstantCommand(() -> new TurretToPose(this)));
 
     // Has the turret aim when the aim state is set
     registerStateCommand(State.AIM, new AutoAim(vision, this));
@@ -52,7 +52,7 @@ public class Turret extends StateMachine<Turret.State> {
 
   @Override
   protected void determineSelf() {
-    setState(State.LOCKED);
+    setState(State.UNLOCKED);
   }
 
   @Override
@@ -68,7 +68,6 @@ public class Turret extends StateMachine<Turret.State> {
   }
 
   public void moveTurret() {
-    System.out.println("Moving to: " + desiredTurretPose);
     io.moveTurret(desiredTurretPose);
   }
 
@@ -79,6 +78,10 @@ public class Turret extends StateMachine<Turret.State> {
    */
   public void aimPercentOut(double omegaPercent) {
     io.moveTurretPO(omegaPercent);
+  }
+
+  public void incrementTurret(double increment) {
+    io.incrementTurret(increment);
   }
 
   public enum State {

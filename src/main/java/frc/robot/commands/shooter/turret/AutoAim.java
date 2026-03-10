@@ -43,7 +43,7 @@ public class AutoAim extends Command {
 
     if (tagID != -1) {
       double xDistance = vision.getXDistance(1);
-      double yDistance = vision.getYDistance(1) * -1;
+      double yDistance = (vision.getYDistance(1) + 0.148) * -1;
 
       Translation2d translation = new Translation2d(xDistance, yDistance);
 

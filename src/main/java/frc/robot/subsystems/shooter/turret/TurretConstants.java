@@ -19,6 +19,8 @@ public class TurretConstants {
   public static final double MAX_MOTOR_ROT = 3;
   public static final double MIN_MOTOR_ROT = -3;
 
+  public static final double NUDGE_AMOUNT = 0.33 / 2;
+
   /// KP for auto aim
   public static final double AIM_KP = 0;
   /// KI for auto aim

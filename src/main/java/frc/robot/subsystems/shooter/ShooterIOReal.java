@@ -4,12 +4,15 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import frc.robot.math.Range;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterIOReal implements ShooterIO {
   protected final TalonFXS shooter = new TalonFXS(ShooterConstants.ID);
   private final VelocityVoltage shooterVelocityRequest = new VelocityVoltage(0).withSlot(0);
   protected final TalonFXS feeder = new TalonFXS(ShooterConstants.FEED_ID);
+
+  private double targetVelocity = 0;
 
   public ShooterIOReal() {
     configureMotor();
@@ -32,6 +35,8 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public void setShooterTargetVelocity(double velocity) {
+    targetVelocity = velocity;
+
     shooter.setControl(
         shooterVelocityRequest.withVelocity(velocity).withAcceleration(5.0).withEnableFOC(false));
 
@@ -79,6 +84,7 @@ public class ShooterIOReal implements ShooterIO {
     inputs.appliedVoltage = shooter.getMotorVoltage().getValueAsDouble();
     inputs.velocity = shooter.getVelocity().getValueAsDouble();
     inputs.encoderPosition = shooter.getPosition().getValueAsDouble();
+    inputs.targetVelocity = targetVelocity;
 
     Logger.processInputs("Shooter", inputs);
   }
@@ -87,10 +93,8 @@ public class ShooterIOReal implements ShooterIO {
   public boolean isCharged() {
     double omega = shooter.getVelocity().getValueAsDouble();
 
-    // Removes the gear ratio from the charge math
-    return omega
-        >= ((ShooterConstants.OUTPUT_SPEED * ShooterConstants.GEAR_RATIO)
-            - ShooterConstants.ERROR_MARGIN);
+    return Range.inRange(
+        omega * ShooterConstants.GEAR_RATIO, ShooterConstants.ERROR_MARGIN, targetVelocity);
   }
 
   @Override

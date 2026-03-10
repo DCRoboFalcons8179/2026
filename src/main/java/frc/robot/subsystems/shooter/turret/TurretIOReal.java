@@ -81,6 +81,11 @@ public class TurretIOReal implements TurretIO {
   }
 
   @Override
+  public void incrementTurret(double increment) {
+    moveTurret(targetPosition + increment);
+  }
+
+  @Override
   public double getTurretPosition() {
     return turretMotor.getPosition().getValueAsDouble();
   }

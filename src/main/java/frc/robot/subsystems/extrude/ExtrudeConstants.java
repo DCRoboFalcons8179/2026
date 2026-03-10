@@ -12,7 +12,7 @@ public class ExtrudeConstants {
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
 
   public static final CurrentLimitsConfigs CURRENT_LIMIT =
-      new CurrentLimitsConfigs().withSupplyCurrentLimit(2).withSupplyCurrentLimitEnable(true);
+      new CurrentLimitsConfigs().withSupplyCurrentLimit(5).withSupplyCurrentLimitEnable(true);
 
   public static final double IN_POSITION = 0;
   public static final double OUT_POSITION = -32;
