@@ -17,15 +17,39 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Enable"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "collect all neutral human to depot"
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Intake Disable"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "depot neutral to hub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Charge"
           }
         }
       ]

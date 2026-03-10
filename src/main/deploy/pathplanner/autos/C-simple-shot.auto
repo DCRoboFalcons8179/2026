@@ -5,22 +5,21 @@
     "data": {
       "commands": [
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Turret Aim Enable"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shooter Charge"
-                }
-              }
-            ]
+            "name": "Turret Aim Enable"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Charge"
           }
         }
       ]

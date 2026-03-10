@@ -19,7 +19,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 3.0
           }
         },
         {
@@ -47,9 +47,27 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Extrude In"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "hub to depot"
+            "pathName": "hub to neutral lower"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
@@ -61,19 +79,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "start depot pt2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake Disable"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "depot to hub"
+            "pathName": "collect neutral human"
           }
         }
       ]

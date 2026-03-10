@@ -17,15 +17,45 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Enable"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "collect all neutral depot to human"
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Intake Disable"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "lower neutral to hub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Turret Aim Enable"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Charge"
           }
         }
       ]

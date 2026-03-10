@@ -9,8 +9,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -188,8 +186,6 @@ public class RobotContainer {
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     AutonContainer.CreateAutonChooser(autoChooser);
 
-    
-
     // Configure the button bindings
     configureButtonBindings();
     configureNamedCommands();
@@ -201,13 +197,29 @@ public class RobotContainer {
         DriveCommands.cameraDrive(
             drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
 
-    NamedCommands.registerCommand("Shooter Charge", new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)));
-    NamedCommands.registerCommand("Extrude Out", new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));    NamedCommands.registerCommand("Extrude Out", new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
-    NamedCommands.registerCommand("Extrude In", new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
+    NamedCommands.registerCommand(
+        "Shooter Charge",
+        new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)));
+    NamedCommands.registerCommand(
+        "Shooter Idle", new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
-    NamedCommands.registerCommand("Turret Aim Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)));
-    NamedCommands.registerCommand("Turret Aim Disable", new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+    NamedCommands.registerCommand(
+        "Extrude Out",
+        new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+    NamedCommands.registerCommand(
+        "Extrude In",
+        new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
 
+    NamedCommands.registerCommand(
+        "Turret Aim Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)));
+    NamedCommands.registerCommand(
+        "Turret Aim Disable",
+        new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+
+    NamedCommands.registerCommand(
+        "Intake Enable", new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
+    NamedCommands.registerCommand(
+        "Intake Disable", new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
   }
 
   private void enableStateSubsystems() {

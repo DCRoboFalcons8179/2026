@@ -11,15 +11,57 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Enable"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "start depot pt2"
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Intake Disable"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "depot to hub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Charge"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Idle"
           }
         },
         {
