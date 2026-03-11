@@ -5,14 +5,18 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import frc.robot.math.Range;
+import frc.robot.subsystems.shooter.pitch.PitchConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterIOReal implements ShooterIO {
   protected final TalonFXS shooter = new TalonFXS(ShooterConstants.ID);
+  protected final TalonFXS follower = new TalonFXS(PitchConstants.PITCH_ID);
   private final VelocityVoltage shooterVelocityRequest = new VelocityVoltage(0).withSlot(0);
+  private final VelocityVoltage followerVelocityRequest = new VelocityVoltage(0).withSlot(0);
   protected final TalonFXS feeder = new TalonFXS(ShooterConstants.FEED_ID);
 
-  private double targetVelocity = 0;
+  private double mainTargetVelocity = 0;
+  private double followerTargetVelocity = 0;
 
   public ShooterIOReal() {
     configureMotor();
@@ -25,20 +29,35 @@ public class ShooterIOReal implements ShooterIO {
     shooter.getConfigurator().apply(new MotorOutputConfigs().withInverted(ShooterConstants.INVERT));
 
     feeder.getConfigurator().apply(ShooterConstants.CURRENT_LIMIT);
-    feeder.setNeutralMode(ShooterConstants.NEUTRAL_MODE);
+    feeder.setNeutralMode(ShooterConstants.FOLLOWER_NEUTRAL_MODE);
     feeder
         .getConfigurator()
         .apply(new MotorOutputConfigs().withInverted(ShooterConstants.FEED_INVERT));
+
+    // follower.setControl(new Follower(ShooterConstants.ID, MotorAlignmentValue.Aligned));
 
     setPIDControl();
   }
 
   @Override
   public void setShooterTargetVelocity(double velocity) {
-    targetVelocity = velocity;
+    // Main velocity
+    mainTargetVelocity = 30;
+
+    // Secondary Velocity
+    followerTargetVelocity = velocity;
 
     shooter.setControl(
-        shooterVelocityRequest.withVelocity(velocity).withAcceleration(5.0).withEnableFOC(false));
+        shooterVelocityRequest
+            .withVelocity(mainTargetVelocity)
+            .withAcceleration(5.0)
+            .withEnableFOC(false));
+
+    follower.setControl(
+        followerVelocityRequest
+            .withVelocity(followerTargetVelocity)
+            .withAcceleration(5.0)
+            .withEnableFOC(false));
 
     // If the shooter is charged, run the feeder
     if (isCharged()) {
@@ -58,6 +77,15 @@ public class ShooterIOReal implements ShooterIO {
 
     shooter.getConfigurator().apply(leadShooterConfig);
 
+    Slot0Configs followShooterConfig =
+        new Slot0Configs()
+            .withKP(ShooterConstants.FOLLOWER_KP)
+            .withKI(ShooterConstants.FOLLOWER_KI)
+            .withKD(ShooterConstants.FOLLOWER_KD)
+            .withKV(ShooterConstants.FOLLOWER_KV);
+
+    follower.getConfigurator().apply(followShooterConfig);
+
     Slot0Configs shootFeedConfig =
         new Slot0Configs()
             .withKP(ShooterConstants.FEED_KP)
@@ -74,6 +102,9 @@ public class ShooterIOReal implements ShooterIO {
         shooterVelocityRequest.withVelocity(0).withAcceleration(1.0).withEnableFOC(false));
     shooter.stopMotor();
 
+    follower.set(0);
+    follower.stopMotor();
+
     feeder.set(0);
     feeder.stopMotor();
   }
@@ -82,9 +113,10 @@ public class ShooterIOReal implements ShooterIO {
   public void updateInputs(ShooterInputsAutoLogged inputs) {
     inputs.current = shooter.getTorqueCurrent().getValueAsDouble();
     inputs.appliedVoltage = shooter.getMotorVoltage().getValueAsDouble();
-    inputs.velocity = shooter.getVelocity().getValueAsDouble();
-    inputs.encoderPosition = shooter.getPosition().getValueAsDouble();
-    inputs.targetVelocity = targetVelocity;
+    inputs.mainVelocity = shooter.getVelocity().getValueAsDouble();
+    inputs.mainTargetVelocity = mainTargetVelocity;
+    inputs.followerVelocity = follower.getVelocity().getValueAsDouble();
+    inputs.followerTargetVelocity = followerTargetVelocity;
 
     Logger.processInputs("Shooter", inputs);
   }
@@ -94,7 +126,7 @@ public class ShooterIOReal implements ShooterIO {
     double omega = shooter.getVelocity().getValueAsDouble();
 
     return Range.inRange(
-        omega * ShooterConstants.GEAR_RATIO, ShooterConstants.ERROR_MARGIN, targetVelocity);
+        omega * ShooterConstants.GEAR_RATIO, ShooterConstants.ERROR_MARGIN, mainTargetVelocity);
   }
 
   @Override

@@ -5,6 +5,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterConstants;
@@ -33,11 +34,13 @@ public class AutoShootVelocity extends Command {
   public void execute() {
     double distance = vision.getTargetDistance(1).getDistance(Translation2d.kZero);
 
+    SmartDashboard.putNumber("Distance to Target", distance);
+
     if (distance == 0) {
       launchVelocity = ShooterConstants.OUTPUT_SPEED;
     } else {
-      // 1 RPS : 0.07m
-      launchVelocity = (14.361 * distance) + 40;
+      // Calculate the launch velocity based on the distance to the target
+      launchVelocity = (7.642 * distance) + 25.723;
     }
 
     shooter.setVelocity(launchVelocity);

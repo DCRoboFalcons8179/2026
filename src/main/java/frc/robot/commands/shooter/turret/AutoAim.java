@@ -45,9 +45,11 @@ public class AutoAim extends Command {
       double xDistance = vision.getXDistance(1);
       double yDistance = (vision.getYDistance(1) + 0.148) * -1;
 
+      double yaw = vision.getYaw(1);
+
       Translation2d translation = new Translation2d(xDistance, yDistance);
 
-      Translation2d robotToHub = Translations.tagToHub(tagID, translation);
+      Translation2d robotToHub = Translations.tagToHub(tagID, translation, yaw);
 
       lastTranslation = robotToHub;
     }

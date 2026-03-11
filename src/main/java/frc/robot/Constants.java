@@ -34,10 +34,10 @@ public final class Constants {
   private static final Translation2d TAG_SET_1 = new Translation2d(0.5842, 0);
 
   /// for Tags 3, 9, 11, 19, 25, 27
-  private static final Translation2d TAG_SET_2 = new Translation2d(0.5842, 0.3556);
+  private static final Translation2d TAG_SET_2 = new Translation2d(0.5842, -0.3556);
 
   /// for Tags 8, 24
-  private static final Translation2d TAG_SET_3 = new Translation2d(0.5842, -0.3556);
+  private static final Translation2d TAG_SET_3 = new Translation2d(0.5842, 0.3556);
 
   private static final Translation2d BLANK_TRANSLATION = new Translation2d(0, 0);
 

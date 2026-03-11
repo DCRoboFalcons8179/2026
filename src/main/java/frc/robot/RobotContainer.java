@@ -37,10 +37,6 @@ import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
-import frc.robot.subsystems.shooter.pitch.Pitch;
-import frc.robot.subsystems.shooter.pitch.PitchIO;
-import frc.robot.subsystems.shooter.pitch.PitchIOReal;
-import frc.robot.subsystems.shooter.pitch.PitchIOSim;
 import frc.robot.subsystems.shooter.turret.Turret;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
 import frc.robot.subsystems.shooter.turret.TurretIO;
@@ -65,7 +61,6 @@ public class RobotContainer {
   private final Vision vision;
   private final Turret turret;
   private final Shooter shooter;
-  private final Pitch pitch;
   private final Intake intake;
   private final Extrude extrude;
 
@@ -102,8 +97,6 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOReal(), vision);
 
-        pitch = new Pitch(new PitchIOReal());
-
         intake = new Intake(new IntakeIOReal());
         extrude = new Extrude(new ExtrudeIOReal(), intake);
         break;
@@ -128,7 +121,6 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIOSim(), vision);
         shooter = new Shooter(new ShooterIO() {}, vision);
-        pitch = new Pitch(new PitchIOSim());
         intake = new Intake(new IntakeIOSim() {});
         extrude = new Extrude(new ExtrudeIOSim() {}, intake);
 
@@ -149,8 +141,6 @@ public class RobotContainer {
         turret = new Turret(new TurretIO() {}, vision);
 
         shooter = new Shooter(new ShooterIO() {}, vision);
-
-        pitch = new Pitch(new PitchIO() {});
 
         intake = new Intake(new IntakeIO() {});
 
@@ -181,9 +171,6 @@ public class RobotContainer {
 
     shooter.enable();
     shooter.determineState();
-
-    pitch.enable();
-    pitch.determineState();
 
     intake.enable();
     intake.determineSelf();
@@ -245,6 +232,11 @@ public class RobotContainer {
         .povUp()
         .onTrue(
             new InstantCommand(() -> extrude.addExtruderPosition(ExtrudeConstants.MANUAL_DELTA)));
+
+    controller
+        .povDown()
+        .onTrue(
+            new InstantCommand(() -> extrude.addExtruderPosition(-ExtrudeConstants.MANUAL_DELTA)));
 
     // Turret Manual Bump
     controller

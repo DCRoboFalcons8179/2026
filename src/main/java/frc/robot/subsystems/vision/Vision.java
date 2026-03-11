@@ -196,6 +196,10 @@ public class Vision extends SubsystemBase {
         "Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[0]));
   }
 
+  public double getYaw(int cameraIndex) {
+    return inputs[cameraIndex].latestTargetObservation.rx().getRadians();
+  }
+
   @FunctionalInterface
   public static interface VisionConsumer {
     public void accept(

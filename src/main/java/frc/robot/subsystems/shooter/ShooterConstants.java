@@ -19,8 +19,13 @@ public class ShooterConstants {
   /// KV for Shooter
   public static final double KV = 0.2;
 
-  /// ID of Follower Shooter
-  // public static final int FOLLOW_SHOOTER_ID = 2;
+  public static final double FOLLOWER_KP = 0.8;
+
+  public static final double FOLLOWER_KI = 0;
+
+  public static final double FOLLOWER_KD = 0;
+
+  public static final double FOLLOWER_KV = 0.2;
 
   /// Current to limit the motors to in amps
   public static final CurrentLimitsConfigs CURRENT_LIMIT =
@@ -37,7 +42,9 @@ public class ShooterConstants {
   public static final double ERROR_MARGIN = 5;
 
   /// The mode for the motors when innactive
-  public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
+  public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
+
+  public static final NeutralModeValue FOLLOWER_NEUTRAL_MODE = NeutralModeValue.Coast;
 
   /// ID of feed motor
   public static final int FEED_ID = 2;
