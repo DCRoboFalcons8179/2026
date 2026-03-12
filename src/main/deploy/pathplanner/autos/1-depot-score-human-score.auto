@@ -49,6 +49,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Turret Aim Enable"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Shooter Charge"
           }
         },
@@ -62,6 +68,12 @@
           "type": "named",
           "data": {
             "name": "Shooter Idle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Turret Aim Disable"
           }
         },
         {

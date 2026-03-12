@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "start depot to neutral"
+            "pathName": "start hub shot"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "collect neutral depot"
+            "name": "Turret Aim Enable"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "depot neutral to hub"
+            "waitTime": 1.0
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "hub to hang"
+            "name": "Shooter Charge"
           }
         }
       ]

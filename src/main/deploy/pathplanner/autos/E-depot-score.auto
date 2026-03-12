@@ -7,37 +7,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": "start human to neutral"
+            "pathName": "start depot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Extrude Out"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Intake Enable"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "collect neutral human"
+            "pathName": "start depot pt2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Intake Disable"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "lower neutral to hub"
+            "name": "Turret Aim Enable"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Charge"
           }
         }
       ]

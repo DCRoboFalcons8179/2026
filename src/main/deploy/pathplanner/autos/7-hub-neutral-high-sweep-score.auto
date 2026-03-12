@@ -11,6 +11,36 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Turret Aim Enable"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Charge"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Idle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Turret Aim Disable"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "hub to neutral upper"
