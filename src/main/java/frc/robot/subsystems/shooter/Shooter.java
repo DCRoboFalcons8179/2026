@@ -42,12 +42,15 @@ public class Shooter extends StateMachine<Shooter.State> {
 
     registerStateCommand(
         State.SHOOT, new InstantCommand(() -> new AutoShootVelocity(this, vision)));
+
+    registerStateCommand(State.REVERSE, new InstantCommand(() -> io.beaterBarReverse(-50)));
   }
 
   public void registerStateTransitions() {
     addOmniTransition(State.IDLE);
     addOmniTransition(State.CHARGE);
     addOmniTransition(State.SHOOT);
+    addOmniTransition(State.REVERSE);
   }
 
   public void setVelocity(double velocity) {
@@ -70,6 +73,7 @@ public class Shooter extends StateMachine<Shooter.State> {
     UNDETERMINED,
     IDLE,
     CHARGE,
-    SHOOT
+    SHOOT,
+    REVERSE
   }
 }

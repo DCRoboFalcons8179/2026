@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 /** IO implementation for real PhotonVision hardware. */
 public class VisionIOPhotonVision implements VisionIO {
@@ -35,6 +36,13 @@ public class VisionIOPhotonVision implements VisionIO {
     this.robotToCamera = robotToCamera;
   }
 
+  private double yaw = 0;
+
+  @Override
+  public double getYaw() {
+    return yaw;
+  }
+
   @Override
   public void updateInputs(VisionIOInputs inputs) {
     inputs.connected = camera.isConnected();
@@ -45,11 +53,28 @@ public class VisionIOPhotonVision implements VisionIO {
     int bestTagId = -1;
     double bestTagDistance = Double.POSITIVE_INFINITY;
 
+    double yaw = 0;
+    double reads = 0;
+
     for (var result : camera.getAllUnreadResults()) {
       // Update latest target observation
       if (result.hasTargets()) {
-        var xDistance = result.getBestTarget().bestCameraToTarget.getMeasureX();
-        var yDistance = result.getBestTarget().bestCameraToTarget.getMeasureY();
+        double xDistance =
+            result.getBestTarget().bestCameraToTarget.getMeasureX().baseUnitMagnitude();
+        double yDistance =
+            result.getBestTarget().bestCameraToTarget.getMeasureY().baseUnitMagnitude();
+
+        for (PhotonTrackedTarget target : result.getTargets()) {
+          double x = target.getBestCameraToTarget().getX();
+          double y = target.getBestCameraToTarget().getY();
+
+          Translation2d translation = new Translation2d(x, y);
+
+          // Translation2d robotToHub = Translations.tagToHub(target.fiducialId, translation);
+
+          yaw += Math.toDegrees(Math.tan(translation.getY() / translation.getX()));
+          reads++;
+        }
 
         inputs.latestTargetObservation =
             new TargetObservation(
@@ -124,6 +149,13 @@ public class VisionIOPhotonVision implements VisionIO {
                   PoseObservationType.PHOTONVISION)); // Observation type
         }
       }
+    }
+
+    yaw /= reads;
+
+    if (!Double.isNaN(yaw)) {
+      inputs.averageYaw = yaw;
+      this.yaw = yaw;
     }
 
     // Save pose observations to inputs object

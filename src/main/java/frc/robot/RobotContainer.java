@@ -253,6 +253,11 @@ public class RobotContainer {
         .rightTrigger()
         .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+
+    controller
+        .x()
+        .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.REVERSE)))
+        .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
   }
 
   /**

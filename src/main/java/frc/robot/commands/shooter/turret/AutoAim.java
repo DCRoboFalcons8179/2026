@@ -49,17 +49,14 @@ public class AutoAim extends Command {
 
       Translation2d translation = new Translation2d(xDistance, yDistance);
 
-      Translation2d robotToHub = Translations.tagToHub(tagID, translation, yaw);
+      Translation2d robotToHub = Translations.tagToHub(tagID, translation);
 
       lastTranslation = robotToHub;
     }
 
-    double rads = Math.tan(lastTranslation.getY() / lastTranslation.getX());
-    double degrees = (rads) * (180 / Math.PI);
+    double degrees = -vision.getYaw(1);
 
-    double turretPos = degrees == 0 ? 0 : degrees / 30;
-
-    System.out.println("Degrees: " + degrees);
+    double turretPos = degrees / 30;
 
     turret.setTurretPose(turretPos);
     turret.moveTurret();

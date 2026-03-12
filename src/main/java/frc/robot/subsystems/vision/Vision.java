@@ -197,7 +197,7 @@ public class Vision extends SubsystemBase {
   }
 
   public double getYaw(int cameraIndex) {
-    return inputs[cameraIndex].latestTargetObservation.rx().getRadians();
+    return io[cameraIndex].getYaw();
   }
 
   @FunctionalInterface

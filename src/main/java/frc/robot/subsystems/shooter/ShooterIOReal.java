@@ -110,6 +110,11 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
+  public void beaterBarReverse(double velocity) {
+    feeder.set(velocity);
+  }
+
+  @Override
   public void updateInputs(ShooterInputsAutoLogged inputs) {
     inputs.current = shooter.getTorqueCurrent().getValueAsDouble();
     inputs.appliedVoltage = shooter.getMotorVoltage().getValueAsDouble();

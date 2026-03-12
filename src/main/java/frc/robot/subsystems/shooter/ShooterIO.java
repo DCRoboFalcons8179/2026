@@ -35,4 +35,6 @@ public interface ShooterIO {
   public default double getVelocity() {
     return 0;
   }
+
+  public default void beaterBarReverse(double velocity) {}
 }

@@ -21,6 +21,7 @@ public interface VisionIO {
     public PoseObservation[] poseObservations = new PoseObservation[0];
     public int[] tagIds = new int[0];
     public int bestTagId = -1; // -1 means no tag visible
+    public double averageYaw = 0;
   }
 
   /** Represents the angle to a simple target, not used for pose estimation. */
@@ -39,6 +40,10 @@ public interface VisionIO {
     MEGATAG_1,
     MEGATAG_2,
     PHOTONVISION
+  }
+
+  public default double getYaw() {
+    return 0;
   }
 
   public default void updateInputs(VisionIOInputs inputs) {}
