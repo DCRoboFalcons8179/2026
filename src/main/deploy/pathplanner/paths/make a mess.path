@@ -1,0 +1,99 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.0,
+        "y": 7.5527444444444445
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.556722222222222,
+        "y": 7.455299999999999
+      },
+      "isLocked": false,
+      "linkedName": "start depot side"
+    },
+    {
+      "anchor": {
+        "x": 8.503866666666667,
+        "y": 4.960722222222222
+      },
+      "prevControl": {
+        "x": 7.588622654668546,
+        "y": 6.4861289088857585
+      },
+      "nextControl": {
+        "x": 8.913133333333333,
+        "y": 4.278611111111111
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.500188888888889,
+        "y": 3.021577777777777
+      },
+      "prevControl": {
+        "x": 6.87226617699068,
+        "y": 3.161347949529206
+      },
+      "nextControl": {
+        "x": 10.433266666666665,
+        "y": 2.368699999999999
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.500188888888889,
+        "y": 0.575722222222222
+      },
+      "prevControl": {
+        "x": 7.207855555555556,
+        "y": 0.6926555555555558
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": 150.89662334697334
+    },
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": -69.67686317033709
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 7.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "start",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": false
+}

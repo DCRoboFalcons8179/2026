@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "start hub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "hub to depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "start depot pt2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "depot to hub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "hub to hang"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Hang",
+  "choreoAuto": false
+}

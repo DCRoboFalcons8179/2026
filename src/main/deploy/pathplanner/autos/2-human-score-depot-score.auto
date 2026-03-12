@@ -1,0 +1,85 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "start to human"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "human to hub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Charge"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 4.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Idle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "hub to depot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Enable"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "start depot pt2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Disable"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "depot to hub"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "No Hang",
+  "choreoAuto": false
+}

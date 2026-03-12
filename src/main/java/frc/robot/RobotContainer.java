@@ -152,6 +152,7 @@ public class RobotContainer {
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    AutonContainer.CreateAutonChooser(autoChooser);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -163,6 +164,30 @@ public class RobotContainer {
         "aimToTag",
         DriveCommands.cameraDrive(
             drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
+
+    NamedCommands.registerCommand(
+        "Shooter Charge",
+        new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)));
+    NamedCommands.registerCommand(
+        "Shooter Idle", new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+
+    NamedCommands.registerCommand(
+        "Extrude Out",
+        new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+    NamedCommands.registerCommand(
+        "Extrude In",
+        new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
+
+    NamedCommands.registerCommand(
+        "Turret Aim Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)));
+    NamedCommands.registerCommand(
+        "Turret Aim Disable",
+        new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+
+    NamedCommands.registerCommand(
+        "Intake Enable", new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
+    NamedCommands.registerCommand(
+        "Intake Disable", new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
   }
 
   private void enableStateSubsystems() {
