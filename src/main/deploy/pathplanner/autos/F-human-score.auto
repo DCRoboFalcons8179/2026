@@ -5,27 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "start depot to neutral"
+            "name": "Turret Aim Enable"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Charge"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "collect neutral depot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "depot neutral to hub"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "hub to hang"
+            "pathName": "start to human"
           }
         }
       ]

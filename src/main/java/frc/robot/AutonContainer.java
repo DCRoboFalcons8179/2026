@@ -18,7 +18,10 @@ public class AutonContainer {
     chooser.addOption("A: Straight forward", new PathPlannerAuto("A-straight-out"));
     chooser.addOption("B: Straight backward", new PathPlannerAuto("B-straight-back"));
     chooser.addOption("C: Simple Shot", new PathPlannerAuto("C-simple-shot"));
-    chooser.addOption("D: Hub backward", new PathPlannerAuto("D-hub-back"));
+    chooser.addOption("C(hub): Simple Shot", new PathPlannerAuto("C(hub)-simple-shot"));
+    chooser.addOption("D: Hub Back", new PathPlannerAuto("D-hub-back"));
+    chooser.addOption("E: Depot Score", new PathPlannerAuto("E-depot-score"));
+    chooser.addOption("F: Human Score", new PathPlannerAuto("F-human-score"));
 
     // this auton goes into the middle and messes up balls
     chooser.addOption("00: Stupid", new PathPlannerAuto("Stupid"));
