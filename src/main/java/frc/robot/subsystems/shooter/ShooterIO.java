@@ -9,8 +9,10 @@ public interface ShooterIO {
   public static class ShooterInputs {
     public double current = 0.0;
     public double appliedVoltage = 0.0;
-    public double encoderPosition = 0.0;
-    public double velocity = 0.0;
+    public double mainVelocity = 0.0;
+    public double mainTargetVelocity = 0;
+    public double followerVelocity = 0;
+    public double followerTargetVelocity = 0;
     public Shooter.State state = Shooter.State.UNDETERMINED;
   }
 

@@ -94,6 +94,11 @@ public class TurretIOSim implements TurretIO {
   }
 
   @Override
+  public void incrementTurret(double increment) {
+    moveTurret(targetPosition + increment);
+  }
+
+  @Override
   public void moveTurretPO(double omegaPercent) {
     // Simulate DutyCycleOut control (percent output)
     // Convert percent (-1 to 1) to voltage (-12 to 12)

@@ -7,9 +7,7 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -32,93 +30,71 @@ public final class Constants {
     REPLAY
   }
 
-  public static class C_Shooter {
-    /// ID of Lead Shooter
-    public static final int LEAD_SHOOTER_ID = 4;
-    /// boolean for the Lead Shooter's invert
-    public static final InvertedValue LEAD_SHOOTER_INVERT = InvertedValue.CounterClockwise_Positive;
+  /// for Tags 2, 4, 5, 10, 18, 20, 21, 26
+  private static final Translation2d TAG_SET_1 = new Translation2d(0.5842, 0);
 
-    /// KP for Lead Shooter
-    public static final double SHOOTER_KP = 1;
-    /// KI for Lead Shooter
-    public static final double SHOOTER_KI = 0;
-    /// KD for Lead Shooter
-    public static final double SHOOTER_KD = 0;
-    /// KV for Shooter
-    public static final double SHOOTER_KV = 0.2;
+  /// for Tags 3, 9, 11, 19, 25, 27
+  private static final Translation2d TAG_SET_2 = new Translation2d(0.5842, 0.3556);
 
-    /// ID of Follower Shooter
-    // public static final int FOLLOW_SHOOTER_ID = 2;
+  /// for Tags 8, 24
+  private static final Translation2d TAG_SET_3 = new Translation2d(0.5842, -0.3556);
 
-    /// Current to limit the motors to in amps
-    public static final CurrentLimitsConfigs CURRENT_LIMIT =
-        new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
+  private static final Translation2d BLANK_TRANSLATION = new Translation2d(0, 0);
 
-    public static final double GEAR_RATIO = 1.0 / 3.0;
-
-    /// Velocity for the motors to set rot/s (will be calculated in later versions,
-    /// setting up to get something working rn)
-    /// Multiply by 1/GEAR_RATIO to convert from output shaft speed to motor speed
-    public static final double OUTPUT_SPEED = 50 * 1 / GEAR_RATIO;
-
-    /// Velocity in rot/s that shooter speed can be under by
-    public static final double ERROR_MARGIN = 10;
-
-    /// The mode for the motors when innactive
-    public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
-
-    /// ID of feed motor
-    public static final int SHOOT_FEED_ID = 2;
-
-    public static final InvertedValue SHOOT_FEED_INVERT = InvertedValue.CounterClockwise_Positive;
-
-    /// KP for Shoot feeder
-    public static final double SHOOT_FEED_KP = 1.3;
-    /// KI for Shoot feeder
-    public static final double SHOOT_FEED_KI = 0;
-    /// KD for Shoot feeder
-    public static final double SHOOT_FEED_KD = 0;
-    /// Current to limit the motors to in amps
-    public static final CurrentLimitsConfigs SHOOT_FEED_CURRENT_LIMIT =
-        new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
-
-    private static final double SHOOT_FEED_GEAR_RATIO = 1.0 / 5.0;
-
-    /// Velocity for the motors to set rot/s (will be calculated in later versions,
-    /// setting up to get something working rn)
-    /// Multiply by 1/GEAR_RATIO to convert from output shaft speed to motor speed
-    public static final double SHOOT_FEED_OUTPUT_SPEED = 15 * 1 / SHOOT_FEED_GEAR_RATIO;
-  }
-
-  public static class Extruder {
-    // ID for extruder
-    public static final int EXTRUDER_ID = 7;
-
-    // Neutral Mode for Extruder
-    public static final NeutralModeValue EXTRUDER_NEUTRAL_MODE = NeutralModeValue.Brake;
-
-    public static final CurrentLimitsConfigs EXTRUDER_CURRENT_LIMIT =
-        new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
-
-    public static final double EXTRUDER_IN_POSITION = 0;
-    public static final double EXTRUDER_OUT_POSITION = 33;
-    public static final double EXTRUDER_MANAL_DELTA = 3;
-
-    public static final InvertedValue INVERT = InvertedValue.CounterClockwise_Positive;
-    // Error thresh hold (current just a placeholder number before being tested)
-    public static final double EXTRUDER_ERROR_THRESH_HOLD = .2;
-
-    // PID values for extruder - These need tuning
-    public static final double KP = 26;
-    public static final double KI = 0;
-    public static final double KD = 0.1;
-
-    // Motion profiling constraints to control speed
-    // Maximum velocity in rotations per second (adjust lower to slow down)
-    public static final double EXTRUDER_MAX_VELOCITY = 48.0; // 24 rotations/sec - adjust as needed
-    // Maximum acceleration in rotations per second squared
-    public static final double EXTRUDER_MAX_ACCELERATION = 21.0; // Smooth acceleration
-    // Jerk control for even smoother motion (rotations per second cubed)
-    public static final double EXTRUDER_JERK = 40.0; // Optional smoothing
-  }
+  public static final Translation2d[] tagsToHub = {
+    // 1
+    BLANK_TRANSLATION,
+    // 2
+    TAG_SET_1,
+    // 3
+    TAG_SET_2,
+    // 4
+    TAG_SET_1,
+    // 5
+    TAG_SET_1,
+    // 6
+    BLANK_TRANSLATION,
+    // 7
+    BLANK_TRANSLATION,
+    // 8
+    TAG_SET_3,
+    // 9
+    TAG_SET_2,
+    // 10
+    TAG_SET_1,
+    // 11
+    TAG_SET_2,
+    // 12
+    BLANK_TRANSLATION,
+    // 13
+    BLANK_TRANSLATION,
+    // 14
+    BLANK_TRANSLATION,
+    // 15
+    BLANK_TRANSLATION,
+    // 16
+    BLANK_TRANSLATION,
+    // 17
+    BLANK_TRANSLATION,
+    // 18
+    TAG_SET_1,
+    // 19
+    TAG_SET_2,
+    // 20
+    TAG_SET_1,
+    // 21
+    TAG_SET_1,
+    // 22
+    BLANK_TRANSLATION,
+    // 23
+    BLANK_TRANSLATION,
+    // 24
+    TAG_SET_3,
+    // 25
+    TAG_SET_2,
+    // 26
+    TAG_SET_1,
+    // 27
+    TAG_SET_2
+  };
 }

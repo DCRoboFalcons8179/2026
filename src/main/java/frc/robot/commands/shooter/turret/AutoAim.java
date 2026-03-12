@@ -5,7 +5,9 @@
 package frc.robot.commands.shooter.turret;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.math.Translations;
 import frc.robot.subsystems.shooter.turret.Turret;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
 import frc.robot.subsystems.vision.Vision;
@@ -15,6 +17,9 @@ public class AutoAim extends Command {
   private final Vision vision;
   private final Turret turret;
   private final PIDController pidController;
+
+  /// Used to account for tags being dedeteced and undetected
+  private Translation2d lastTranslation = new Translation2d();
 
   /** Creates a new AutoAim. */
   public AutoAim(Vision vision, Turret turret) {
@@ -34,9 +39,30 @@ public class AutoAim extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double omegaPercent = vision.getOmegaPercentOut(pidController);
+    int tagID = vision.getBestTagId(1);
 
-    turret.aimPercentOut(omegaPercent);
+    if (tagID != -1) {
+      double xDistance = vision.getXDistance(1);
+      double yDistance = (vision.getYDistance(1) + 0.148) * -1;
+
+      double yaw = vision.getYaw(1);
+
+      Translation2d translation = new Translation2d(xDistance, yDistance);
+
+      Translation2d robotToHub = Translations.tagToHub(tagID, translation, yaw);
+
+      lastTranslation = robotToHub;
+    }
+
+    double rads = Math.tan(lastTranslation.getY() / lastTranslation.getX());
+    double degrees = (rads) * (180 / Math.PI);
+
+    double turretPos = degrees == 0 ? 0 : degrees / 30;
+
+    System.out.println("Degrees: " + degrees);
+
+    turret.setTurretPose(turretPos);
+    turret.moveTurret();
   }
 
   // Called once the command ends or is interrupted.

@@ -6,9 +6,9 @@ package frc.robot.subsystems.extrude;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
 import frc.robot.SMF.StateMachine;
 import frc.robot.commands.MoveExtrude;
+import frc.robot.subsystems.intake.Intake;
 
 public class Extrude extends StateMachine<Extrude.State> {
   /** Creates a new Intake. */
@@ -18,9 +18,15 @@ public class Extrude extends StateMachine<Extrude.State> {
 
   public double desiredPos;
 
-  public Extrude(ExtrudeIO io) {
+  private final Intake intake;
+
+  /// Tracks if we already used auto intake on
+  private boolean autoIntake = false;
+
+  public Extrude(ExtrudeIO io, Intake intake) {
     super("Extruder", State.UNDETERMINED, State.class);
     this.io = io;
+    this.intake = intake;
 
     io.updateInputs(inputs);
 
@@ -32,12 +38,13 @@ public class Extrude extends StateMachine<Extrude.State> {
     registerStateCommand(State.IDLE, new InstantCommand(io::stop));
     registerStateCommand(
         State.EXTRUDE_IN,
-        new InstantCommand(() -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_IN_POSITION)));
+        new SequentialCommandGroup(
+            new InstantCommand(() -> io.setExtruderPosition(ExtrudeConstants.IN_POSITION)),
+            new InstantCommand(() -> intake.requestTransition(Intake.State.EXTRUDE_IN))));
     registerStateCommand(
         State.EXTRUDE_OUT,
         new SequentialCommandGroup(
-            new InstantCommand(
-                () -> io.setExtruderPosition(Constants.Extruder.EXTRUDER_OUT_POSITION))));
+            new InstantCommand(() -> io.setExtruderPosition(ExtrudeConstants.OUT_POSITION))));
     registerStateCommand(State.MANUAL_EXTRUDE, new MoveExtrude(this));
   }
 
@@ -64,9 +71,9 @@ public class Extrude extends StateMachine<Extrude.State> {
 
   public double getDesiredPos() {
     if (getState().equals(State.EXTRUDE_IN)) {
-      desiredPos = Constants.Extruder.EXTRUDER_IN_POSITION;
+      desiredPos = ExtrudeConstants.IN_POSITION;
     } else if (getState().equals(State.EXTRUDE_OUT)) {
-      desiredPos = Constants.Extruder.EXTRUDER_OUT_POSITION;
+      desiredPos = ExtrudeConstants.OUT_POSITION;
     } else if (getState().equals(State.MANUAL_EXTRUDE)) {
       desiredPos = io.getTargetPosition();
     }
@@ -78,6 +85,14 @@ public class Extrude extends StateMachine<Extrude.State> {
     // Update the state of the subsystem
     inputs.state = this.getState();
     io.updateInputs(inputs);
+
+    // if (io.getPosition() > -3) {
+    //   intake.requestTransition(Intake.State.IDLE);
+    //   autoIntake = false;
+    // } else if (io.getPosition() < -23 && !autoIntake) {
+    //   autoIntake = true;
+    //   intake.requestTransition(Intake.State.FEED_IN);
+    // }
   }
 
   public enum State {

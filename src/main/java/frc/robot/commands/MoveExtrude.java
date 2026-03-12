@@ -12,8 +12,6 @@ public class MoveExtrude extends Command {
   /** Creates a new MoveExtrude. */
   private Extrude extrude;
 
-  private double targetPosition;
-
   public MoveExtrude(Extrude extrude) {
     this.extrude = extrude;
     addRequirements(extrude);
@@ -23,7 +21,7 @@ public class MoveExtrude extends Command {
   @Override
   public void initialize() {
     // Get the target position when the command starts
-    targetPosition = extrude.getDesiredPos();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -1,17 +1,22 @@
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.Constants.C_Shooter.*;
-
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import frc.robot.math.Range;
+import frc.robot.subsystems.shooter.pitch.PitchConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterIOReal implements ShooterIO {
-  protected final TalonFXS shooter = new TalonFXS(LEAD_SHOOTER_ID);
-  private final VelocityVoltage shootVelocityRequest = new VelocityVoltage(0).withSlot(0);
-  protected final TalonFXS shootFeed = new TalonFXS(SHOOT_FEED_ID);
+  protected final TalonFXS shooter = new TalonFXS(ShooterConstants.ID);
+  protected final TalonFXS follower = new TalonFXS(PitchConstants.PITCH_ID);
+  private final VelocityVoltage shooterVelocityRequest = new VelocityVoltage(0).withSlot(0);
+  private final VelocityVoltage followerVelocityRequest = new VelocityVoltage(0).withSlot(0);
+  protected final TalonFXS feeder = new TalonFXS(ShooterConstants.FEED_ID);
+
+  private double mainTargetVelocity = 0;
+  private double followerTargetVelocity = 0;
 
   public ShooterIOReal() {
     configureMotor();
@@ -19,25 +24,44 @@ public class ShooterIOReal implements ShooterIO {
 
   private void configureMotor() {
     // Lead configuration
-    shooter.getConfigurator().apply(CURRENT_LIMIT);
-    shooter.setNeutralMode(NEUTRAL_MODE);
-    shooter.getConfigurator().apply(new MotorOutputConfigs().withInverted(LEAD_SHOOTER_INVERT));
+    shooter.getConfigurator().apply(ShooterConstants.CURRENT_LIMIT);
+    shooter.setNeutralMode(ShooterConstants.NEUTRAL_MODE);
+    shooter.getConfigurator().apply(new MotorOutputConfigs().withInverted(ShooterConstants.INVERT));
 
-    shootFeed.getConfigurator().apply(CURRENT_LIMIT);
-    shootFeed.setNeutralMode(NEUTRAL_MODE);
-    shootFeed.getConfigurator().apply(new MotorOutputConfigs().withInverted(SHOOT_FEED_INVERT));
+    feeder.getConfigurator().apply(ShooterConstants.CURRENT_LIMIT);
+    feeder.setNeutralMode(ShooterConstants.FOLLOWER_NEUTRAL_MODE);
+    feeder
+        .getConfigurator()
+        .apply(new MotorOutputConfigs().withInverted(ShooterConstants.FEED_INVERT));
+
+    // follower.setControl(new Follower(ShooterConstants.ID, MotorAlignmentValue.Aligned));
 
     setPIDControl();
   }
 
   @Override
   public void setShooterTargetVelocity(double velocity) {
+    // Main velocity
+    mainTargetVelocity = 30;
+
+    // Secondary Velocity
+    followerTargetVelocity = velocity;
+
     shooter.setControl(
-        shootVelocityRequest.withVelocity(velocity).withAcceleration(5.0).withEnableFOC(false));
+        shooterVelocityRequest
+            .withVelocity(mainTargetVelocity)
+            .withAcceleration(5.0)
+            .withEnableFOC(false));
+
+    follower.setControl(
+        followerVelocityRequest
+            .withVelocity(followerTargetVelocity)
+            .withAcceleration(5.0)
+            .withEnableFOC(false));
 
     // If the shooter is charged, run the feeder
     if (isCharged()) {
-      shootFeed.set(SHOOT_FEED_OUTPUT_SPEED);
+      feeder.set(ShooterConstants.FEED_OUTPUT_SPEED);
     }
   }
 
@@ -46,36 +70,53 @@ public class ShooterIOReal implements ShooterIO {
     // Pitch config
     Slot0Configs leadShooterConfig =
         new Slot0Configs()
-            .withKP(SHOOTER_KP)
-            .withKI(SHOOTER_KI)
-            .withKD(SHOOTER_KD)
-            .withKV(SHOOTER_KV);
+            .withKP(ShooterConstants.KP)
+            .withKI(ShooterConstants.KI)
+            .withKD(ShooterConstants.KD)
+            .withKV(ShooterConstants.KV);
 
     shooter.getConfigurator().apply(leadShooterConfig);
 
-    Slot0Configs shootFeedConfig =
-        new Slot0Configs().withKP(SHOOT_FEED_KP).withKI(SHOOT_FEED_KI).withKD(SHOOT_FEED_KD);
+    Slot0Configs followShooterConfig =
+        new Slot0Configs()
+            .withKP(ShooterConstants.FOLLOWER_KP)
+            .withKI(ShooterConstants.FOLLOWER_KI)
+            .withKD(ShooterConstants.FOLLOWER_KD)
+            .withKV(ShooterConstants.FOLLOWER_KV);
 
-    shootFeed.getConfigurator().apply(shootFeedConfig);
+    follower.getConfigurator().apply(followShooterConfig);
+
+    Slot0Configs shootFeedConfig =
+        new Slot0Configs()
+            .withKP(ShooterConstants.FEED_KP)
+            .withKI(ShooterConstants.FEED_KI)
+            .withKD(ShooterConstants.FEED_KD);
+
+    feeder.getConfigurator().apply(shootFeedConfig);
   }
 
   @Override
   public void stop() {
     // shooter.set(0);
     shooter.setControl(
-        shootVelocityRequest.withVelocity(0).withAcceleration(1.0).withEnableFOC(false));
+        shooterVelocityRequest.withVelocity(0).withAcceleration(1.0).withEnableFOC(false));
     shooter.stopMotor();
 
-    shootFeed.set(0);
-    shootFeed.stopMotor();
+    follower.set(0);
+    follower.stopMotor();
+
+    feeder.set(0);
+    feeder.stopMotor();
   }
 
   @Override
   public void updateInputs(ShooterInputsAutoLogged inputs) {
     inputs.current = shooter.getTorqueCurrent().getValueAsDouble();
     inputs.appliedVoltage = shooter.getMotorVoltage().getValueAsDouble();
-    inputs.velocity = shooter.getVelocity().getValueAsDouble();
-    inputs.encoderPosition = shooter.getPosition().getValueAsDouble();
+    inputs.mainVelocity = shooter.getVelocity().getValueAsDouble();
+    inputs.mainTargetVelocity = mainTargetVelocity;
+    inputs.followerVelocity = follower.getVelocity().getValueAsDouble();
+    inputs.followerTargetVelocity = followerTargetVelocity;
 
     Logger.processInputs("Shooter", inputs);
   }
@@ -84,8 +125,8 @@ public class ShooterIOReal implements ShooterIO {
   public boolean isCharged() {
     double omega = shooter.getVelocity().getValueAsDouble();
 
-    // Removes the gear ratio from the charge math
-    return omega >= ((OUTPUT_SPEED / (1 / GEAR_RATIO)) - ERROR_MARGIN);
+    return Range.inRange(
+        omega * ShooterConstants.GEAR_RATIO, ShooterConstants.ERROR_MARGIN, mainTargetVelocity);
   }
 
   @Override

@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.Intake;
+package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.SMF.StateMachine;
@@ -24,20 +24,21 @@ public class Intake extends StateMachine<Intake.State> {
   }
 
   public void registerStateCommand() {
-    registerStateCommand(State.IDLE, new InstantCommand(io::stop));
+    registerStateCommand(State.IDLE, new InstantCommand(() -> io.setFeederVelocity(0)));
     registerStateCommand(
-        State.FEED_IN,
-        new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.FEEDER_SPEED_IN)));
+        State.FEED_IN, new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.SPEED_IN)));
     registerStateCommand(
-        State.FEED_OUT,
-        new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.FEEDER_SPEED_OUT)));
+        State.FEED_OUT, new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.SPEED_OUT)));
+    registerStateCommand(
+        State.EXTRUDE_IN,
+        new InstantCommand(() -> io.setFeederVelocity(IntakeConstants.EXTRUDE_IN_SPEED)));
   }
 
   public void registerStateTransition() {
-    addOmniTransition(State.UNDETERMINED);
     addOmniTransition(State.IDLE);
     addOmniTransition(State.FEED_IN);
     addOmniTransition(State.FEED_OUT);
+    addOmniTransition(State.EXTRUDE_IN);
   }
 
   @Override
@@ -56,5 +57,6 @@ public class Intake extends StateMachine<Intake.State> {
     IDLE,
     FEED_IN,
     FEED_OUT,
+    EXTRUDE_IN
   }
 }

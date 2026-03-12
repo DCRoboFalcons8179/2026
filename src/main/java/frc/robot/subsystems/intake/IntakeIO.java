@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.Intake;
+package frc.robot.subsystems.intake;
 
 import org.littletonrobotics.junction.AutoLog;
 
@@ -14,6 +14,7 @@ public interface IntakeIO {
     public double appliedVoltage = 0.0;
     public double motorRotationsPerSecond = 0.0;
     public double mechanismRotationsPerSecond = 0.0;
+    public double desiredMotorRPS = 0;
     public Intake.State state = Intake.State.UNDETERMINED;
   }
 

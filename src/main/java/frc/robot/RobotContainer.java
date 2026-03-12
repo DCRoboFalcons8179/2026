@@ -16,14 +16,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Intake.Intake;
-import frc.robot.subsystems.Intake.IntakeIO;
-import frc.robot.subsystems.Intake.IntakeIOReal;
-import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -31,17 +26,19 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.extrude.Extrude;
+import frc.robot.subsystems.extrude.ExtrudeConstants;
 import frc.robot.subsystems.extrude.ExtrudeIO;
 import frc.robot.subsystems.extrude.ExtrudeIOReal;
 import frc.robot.subsystems.extrude.ExtrudeIOSim;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIO;
+import frc.robot.subsystems.intake.IntakeIOReal;
+import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
-import frc.robot.subsystems.shooter.pitch.Pitch;
-import frc.robot.subsystems.shooter.pitch.PitchIO;
-import frc.robot.subsystems.shooter.pitch.PitchIOReal;
-import frc.robot.subsystems.shooter.pitch.PitchIOSim;
 import frc.robot.subsystems.shooter.turret.Turret;
+import frc.robot.subsystems.shooter.turret.TurretConstants;
 import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretIOReal;
 import frc.robot.subsystems.shooter.turret.TurretIOSim;
@@ -64,13 +61,11 @@ public class RobotContainer {
   private final Vision vision;
   private final Turret turret;
   private final Shooter shooter;
-  private final Pitch pitch;
   private final Intake intake;
   private final Extrude extrude;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
-  private final CommandJoystick box = new CommandJoystick(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -94,40 +89,16 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(
-                    VisionConstants.camera0Name, VisionConstants.robotToCamera0)
-                // new VisionIOPhotonVision(
-                // VisionConstants.camera1Name, VisionConstants.robotToCamera1));
-                );
+                    VisionConstants.camera0Name, VisionConstants.robotToCamera0),
+                new VisionIOPhotonVision(
+                    VisionConstants.camera1Name, VisionConstants.robotToCamera1));
 
         turret = new Turret(new TurretIOReal(), vision);
 
-        shooter = new Shooter(new ShooterIOReal());
-
-        pitch = new Pitch(new PitchIOReal());
-        // The ModuleIOTalonFXS implementation provides an example implementation for
-        // TalonFXS controller connected to a CANdi with a PWM encoder. The
-        // implementations
-        // of ModuleIOTalonFX, ModuleIOTalonFXS, and ModuleIOSpark (from the Spark
-        // swerve
-        // template) can be freely intermixed to support alternative hardware
-        // arrangements.
-        // Please see the AdvantageKit template documentation for more information:
-        // https://docs.advantagekit.org/getting-started/template-projects/talonfx-swerve-template#custom-module-implementations
-        //
-        // drive =
-        // new Drive(
-        // new GyroIOPigeon2(),
-        // new ModuleIOTalonFXS(TunerConstants.FrontLeft),
-        // new ModuleIOTalonFXS(TunerConstants.FrontRight),
-        // new ModuleIOTalonFXS(TunerConstants.BackLeft),
-        // new ModuleIOTalonFXS(TunerConstants.BackRight));
+        shooter = new Shooter(new ShooterIOReal(), vision);
 
         intake = new Intake(new IntakeIOReal());
-        extrude = new Extrude(new ExtrudeIOReal());
-
-        // Enable state machines
-        intake.enable();
-        extrude.enable();
+        extrude = new Extrude(new ExtrudeIOReal(), intake);
         break;
 
       case SIM:
@@ -149,10 +120,9 @@ public class RobotContainer {
                     VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose));
 
         turret = new Turret(new TurretIOSim(), vision);
-        shooter = new Shooter(new ShooterIO() {});
-        pitch = new Pitch(new PitchIOSim());
+        shooter = new Shooter(new ShooterIO() {}, vision);
         intake = new Intake(new IntakeIOSim() {});
-        extrude = new Extrude(new ExtrudeIOSim() {});
+        extrude = new Extrude(new ExtrudeIOSim() {}, intake);
 
         break;
 
@@ -170,13 +140,11 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIO() {}, vision);
 
-        shooter = new Shooter(new ShooterIO() {});
-
-        pitch = new Pitch(new PitchIO() {});
+        shooter = new Shooter(new ShooterIO() {}, vision);
 
         intake = new Intake(new IntakeIO() {});
 
-        extrude = new Extrude(new ExtrudeIO() {});
+        extrude = new Extrude(new ExtrudeIO() {}, intake);
         break;
     }
 
@@ -229,9 +197,6 @@ public class RobotContainer {
     shooter.enable();
     shooter.determineState();
 
-    pitch.enable();
-    pitch.determineState();
-
     intake.enable();
     intake.determineSelf();
 
@@ -254,15 +219,8 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    // Lock on to tag
-    controller
-        .a()
-        .whileTrue(
-            DriveCommands.cameraDrive(
-                drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
-
     // Switch to X pattern when X button is pressed
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    controller.b().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Reset gyro to 0° when B button is pressed
     controller
@@ -276,59 +234,48 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     controller
-        .povDown()
+        .leftTrigger()
         .onTrue(new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)))
         .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
 
     controller
-        .povLeft()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  turret.setTurretPose(-3);
-                }))
-        .onFalse(new InstantCommand(() -> turret.setTurretPose(0)));
-
-    controller
-        .povRight()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  turret.setTurretPose(3);
-                }))
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  turret.setTurretPose(0);
-                }));
-
+        .rightBumper()
+        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
     controller
         .rightBumper()
-        .onTrue(new InstantCommand(() -> pitch.setPitchPose(100)))
-        .onFalse(new InstantCommand(() -> pitch.setPitchPose(0)));
-
-    // Feeds intake in when b button is pressed
-    controller
-        .b()
-        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
-    // Feeds intake out when right bumper is pressed
-    controller
-        .b()
         .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
 
     controller
-        .leftTrigger()
-        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+        .leftBumper()
+        .toggleOnTrue(
+            new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
     controller
         .leftBumper()
-        .onTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
+        .toggleOnTrue(
+            new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+    controller
+        .povUp()
+        .onTrue(
+            new InstantCommand(() -> extrude.addExtruderPosition(ExtrudeConstants.MANUAL_DELTA)));
+
+    controller
+        .povDown()
+        .onTrue(
+            new InstantCommand(() -> extrude.addExtruderPosition(-ExtrudeConstants.MANUAL_DELTA)));
+
+    // Turret Manual Bump
+    controller
+        .povLeft()
+        .onTrue(new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
+    controller
+        .povRight()
+        .onTrue(new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
+
+    // Turret Reset to Zero
+    controller.a().onTrue(new InstantCommand(() -> turret.setTurretPose(0)));
+
     controller
         .rightTrigger()
-        .onTrue(
-            new InstantCommand(
-                () -> extrude.addExtruderPosition(Constants.Extruder.EXTRUDER_MANAL_DELTA)));
-
-    box.button(1)
         .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
   }
