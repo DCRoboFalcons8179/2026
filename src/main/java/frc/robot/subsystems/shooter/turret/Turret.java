@@ -67,6 +67,12 @@ public class Turret extends StateMachine<Turret.State> {
     }
   }
 
+  public void setTurretDegrees(double degrees) {
+    if (getState() != State.LOCKED) {
+      this.desiredTurretPose = degrees / 30;
+    }
+  }
+
   public void moveTurret() {
     io.moveTurret(desiredTurretPose);
   }

@@ -43,7 +43,7 @@ public class AutoAim extends Command {
 
     if (tagID != -1) {
       double xDistance = vision.getXDistance(1);
-      double yDistance = (vision.getYDistance(1) + 0.148) * -1;
+      double yDistance = (vision.getYDistance(1)) * -1;
 
       double yaw = vision.getYaw(1);
 
@@ -58,7 +58,7 @@ public class AutoAim extends Command {
 
     double turretPos = degrees / 30;
 
-    turret.setTurretPose(turretPos);
+    turret.setTurretPose(turretPos + TurretConstants.NUDGE_AMOUNT / 2);
     turret.moveTurret();
   }
 

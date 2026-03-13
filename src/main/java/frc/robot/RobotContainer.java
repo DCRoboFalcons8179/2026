@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
@@ -51,264 +52,313 @@ import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // Subsystems
-  private final Drive drive;
-  private final Vision vision;
-  private final Turret turret;
-  private final Shooter shooter;
-  private final Intake intake;
-  private final Extrude extrude;
+    // Subsystems
+    private final Drive drive;
+    private final Vision vision;
+    private final Turret turret;
+    private final Shooter shooter;
+    private final Intake intake;
+    private final Extrude extrude;
 
-  // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+    // Controller
+    private final CommandXboxController controller = new CommandXboxController(0);
+    private final CommandJoystick leftBox = new CommandJoystick(1);
+    private final CommandJoystick rightBox = new CommandJoystick(2);
 
-  // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
+    // Dashboard inputs
+    private final LoggedDashboardChooser<Command> autoChooser;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    configureNamedCommands();
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        configureNamedCommands();
 
-    switch (Constants.currentMode) {
-      case REAL:
-        // Real robot, instantiate hardware IO implementations
-        // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
-        // a CANcoder
-        drive =
-            new Drive(
-                new GyroIOPigeon2(),
-                new ModuleIOTalonFX(TunerConstants.FrontLeft),
-                new ModuleIOTalonFX(TunerConstants.FrontRight),
-                new ModuleIOTalonFX(TunerConstants.BackLeft),
-                new ModuleIOTalonFX(TunerConstants.BackRight));
+        switch (Constants.currentMode) {
+            case REAL:
+                // Real robot, instantiate hardware IO implementations
+                // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
+                // a CANcoder
+                drive = new Drive(
+                        new GyroIOPigeon2(),
+                        new ModuleIOTalonFX(TunerConstants.FrontLeft),
+                        new ModuleIOTalonFX(TunerConstants.FrontRight),
+                        new ModuleIOTalonFX(TunerConstants.BackLeft),
+                        new ModuleIOTalonFX(TunerConstants.BackRight));
 
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIOPhotonVision(
-                    VisionConstants.camera0Name, VisionConstants.robotToCamera0),
-                new VisionIOPhotonVision(
-                    VisionConstants.camera1Name, VisionConstants.robotToCamera1));
+                vision = new Vision(
+                        drive::addVisionMeasurement,
+                        new VisionIOPhotonVision(
+                                VisionConstants.camera0Name, VisionConstants.robotToCamera0),
+                        new VisionIOPhotonVision(
+                                VisionConstants.camera1Name, VisionConstants.robotToCamera1));
 
-        turret = new Turret(new TurretIOReal(), vision);
+                turret = new Turret(new TurretIOReal(), vision);
 
-        shooter = new Shooter(new ShooterIOReal(), vision);
+                shooter = new Shooter(new ShooterIOReal(), vision);
 
-        intake = new Intake(new IntakeIOReal());
-        extrude = new Extrude(new ExtrudeIOReal(), intake);
-        break;
+                intake = new Intake(new IntakeIOReal());
+                extrude = new Extrude(new ExtrudeIOReal(), intake);
+                break;
 
-      case SIM:
-        // Sim robot, instantiate physics sim IO implementations
-        drive =
-            new Drive(
-                new GyroIO() {},
-                new ModuleIOSim(TunerConstants.FrontLeft),
-                new ModuleIOSim(TunerConstants.FrontRight),
-                new ModuleIOSim(TunerConstants.BackLeft),
-                new ModuleIOSim(TunerConstants.BackRight));
+            case SIM:
+                // Sim robot, instantiate physics sim IO implementations
+                drive = new Drive(
+                        new GyroIO() {
+                        },
+                        new ModuleIOSim(TunerConstants.FrontLeft),
+                        new ModuleIOSim(TunerConstants.FrontRight),
+                        new ModuleIOSim(TunerConstants.BackLeft),
+                        new ModuleIOSim(TunerConstants.BackRight));
 
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIOPhotonVisionSim(
-                    VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose),
-                new VisionIOPhotonVisionSim(
-                    VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose));
+                vision = new Vision(
+                        drive::addVisionMeasurement,
+                        new VisionIOPhotonVisionSim(
+                                VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose),
+                        new VisionIOPhotonVisionSim(
+                                VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose));
 
-        turret = new Turret(new TurretIOSim(), vision);
-        shooter = new Shooter(new ShooterIO() {}, vision);
-        intake = new Intake(new IntakeIOSim() {});
-        extrude = new Extrude(new ExtrudeIOSim() {}, intake);
+                turret = new Turret(new TurretIOSim(), vision);
+                shooter = new Shooter(new ShooterIO() {
+                }, vision);
+                intake = new Intake(new IntakeIOSim() {
+                });
+                extrude = new Extrude(new ExtrudeIOSim() {
+                }, intake);
 
-        break;
+                break;
 
-      default:
-        // Replayed robot, disable IO implementations
-        drive =
-            new Drive(
-                new GyroIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {});
+            default:
+                // Replayed robot, disable IO implementations
+                drive = new Drive(
+                        new GyroIO() {
+                        },
+                        new ModuleIO() {
+                        },
+                        new ModuleIO() {
+                        },
+                        new ModuleIO() {
+                        },
+                        new ModuleIO() {
+                        });
 
-        vision = new Vision(drive::addVisionMeasurement, new VisionIO() {}, new VisionIO() {});
+                vision = new Vision(drive::addVisionMeasurement, new VisionIO() {
+                }, new VisionIO() {
+                });
 
-        turret = new Turret(new TurretIO() {}, vision);
+                turret = new Turret(new TurretIO() {
+                }, vision);
 
-        shooter = new Shooter(new ShooterIO() {}, vision);
+                shooter = new Shooter(new ShooterIO() {
+                }, vision);
 
-        intake = new Intake(new IntakeIO() {});
+                intake = new Intake(new IntakeIO() {
+                });
 
-        extrude = new Extrude(new ExtrudeIO() {}, intake);
-        break;
+                extrude = new Extrude(new ExtrudeIO() {
+                }, intake);
+                break;
+        }
+
+        enableStateSubsystems();
+
+        // Set up auto routines
+        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+        // AutonContainer.CreateAutonChooser(autoChooser);
+
+        // Configure the button bindings
+        configureButtonBindings();
     }
 
-    enableStateSubsystems();
+    private void configureNamedCommands() {
+        NamedCommands.registerCommand(
+                "aimToTag",
+                DriveCommands.cameraDrive(
+                        drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
 
-    // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-    // AutonContainer.CreateAutonChooser(autoChooser);
+        NamedCommands.registerCommand(
+                "Shooter Charge",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)),
+                        new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN))));
+        NamedCommands.registerCommand(
+                "Shooter Idle", new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
-    // Configure the button bindings
-    configureButtonBindings();
-  }
+        NamedCommands.registerCommand(
+                "Extrude Out",
+                new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+        NamedCommands.registerCommand(
+                "Extrude In",
+                new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
 
-  private void configureNamedCommands() {
-    NamedCommands.registerCommand(
-        "aimToTag",
-        DriveCommands.cameraDrive(
-            drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
+        NamedCommands.registerCommand(
+                "Turret Aim Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)));
+        NamedCommands.registerCommand(
+                "Turret Aim Disable",
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)),
+                        new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)),
+                        new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT))));
 
-    NamedCommands.registerCommand(
-        "Shooter Charge",
-        new SequentialCommandGroup(
-            new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)),
-            new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN))));
-    NamedCommands.registerCommand(
-        "Shooter Idle", new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+        NamedCommands.registerCommand(
+                "Turret Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
 
-    NamedCommands.registerCommand(
-        "Extrude Out",
-        new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
-    NamedCommands.registerCommand(
-        "Extrude In",
-        new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
+        NamedCommands.registerCommand(
+                "Turret Nudge Left",
+                new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
 
-    NamedCommands.registerCommand(
-        "Turret Aim Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)));
-    NamedCommands.registerCommand(
-        "Turret Aim Disable",
-        new SequentialCommandGroup(
-            new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)),
-            new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)),
-            new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT))));
+        NamedCommands.registerCommand(
+                "Turret Nudge Right",
+                new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
 
-    NamedCommands.registerCommand(
-        "Turret Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+        NamedCommands.registerCommand(
+                "Intake Enable", new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
+        NamedCommands.registerCommand(
+                "Intake Disable", new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
+    }
 
-    NamedCommands.registerCommand(
-        "Turret Nudge Left",
-        new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
+    private void enableStateSubsystems() {
+        turret.enable();
+        turret.determineState();
 
-    NamedCommands.registerCommand(
-        "Turret Nudge Right",
-        new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
+        shooter.enable();
+        shooter.determineState();
 
-    NamedCommands.registerCommand(
-        "Intake Enable", new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
-    NamedCommands.registerCommand(
-        "Intake Disable", new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
-  }
+        intake.enable();
+        intake.determineSelf();
 
-  private void enableStateSubsystems() {
-    turret.enable();
-    turret.determineState();
+        extrude.enable();
+        extrude.determineSelf();
+    }
 
-    shooter.enable();
-    shooter.determineState();
+    /**
+     * Use this method to define your button->command mappings. Buttons can be
+     * created by
+     * instantiating a {@link GenericHID} or one of its subclasses ({@link
+     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+     * it to a {@link
+     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureButtonBindings() {
+        // Default command, normal field-relative drive
+        drive.setDefaultCommand(
+                DriveCommands.joystickDrive(
+                        drive,
+                        () -> -controller.getLeftY(),
+                        () -> -controller.getLeftX(),
+                        () -> -controller.getRightX()));
 
-    intake.enable();
-    intake.determineSelf();
+        // Switch to X pattern when X button is pressed
+        controller.b().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    extrude.enable();
-    extrude.determineSelf();
-  }
+        // Reset gyro to 0° when B button is pressed
+        controller
+                .y()
+                .onTrue(
+                        Commands.runOnce(
+                                () -> drive.setPose(
+                                        new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
+                                drive)
+                                .ignoringDisable(true));
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    // Default command, normal field-relative drive
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+        controller
+                .leftTrigger()
+                .onTrue(new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)))
+                .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
 
-    // Switch to X pattern when X button is pressed
-    controller.b().onTrue(Commands.runOnce(drive::stopWithX, drive));
+        controller
+                .rightBumper()
+                .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
+        controller
+                .rightBumper()
+                .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
 
-    // Reset gyro to 0° when B button is pressed
-    controller
-        .y()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
-                    drive)
-                .ignoringDisable(true));
+        controller
+                .leftBumper()
+                .toggleOnTrue(
+                        new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
+        controller
+                .leftBumper()
+                .toggleOnTrue(
+                        new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+        controller
+                .povUp()
+                .onTrue(
+                        new InstantCommand(() -> extrude.addExtruderPosition(ExtrudeConstants.MANUAL_DELTA)));
 
-    controller
-        .leftTrigger()
-        .onTrue(new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)))
-        .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+        controller
+                .povDown()
+                .onTrue(
+                        new InstantCommand(() -> extrude.addExtruderPosition(-ExtrudeConstants.MANUAL_DELTA)));
 
-    controller
-        .rightBumper()
-        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
-    controller
-        .rightBumper()
-        .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
+        // Turret Manual Bump
+        controller
+                .povLeft()
+                .onTrue(new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
+        controller
+                .povRight()
+                .onTrue(new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
 
-    controller
-        .leftBumper()
-        .toggleOnTrue(
-            new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
-    controller
-        .leftBumper()
-        .toggleOnTrue(
-            new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
-    controller
-        .povUp()
-        .onTrue(
-            new InstantCommand(() -> extrude.addExtruderPosition(ExtrudeConstants.MANUAL_DELTA)));
+        // Turret Reset to Zero
+        controller.a().onTrue(new InstantCommand(() -> turret.setTurretPose(0)));
 
-    controller
-        .povDown()
-        .onTrue(
-            new InstantCommand(() -> extrude.addExtruderPosition(-ExtrudeConstants.MANUAL_DELTA)));
+        controller
+                .rightTrigger()
+                .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
+                .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
-    // Turret Manual Bump
-    controller
-        .povLeft()
-        .onTrue(new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
-    controller
-        .povRight()
-        .onTrue(new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
+        controller
+                .x()
+                .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.REVERSE)))
+                .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
-    // Turret Reset to Zero
-    controller.a().onTrue(new InstantCommand(() -> turret.setTurretPose(0)));
+        // Left box
 
-    controller
-        .rightTrigger()
-        .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
-        .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+        // Trench Left (velocity calculated with shooter velocity equation)
+        leftBox.button(8).onTrue(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(60)), new InstantCommand(() -> shooter.setVelocity(71.2962679306)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))).onFalse(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(0)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
-    controller
-        .x()
-        .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.REVERSE)))
-        .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
-  }
+        // Corner Left (velocity calculated with shooter velocity equation)
+        leftBox.button(1).onTrue(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(45)), new InstantCommand(() -> shooter.setVelocity(95.835697)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))).onFalse(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(0)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
-  }
+        // Tower Shoot (velocity calculated with shooter velocity equation)
+        leftBox.button(12).onTrue(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(0)), new InstantCommand(() -> shooter.setVelocity(40)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))).onFalse(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(0)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
+
+        // Lebron Left
+        leftBox.button(1).onTrue(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(90)), new InstantCommand(() -> shooter.setVelocity(78.90931314)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))).onFalse(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(0)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
+        
+        // Right box
+
+        // Trench Right (velocity calculated with shooter velocity equation)
+        rightBox.button(12).onTrue(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(-60)), new InstantCommand(() -> shooter.setVelocity(71.2962679306)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))).onFalse(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(0)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
+
+        // Corner Right (velocity calculated with shooter velocity equation)
+        rightBox.button(8).onTrue(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(-45)), new InstantCommand(() -> shooter.setVelocity(95.835697)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))).onFalse(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(0)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
+        
+        // Trench Arc
+        rightBox.button(6).onTrue(new SequentialCommandGroup(new InstantCommand(() -> shooter.setVelocity(71.2962679306)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))).onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+
+        // Cody Jones
+        rightBox.button(10).onTrue(new SequentialCommandGroup(new InstantCommand(() -> shooter.setVelocity(100)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))).onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+
+        // Lebron Right
+        leftBox.button(1).onTrue(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(-90)), new InstantCommand(() -> shooter.setVelocity(78.90931314)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))).onFalse(new SequentialCommandGroup(new InstantCommand(() -> turret.setTurretDegrees(0)), new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
+    }
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        return autoChooser.get();
+    }
 }
