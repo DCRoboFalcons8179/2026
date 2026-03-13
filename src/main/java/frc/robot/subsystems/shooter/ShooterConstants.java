@@ -39,7 +39,7 @@ public class ShooterConstants {
   public static final double OUTPUT_SPEED = 75 * 1 / GEAR_RATIO;
 
   /// Velocity in rot/s that shooter speed can be under by
-  public static final double ERROR_MARGIN = 5;
+  public static final double ERROR_MARGIN = 1;
 
   /// The mode for the motors when innactive
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;

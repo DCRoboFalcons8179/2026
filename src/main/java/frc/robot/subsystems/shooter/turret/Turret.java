@@ -52,7 +52,7 @@ public class Turret extends StateMachine<Turret.State> {
 
   @Override
   protected void determineSelf() {
-    setState(State.UNLOCKED);
+    setState(State.IDLE);
   }
 
   @Override
@@ -87,6 +87,7 @@ public class Turret extends StateMachine<Turret.State> {
   public enum State {
     // states
     UNDETERMINED,
+    IDLE,
     LOCKED,
     UNLOCKED,
     AIM

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
@@ -72,6 +73,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    configureNamedCommands();
+
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -152,11 +155,10 @@ public class RobotContainer {
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-    AutonContainer.CreateAutonChooser(autoChooser);
+    // AutonContainer.CreateAutonChooser(autoChooser);
 
     // Configure the button bindings
     configureButtonBindings();
-    configureNamedCommands();
   }
 
   private void configureNamedCommands() {
@@ -167,7 +169,9 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
         "Shooter Charge",
-        new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)));
+        new SequentialCommandGroup(
+            new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)),
+            new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN))));
     NamedCommands.registerCommand(
         "Shooter Idle", new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
@@ -182,7 +186,10 @@ public class RobotContainer {
         "Turret Aim Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)));
     NamedCommands.registerCommand(
         "Turret Aim Disable",
-        new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+        new SequentialCommandGroup(
+            new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)),
+            new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)),
+            new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT))));
 
     NamedCommands.registerCommand(
         "Intake Enable", new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));

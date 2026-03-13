@@ -86,13 +86,13 @@ public class Extrude extends StateMachine<Extrude.State> {
     inputs.state = this.getState();
     io.updateInputs(inputs);
 
-    // if (io.getPosition() > -3) {
-    //   intake.requestTransition(Intake.State.IDLE);
-    //   autoIntake = false;
-    // } else if (io.getPosition() < -23 && !autoIntake) {
-    //   autoIntake = true;
-    //   intake.requestTransition(Intake.State.FEED_IN);
-    // }
+    if (io.getPosition() > -3) {
+      intake.requestTransition(Intake.State.IDLE);
+      autoIntake = false;
+    } else if (io.getPosition() < -23 && !autoIntake) {
+      autoIntake = true;
+      intake.requestTransition(Intake.State.FEED_IN);
+    }
   }
 
   public enum State {
