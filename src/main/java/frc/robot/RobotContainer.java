@@ -192,6 +192,17 @@ public class RobotContainer {
             new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT))));
 
     NamedCommands.registerCommand(
+        "Turret Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+
+    NamedCommands.registerCommand(
+        "Turret Nudge Left",
+        new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
+
+    NamedCommands.registerCommand(
+        "Turret Nudge Right",
+        new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
+
+    NamedCommands.registerCommand(
         "Intake Enable", new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
     NamedCommands.registerCommand(
         "Intake Disable", new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
