@@ -39,6 +39,7 @@ import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOReal;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.turret.Turret;
@@ -316,12 +317,12 @@ public class RobotContainer {
         .button(8)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(60)),
-                new InstantCommand(() -> shooter.setVelocity(71.2962679306)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.TRENCH_ANGLE)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(0)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Corner Left (velocity calculated with shooter velocity equation)
@@ -329,12 +330,12 @@ public class RobotContainer {
         .button(1)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(45)),
-                new InstantCommand(() -> shooter.setVelocity(95.835697)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.CORNER_ANGLE)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.CORNER_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(0)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Tower Shoot (velocity calculated with shooter velocity equation)
@@ -342,12 +343,12 @@ public class RobotContainer {
         .button(12)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(0)),
-                new InstantCommand(() -> shooter.setVelocity(40)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TOWER_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(0)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Lebron Left
@@ -355,12 +356,12 @@ public class RobotContainer {
         .button(1)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(90)),
-                new InstantCommand(() -> shooter.setVelocity(78.90931314)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.LEBRON_ANGLE)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.LEBRON_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(0)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Right box
@@ -370,12 +371,12 @@ public class RobotContainer {
         .button(12)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(-60)),
-                new InstantCommand(() -> shooter.setVelocity(71.2962679306)),
+                new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.TRENCH_ANGLE)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(0)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Zero turret
@@ -384,19 +385,19 @@ public class RobotContainer {
         .onTrue(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)),
-                new InstantCommand(() -> turret.setTurretDegrees(0))));
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE))));
 
     // Corner Right (velocity calculated with shooter velocity equation)
     boxRight
         .button(8)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(-45)),
-                new InstantCommand(() -> shooter.setVelocity(95.835697)),
+                new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.CORNER_ANGLE)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.CORNER_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(0)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Trench Arc
@@ -404,7 +405,7 @@ public class RobotContainer {
         .button(6)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> shooter.setVelocity(71.2962679306)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_ARC)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
@@ -422,12 +423,12 @@ public class RobotContainer {
         .button(1)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(-90)),
-                new InstantCommand(() -> shooter.setVelocity(78.90931314)),
+                new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.LEBRON_ANGLE)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.LEBRON_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(0)),
+                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
   }
 

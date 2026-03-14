@@ -29,4 +29,17 @@ public class TurretConstants {
   public static final double AIM_KD = 0;
 
   public static final double GEAR_RATIO = 10 / 1.0;
+
+
+  // All in degrees
+
+  public static final double TRENCH_ANGLE = 60;
+
+  public static final double CORNER_ANGLE = 45;
+
+  public static final double TOWER_ANGLE = 0;
+
+  public static final double LEBRON_ANGLE = 90;
+
+  public static final double ZERO_ANGLE = 0;
 }

@@ -46,7 +46,7 @@ public class ExtrudeIOReal implements ExtrudeIO {
 
     // gives a current limit
     extruder.getConfigurator().apply(ExtrudeConstants.CURRENT_LIMIT);
-    // sets desirded neutral state
+    // sets desired neutral state
     extruder.setNeutralMode(ExtrudeConstants.NEUTRAL_MODE);
     // Reset encoder position to 0 on startup
     extruder.setPosition(0);

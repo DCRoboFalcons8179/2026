@@ -41,7 +41,7 @@ public class ShooterConstants {
   /// Velocity in rot/s that shooter speed can be under by
   public static final double ERROR_MARGIN = 1;
 
-  /// The mode for the motors when innactive
+  /// The mode for the motors when inactive
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
 
   public static final NeutralModeValue FOLLOWER_NEUTRAL_MODE = NeutralModeValue.Coast;
@@ -67,4 +67,14 @@ public class ShooterConstants {
   /// setting up to get something working rn)
   /// Multiply by 1/GEAR_RATIO to convert from output shaft speed to motor speed
   public static final double FEED_OUTPUT_SPEED = 15 * 1 / FEED_GEAR_RATIO;
+
+  public static final double LEBRON_VELOCITY = 78.90931314;
+
+  public static final double TOWER_VELOCITY = 40;
+
+  public static final double CORNER_VELOCITY = 67;
+
+  public static final double TRENCH_VELOCITY = 57;
+
+  public static final double TRENCH_ARC = 71.2962679306;
 }
