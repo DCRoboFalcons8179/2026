@@ -96,22 +96,10 @@ public class GetAuton {
               /* 1*/ "C-Depo-Simple",
               /* 2*/ "C(hub)-simple-shot",
               /* 3*/ "C-Human-Simple",
-              /* 4*/ "Center Processor Side Score L4 Single",
-              /* 5*/ "Center Cage Side Score L4 Single",
-              /* 6*/ "Processor Side Score L4 Single",
-              /* 7*/ "Cage Side Score L4 Single",
-              /* 8*/ "Center Processor Side Score L4 Double",
-              /* 9*/ "Center Cage Side Score L4 Double",
-              /*10*/ "Processor Side Score L4 Double",
-              /*11*/ "Cage Side Score L4 Double",
-              /*12*/ "Center Processor Side Score L4 Triple",
-              /*13*/ "Center Cage Side Score L4 Triple",
-              /*14*/ "Processor Side Score L4 Triple",
-              /*15*/ "Cage Side Score L4 Triple",
-              /*16*/ "Processor Side Score L2 then L4",
-              /*17*/ "Cage Side Score L2 then L4",
-              /*18*/ "Center Processor Side Score L2 then L4",
-              /*19*/ "Center Cage Side Score L2 then L4"
+              /* 4*/ "Swap Button Order!",
+              /* 5*/ "Swap Button Order!",
+              /* 6*/ "Swap Button Order!",
+              /* 7*/ "Swap Button Order!"
               /*20*/
               /*21*/
               ));
