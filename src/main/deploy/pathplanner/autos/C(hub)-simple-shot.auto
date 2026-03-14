@@ -40,6 +40,12 @@
           "data": {
             "name": "Shooter Charge"
           }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 11.0
+          }
         }
       ]
     }

@@ -49,12 +49,13 @@ public class CheckAutonOptions extends InstantCommand {
     }
 
     if (trench || ramp) {
-      var auto =
-          AutoBuilder.followPath(path)
-              .beforeStarting(
-                  new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)))
-              .andThen(
-                  new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+      var auto = AutoBuilder.followPath(path);
+      // Before path runs
+      // .beforeStarting(
+      //     new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)))
+      // // After path runs
+      // .andThen(
+      //     new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
 
       CommandScheduler.getInstance().schedule(auto);
     }
