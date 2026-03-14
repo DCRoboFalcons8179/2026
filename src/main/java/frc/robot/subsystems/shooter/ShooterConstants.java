@@ -36,7 +36,7 @@ public class ShooterConstants {
   /// Velocity for the motors to set rot/s (will be calculated in later versions,
   /// setting up to get something working rn)
   /// Multiply by 1/GEAR_RATIO to convert from output shaft speed to motor speed
-  public static final double OUTPUT_SPEED = 75 * 1 / GEAR_RATIO;
+  public static final double OUTPUT_SPEED = 40 * 1 / GEAR_RATIO;
 
   /// Velocity in rot/s that shooter speed can be under by
   public static final double ERROR_MARGIN = 1;
