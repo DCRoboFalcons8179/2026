@@ -15,7 +15,7 @@ public class ExtrudeConstants {
       new CurrentLimitsConfigs().withSupplyCurrentLimit(5).withSupplyCurrentLimitEnable(true);
 
   public static final double IN_POSITION = -16;
-  public static final double OUT_POSITION = -29;
+  public static final double OUT_POSITION = -33;
   public static final double MANUAL_DELTA = 3;
 
   public static final InvertedValue INVERT = InvertedValue.CounterClockwise_Positive;

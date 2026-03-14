@@ -30,7 +30,6 @@ public class TurretConstants {
 
   public static final double GEAR_RATIO = 10 / 1.0;
 
-
   // All in degrees
 
   public static final double TRENCH_ANGLE = 60;
