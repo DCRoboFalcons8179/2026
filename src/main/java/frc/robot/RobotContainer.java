@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.CheckAutonOptions;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.Drive;
@@ -162,6 +163,9 @@ public class RobotContainer {
 
     SmartDashboard.putNumber("Auton Number", autonID);
     SmartDashboard.putString("Auton Name", GetAuton.getAutonName(autonID));
+
+    SmartDashboard.putString("Auto Side", CheckAutonOptions.getAutoSide(boxLeft, boxRight));
+    SmartDashboard.putString("Path Name", CheckAutonOptions.getPathName(boxLeft, boxRight));
   }
 
   private void configureNamedCommands() {
@@ -433,6 +437,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)));
+    return new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)))
+        .andThen(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)))
+        .andThen(new CheckAutonOptions(boxLeft, boxRight, extrude));
   }
 }
