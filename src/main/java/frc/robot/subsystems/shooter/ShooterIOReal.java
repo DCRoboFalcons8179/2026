@@ -4,7 +4,6 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import frc.robot.math.Range;
 import frc.robot.subsystems.shooter.pitch.PitchConstants;
 import org.littletonrobotics.junction.Logger;
 
@@ -34,8 +33,6 @@ public class ShooterIOReal implements ShooterIO {
         .getConfigurator()
         .apply(new MotorOutputConfigs().withInverted(ShooterConstants.FEED_INVERT));
 
-    // follower.setControl(new Follower(ShooterConstants.ID, MotorAlignmentValue.Aligned));
-
     setPIDControl();
   }
 
@@ -60,7 +57,7 @@ public class ShooterIOReal implements ShooterIO {
             .withEnableFOC(false));
 
     // If the shooter is charged, run the feeder
-    if (isCharged()) {
+    if (true) {
       feeder.set(ShooterConstants.FEED_OUTPUT_SPEED);
     }
   }
@@ -90,7 +87,8 @@ public class ShooterIOReal implements ShooterIO {
         new Slot0Configs()
             .withKP(ShooterConstants.FEED_KP)
             .withKI(ShooterConstants.FEED_KI)
-            .withKD(ShooterConstants.FEED_KD);
+            .withKD(ShooterConstants.FEED_KD)
+            .withKV(ShooterConstants.FEED_KV);
 
     feeder.getConfigurator().apply(shootFeedConfig);
   }
@@ -128,10 +126,12 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public boolean isCharged() {
-    double omega = shooter.getVelocity().getValueAsDouble();
+    double omega = follower.getVelocity().getValueAsDouble();
 
-    return Range.inRange(
-        omega * ShooterConstants.GEAR_RATIO, ShooterConstants.ERROR_MARGIN, mainTargetVelocity);
+    return omega * ShooterConstants.GEAR_RATIO + 10 > followerTargetVelocity;
+    // return Range.inRange(
+    //     omega * ShooterConstants.GEAR_RATIO, ShooterConstants.LOWER_ERROR_MARGIN,
+    // followerTargetVelocity);
   }
 
   @Override

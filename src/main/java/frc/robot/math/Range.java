@@ -1,7 +1,7 @@
 package frc.robot.math;
 
 public class Range {
-  public static boolean inRange(double value, double range, double target) {
-    return value - range < target || value + range > target;
+  public static boolean inRange(double value, double upperRange, double lowerRange, double target) {
+    return value < target + upperRange && value > target - upperRange;
   }
 }

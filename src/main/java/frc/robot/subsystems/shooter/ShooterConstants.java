@@ -39,7 +39,9 @@ public class ShooterConstants {
   public static final double OUTPUT_SPEED = 40 * 1 / GEAR_RATIO;
 
   /// Velocity in rot/s that shooter speed can be under by
-  public static final double ERROR_MARGIN = 1;
+  public static final double LOWER_ERROR_MARGIN = 1;
+  /// Velocity in rot/s that shooter speed can be over by
+  public static final double UPPER_ERROR_MARGIN = 15;
 
   /// The mode for the motors when inactive
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
@@ -57,6 +59,8 @@ public class ShooterConstants {
   public static final double FEED_KI = 0;
   /// KD for Shoot feeder
   public static final double FEED_KD = 0;
+  /// KV for Shoot feeder
+  public static final double FEED_KV = 0.2;
   /// Current to limit the motors to in amps
   public static final CurrentLimitsConfigs FEED_CURRENT_LIMIT =
       new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
@@ -68,13 +72,14 @@ public class ShooterConstants {
   /// Multiply by 1/GEAR_RATIO to convert from output shaft speed to motor speed
   public static final double FEED_OUTPUT_SPEED = 15 * 1 / FEED_GEAR_RATIO;
 
-  public static final double LEBRON_VELOCITY = 78.90931314;
+  public static final double TRENCH_VELOCITY = 57;
+
+  // 78.90931314
+  public static final double LEBRON_VELOCITY = TRENCH_VELOCITY;
 
   public static final double TOWER_VELOCITY = 40;
 
   public static final double CORNER_VELOCITY = 67;
-
-  public static final double TRENCH_VELOCITY = 57;
 
   public static final double TRENCH_ARC = 71.2962679306;
 }

@@ -40,7 +40,7 @@ public class AutoShootVelocity extends Command {
       launchVelocity = ShooterConstants.OUTPUT_SPEED;
     } else {
       // Calculate the launch velocity based on the distance to the target
-      launchVelocity = (7.642 * distance) + 28.723 - 0;
+      launchVelocity = (7.642 * distance) + 28.723 - 2.223;
     }
 
     shooter.setVelocity(launchVelocity);
