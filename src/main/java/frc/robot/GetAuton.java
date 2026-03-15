@@ -96,7 +96,7 @@ public class GetAuton {
               /* 1*/ "C-Depo-Simple",
               /* 2*/ "C(hub)-simple-shot",
               /* 3*/ "C-Human-Simple",
-              /* 4*/ "Swap Button Order!",
+              /* 4*/ "Crew",
               /* 5*/ "Swap Button Order!",
               /* 6*/ "Swap Button Order!",
               /* 7*/ "Swap Button Order!"

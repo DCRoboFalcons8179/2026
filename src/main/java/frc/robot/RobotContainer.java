@@ -230,6 +230,10 @@ public class RobotContainer {
     extrude.determineSelf();
   }
 
+  public void unlockTurret() {
+    turret.requestTransition(Turret.State.UNLOCKED);
+  }
+
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -317,9 +321,8 @@ public class RobotContainer {
         .button(8)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.TRENCH_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_VELOCITY)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
@@ -332,7 +335,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.CORNER_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.CORNER_VELOCITY)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
@@ -345,7 +348,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TOWER_VELOCITY)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
@@ -353,12 +356,12 @@ public class RobotContainer {
 
     // Lebron Left
     boxLeft
-        .button(1)
+        .button(7)
         .onTrue(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.LEBRON_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.LEBRON_VELOCITY)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
@@ -371,9 +374,8 @@ public class RobotContainer {
         .button(12)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.TRENCH_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_VELOCITY)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
@@ -394,7 +396,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.CORNER_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.CORNER_VELOCITY)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
@@ -406,7 +408,7 @@ public class RobotContainer {
         .onTrue(
             new SequentialCommandGroup(
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_ARC)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
     // Cody Jones
@@ -415,17 +417,17 @@ public class RobotContainer {
         .onTrue(
             new SequentialCommandGroup(
                 new InstantCommand(() -> shooter.setVelocity(100)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
     // Lebron Right
     boxRight
-        .button(1)
+        .button(11)
         .onTrue(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.LEBRON_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.LEBRON_VELOCITY)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
                 new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),

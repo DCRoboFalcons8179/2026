@@ -87,7 +87,7 @@ public class CheckAutonOptions extends InstantCommand {
     String autoName = GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)).toLowerCase();
 
     String humanOrDepo;
-    if (autoName.contains("c(hub)") || autoName.contains("do nothing")) {
+    if (autoName.contains("c(hub)") || autoName.contains("do nothing") || autoName.equals("crew")) {
       return "None";
     } else {
       humanOrDepo = autoName.contains("human") ? "Human" : "Depo";
