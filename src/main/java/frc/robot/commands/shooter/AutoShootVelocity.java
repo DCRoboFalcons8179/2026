@@ -5,6 +5,8 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.shooter.Shooter;
@@ -15,7 +17,7 @@ import frc.robot.subsystems.vision.Vision;
 public class AutoShootVelocity extends Command {
   private final Vision vision;
   private final Shooter shooter;
-  private double launchVelocity = 0;
+  private double launchVelocity = ShooterConstants.OUTPUT_SPEED;
 
   /** Creates a new AutoShootVelocity. */
   public AutoShootVelocity(Shooter shooter, Vision vision) {
@@ -34,9 +36,32 @@ public class AutoShootVelocity extends Command {
   public void execute() {
     double distance = vision.getTargetDistance(1).getDistance(Translation2d.kZero);
 
+    int targetID = vision.getBestTagId(1);
+
+    double[] badBlueIDs = {17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
+    double[] badRedIDs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+
+    if (DriverStation.getAlliance().get() == Alliance.Red) {
+      for (double id : badBlueIDs) {
+        if (id == targetID) {
+          launchVelocity = ShooterConstants.OUTPUT_SPEED;
+          shooter.setVelocity(launchVelocity);
+          return;
+        }
+      }
+    } else {
+      for (double id : badRedIDs) {
+        if (id == targetID) {
+          launchVelocity = ShooterConstants.OUTPUT_SPEED;
+          shooter.setVelocity(launchVelocity);
+          return;
+        }
+      }
+    }
+
     SmartDashboard.putNumber("Distance to Target", distance);
 
-    if (distance == 0) {
+    if (distance < 0.5 || distance > 8) {
       launchVelocity = ShooterConstants.OUTPUT_SPEED;
     } else {
       // Calculate the launch velocity based on the distance to the target
