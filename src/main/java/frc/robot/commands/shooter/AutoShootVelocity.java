@@ -40,6 +40,7 @@ public class AutoShootVelocity extends Command {
 
     double[] badBlueIDs = {17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
     double[] badRedIDs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    double[] trenchIDs = {1, 12, 6, 7, 22, 23, 17, 28};
 
     if (DriverStation.getAlliance().get() == Alliance.Red) {
       for (double id : badBlueIDs) {
@@ -59,13 +60,22 @@ public class AutoShootVelocity extends Command {
       }
     }
 
+    // Remove all trench tags
+    for (double id : trenchIDs) {
+      if (id == targetID) {
+        launchVelocity = ShooterConstants.OUTPUT_SPEED;
+        shooter.setVelocity(launchVelocity);
+        return;
+      }
+    }
+
     SmartDashboard.putNumber("Distance to Target", distance);
 
     if (distance < 0.5 || distance > 8) {
       launchVelocity = ShooterConstants.OUTPUT_SPEED;
     } else {
       // Calculate the launch velocity based on the distance to the target
-      launchVelocity = (7.642 * distance) + 28.723 - 2.223 - 5 + 1.5;
+      launchVelocity = (7.642 * distance) + 28.723 - 2.223 - 5;
     }
 
     shooter.setVelocity(launchVelocity);

@@ -274,6 +274,12 @@ public class RobotContainer {
     controller
         .rightBumper()
         .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
+    controller
+        .start()
+        .onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_OUT)));
+    controller
+        .start()
+        .onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
 
     controller
         .leftBumper()
