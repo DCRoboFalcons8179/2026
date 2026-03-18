@@ -5,31 +5,31 @@
 package frc.robot.commands.shooter.turret;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.math.Translations;
+import frc.robot.FieldConstants;
+import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.shooter.turret.Turret;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
-import frc.robot.subsystems.vision.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoAim extends Command {
-  private final Vision vision;
+  private final Drive drive;
   private final Turret turret;
   private final PIDController pidController;
 
-  /// Used to account for tags being dedeteced and undetected
-  private Translation2d lastTranslation = new Translation2d();
-
   /** Creates a new AutoAim. */
-  public AutoAim(Vision vision, Turret turret) {
-    this.vision = vision;
+  public AutoAim(Drive drive, Turret turret) {
+    this.drive = drive;
     this.turret = turret;
     pidController =
         new PIDController(TurretConstants.AIM_KP, TurretConstants.AIM_KI, TurretConstants.AIM_KD);
     pidController.enableContinuousInput(-Math.PI, Math.PI);
 
-    addRequirements(vision, turret);
+    addRequirements(turret);
   }
 
   // Called when the command is initially scheduled.
@@ -39,26 +39,20 @@ public class AutoAim extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    int tagID = vision.getBestTagId(1);
+    Pose2d robotPose = drive.getPose();
 
-    if (tagID != -1) {
-      double xDistance = vision.getXDistance(1);
-      double yDistance = (vision.getYDistance(1)) * -1;
+    Translation2d delta =
+        FieldConstants.getTargetData(FieldConstants.HUB_POSITION).minus(robotPose.getTranslation());
 
-      double yaw = vision.getYaw(1);
+    Angle fieldAngle = delta.getAngle().getMeasure();
 
-      Translation2d translation = new Translation2d(xDistance, yDistance);
+    Angle turretAngle = fieldAngle.minus(robotPose.getRotation().getMeasure());
 
-      Translation2d robotToHub = Translations.tagToHub(tagID, translation);
+    double angleDegrees = Math.toDegrees(turretAngle.baseUnitMagnitude());
 
-      lastTranslation = robotToHub;
-    }
+    SmartDashboard.putNumber("Turret Angle Desired", angleDegrees);
 
-    double degrees = -vision.getYaw(1);
-
-    double turretPos = degrees / 30;
-
-    turret.setTurretPose(turretPos + TurretConstants.NUDGE_AMOUNT / 2);
+    turret.setTurretPose(-angleDegrees / 30);
     turret.moveTurret();
   }
 

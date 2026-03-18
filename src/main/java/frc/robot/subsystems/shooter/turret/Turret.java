@@ -9,20 +9,20 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SMF.StateMachine;
 import frc.robot.commands.shooter.turret.AutoAim;
 import frc.robot.commands.shooter.turret.TurretToPose;
-import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.drive.Drive;
 
 public class Turret extends StateMachine<Turret.State> {
   private final TurretIO io;
   private final TurretInputsAutoLogged inputs = new TurretInputsAutoLogged();
 
-  private final Vision vision;
+  private final Drive drive;
 
   private double desiredTurretPose = 0;
 
-  public Turret(TurretIO io, Vision vision) {
+  public Turret(TurretIO io, Drive drive) {
     super("Turret", State.UNDETERMINED, State.class);
     this.io = io;
-    this.vision = vision;
+    this.drive = drive;
 
     io.updateInputs(inputs);
 
@@ -41,7 +41,7 @@ public class Turret extends StateMachine<Turret.State> {
     registerStateCommand(State.UNLOCKED, new InstantCommand(() -> new TurretToPose(this)));
 
     // Has the turret aim when the aim state is set
-    registerStateCommand(State.AIM, new AutoAim(vision, this));
+    registerStateCommand(State.AIM, new AutoAim(drive, this));
   }
 
   public void registerStateTransitions() {

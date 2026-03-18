@@ -98,7 +98,7 @@ public class RobotContainer {
                 new VisionIOPhotonVision(
                     VisionConstants.camera1Name, VisionConstants.robotToCamera1));
 
-        turret = new Turret(new TurretIOReal(), vision);
+        turret = new Turret(new TurretIOReal(), drive);
 
         shooter = new Shooter(new ShooterIOReal(), vision);
 
@@ -124,7 +124,7 @@ public class RobotContainer {
                 new VisionIOPhotonVisionSim(
                     VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose));
 
-        turret = new Turret(new TurretIOSim(), vision);
+        turret = new Turret(new TurretIOSim(), drive);
         shooter = new Shooter(new ShooterIO() {}, vision);
         intake = new Intake(new IntakeIOSim() {});
         extrude = new Extrude(new ExtrudeIOSim() {}, intake);
@@ -143,7 +143,7 @@ public class RobotContainer {
 
         vision = new Vision(drive::addVisionMeasurement, new VisionIO() {}, new VisionIO() {});
 
-        turret = new Turret(new TurretIO() {}, vision);
+        turret = new Turret(new TurretIO() {}, drive);
 
         shooter = new Shooter(new ShooterIO() {}, vision);
 
