@@ -18,12 +18,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.FieldConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.vision.Vision;
 import java.text.DecimalFormat;
@@ -70,30 +72,31 @@ public class DriveCommands {
 
           double omegaPercent = 0.0;
 
-          // Only calculate rotation if we have a valid target
-          if (vision.hasValidTarget(0)) {
-            var rads = vision.getTargetX(0).getRadians();
+          Pose2d robotPose = drive.getPose();
 
-            @SuppressWarnings("resource")
-            PIDController aimController = new PIDController(0.8, 0.0, 0.01);
-            aimController.enableContinuousInput(-Math.PI, Math.PI);
+          Translation2d delta =
+              FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
+                  .minus(robotPose.getTranslation());
 
-            // Clamp output to prevent violent turns
-            aimController.setTolerance(0.02); // ~1 degree tolerance
+          Angle fieldAngle = delta.getAngle().getMeasure();
 
-            SmartDashboard.putNumber("Rads", rads);
+          double angleDegrees = Math.toDegrees(fieldAngle.baseUnitMagnitude());
 
-            omegaPercent = -aimController.calculate(rads);
+          @SuppressWarnings("resource")
+          PIDController aimController = new PIDController(0.8, 0.0, 0.01);
+          aimController.enableContinuousInput(-Math.PI, Math.PI);
 
-            // Limit max turning speed to 40% for smoother control
-            omegaPercent = MathUtil.clamp(omegaPercent, -0.4, 0.4);
+          // Clamp output to prevent violent turns
+          aimController.setTolerance(0.02); // ~1 degree tolerance
 
-            SmartDashboard.putNumber("Omeag Percent Out", omegaPercent);
-          } else {
-            // No valid target, stop rotation
-            SmartDashboard.putNumber("Rads", 0.0);
-            SmartDashboard.putNumber("Omeag Percent Out", 0.0);
-          }
+          SmartDashboard.putNumber("Rads", angleDegrees);
+
+          omegaPercent = -aimController.calculate(angleDegrees);
+
+          // Limit max turning speed to 40% for smoother control
+          omegaPercent = MathUtil.clamp(omegaPercent, -0.4, 0.4);
+
+          SmartDashboard.putNumber("Omeag Percent Out", omegaPercent);
 
           // Convert to field relative speeds & send command
           ChassisSpeeds speeds =

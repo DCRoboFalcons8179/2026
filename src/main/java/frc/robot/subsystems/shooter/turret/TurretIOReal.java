@@ -76,8 +76,6 @@ public class TurretIOReal implements TurretIO {
       targetPosition = position;
     }
 
-    System.out.println("Target Pose: " + targetPosition);
-
     usePositionControl = true;
     turretMotor.setControl(new MotionMagicVoltage(targetPosition));
   }

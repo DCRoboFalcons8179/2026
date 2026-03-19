@@ -94,13 +94,15 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVision(
-                    VisionConstants.camera0Name, VisionConstants.robotToCamera0),
-                new VisionIOPhotonVision(
-                    VisionConstants.camera1Name, VisionConstants.robotToCamera1));
+                    VisionConstants.camera0Name, VisionConstants.robotToCamera0));
+        // new VisionIOPhotonVision(
+        //     VisionConstants.camera1Name, VisionConstants.robotToCamera1),
+        // new VisionIOPhotonVision(
+        //     VisionConstants.camera2Name, VisionConstants.robotToCamera2));
 
         turret = new Turret(new TurretIOReal(), drive);
 
-        shooter = new Shooter(new ShooterIOReal(), vision);
+        shooter = new Shooter(new ShooterIOReal(), vision, drive::getPose);
 
         intake = new Intake(new IntakeIOReal());
         extrude = new Extrude(new ExtrudeIOReal(), intake);
@@ -120,12 +122,14 @@ public class RobotContainer {
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose),
+                    VisionConstants.camera0Name, VisionConstants.robotToCamera1, drive::getPose),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose));
+                    VisionConstants.camera1Name, VisionConstants.robotToCamera0, drive::getPose),
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.camera2Name, VisionConstants.robotToCamera2, drive::getPose));
 
         turret = new Turret(new TurretIOSim(), drive);
-        shooter = new Shooter(new ShooterIO() {}, vision);
+        shooter = new Shooter(new ShooterIO() {}, vision, drive::getPose);
         intake = new Intake(new IntakeIOSim() {});
         extrude = new Extrude(new ExtrudeIOSim() {}, intake);
 
@@ -141,11 +145,16 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
 
-        vision = new Vision(drive::addVisionMeasurement, new VisionIO() {}, new VisionIO() {});
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIO() {},
+                new VisionIO() {},
+                new VisionIO() {});
 
         turret = new Turret(new TurretIO() {}, drive);
 
-        shooter = new Shooter(new ShooterIO() {}, vision);
+        shooter = new Shooter(new ShooterIO() {}, vision, drive::getPose);
 
         intake = new Intake(new IntakeIO() {});
 
