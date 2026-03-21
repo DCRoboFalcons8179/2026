@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.CheckAutonOptions;
 import frc.robot.commands.DriveCommands;
 import frc.robot.generated.TunerConstants;
+import frc.robot.math.DriveByCalcs;
 import frc.robot.subsystems.Music;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -104,9 +105,9 @@ public class RobotContainer {
         // new VisionIOPhotonVision(
         //     VisionConstants.camera2Name, VisionConstants.robotToCamera2));
 
-        turret = new Turret(new TurretIOReal(), drive);
+        turret = new Turret(new TurretIOReal());
 
-        shooter = new Shooter(new ShooterIOReal(), drive::getPose);
+        shooter = new Shooter(new ShooterIOReal());
 
         intake = new Intake(new IntakeIOReal());
         extrude = new Extrude(new ExtrudeIOReal(), intake);
@@ -133,8 +134,8 @@ public class RobotContainer {
                 new VisionIOPhotonVisionSim(
                     VisionConstants.camera2Name, VisionConstants.robotToCamera2, drive::getPose));
 
-        turret = new Turret(new TurretIOSim(), drive);
-        shooter = new Shooter(new ShooterIO() {}, drive::getPose);
+        turret = new Turret(new TurretIOSim());
+        shooter = new Shooter(new ShooterIO() {});
         intake = new Intake(new IntakeIOSim() {});
         extrude = new Extrude(new ExtrudeIOSim() {}, intake);
         music = new Music();
@@ -158,9 +159,9 @@ public class RobotContainer {
                 new VisionIO() {},
                 new VisionIO() {});
 
-        turret = new Turret(new TurretIO() {}, drive);
+        turret = new Turret(new TurretIO() {});
 
-        shooter = new Shooter(new ShooterIO() {}, drive::getPose);
+        shooter = new Shooter(new ShooterIO() {});
 
         intake = new Intake(new IntakeIO() {});
 
@@ -177,6 +178,8 @@ public class RobotContainer {
 
   public void periodic() {
     int autonID = BinaryToInt.getInt(boxRight, boxLeft);
+
+    DriveByCalcs.updateDriveByValues(drive.getPose(), drive.getRobotVelocityComponents(), drive.getRotation(), drive.getAngularVelocity());
 
     SmartDashboard.putNumber("Auton Number", autonID);
     SmartDashboard.putString("Auton Name", GetAuton.getAutonName(autonID));

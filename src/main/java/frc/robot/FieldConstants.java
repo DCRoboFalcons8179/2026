@@ -14,6 +14,8 @@ public class FieldConstants {
   public static final Target DEPOT_POSITION =
       new Target(new Translation2d(0.3937, 0.665988), new Translation2d(16.147288, 7.403338));
 
+  public static final double HUB_HEIGHT = 1.8034;
+
   public static Translation2d getTargetData(Target target) {
     return AllianceHelpers.isBlueAlliance() ? target.blue() : target.red();
   }

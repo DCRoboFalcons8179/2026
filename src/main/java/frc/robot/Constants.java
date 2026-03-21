@@ -97,4 +97,6 @@ public final class Constants {
     // 27
     TAG_SET_2
   };
+
+  public static final double g = 9.81;
 }

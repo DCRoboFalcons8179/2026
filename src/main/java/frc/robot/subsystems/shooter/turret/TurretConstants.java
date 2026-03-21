@@ -43,5 +43,12 @@ public class TurretConstants {
 
   public static final double ZERO_ANGLE = 0;
 
+  // TODO: Turret pose to robot center
   public static final Translation2d TURRET_POSE = new Translation2d(0, 0.5);
+
+  // TODO: Add actual height
+  public static final double TURRET_HEIHGT = 1;
+
+  // TODO: Set real pitch
+  public static final double PITCH = 20;
 }

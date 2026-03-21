@@ -4,25 +4,21 @@
 
 package frc.robot.subsystems.shooter;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.SMF.StateMachine;
 import frc.robot.commands.shooter.AutoShootVelocity;
-import java.util.function.Supplier;
 
 public class Shooter extends StateMachine<Shooter.State> {
   private final ShooterIO io;
 
   private final ShooterInputsAutoLogged inputs = new ShooterInputsAutoLogged();
-  private final Supplier<Pose2d> poseSupplier;
 
-  public Shooter(ShooterIO io, Supplier<Pose2d> poseSupplier) {
+  public Shooter(ShooterIO io) {
     super("Shooter", State.UNDETERMINED, State.class);
     this.io = io;
-    this.poseSupplier = poseSupplier;
 
     io.updateInputs(inputs);
 
@@ -36,13 +32,13 @@ public class Shooter extends StateMachine<Shooter.State> {
     registerStateCommand(
         State.CHARGE,
         new SequentialCommandGroup(
-            new AutoShootVelocity(this, poseSupplier).withTimeout(0.25),
+            new AutoShootVelocity(this).withTimeout(0.25),
             new WaitUntilCommand(() -> io.isCharged()),
             new WaitCommand(0.1),
             new InstantCommand(() -> requestTransition(State.SHOOT))));
 
     registerStateCommand(
-        State.SHOOT, new InstantCommand(() -> new AutoShootVelocity(this, poseSupplier)));
+        State.SHOOT, new InstantCommand(() -> new AutoShootVelocity(this)));
 
     registerStateCommand(State.REVERSE, new InstantCommand(() -> io.beaterBarReverse(-50)));
   }

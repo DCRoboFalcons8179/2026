@@ -62,6 +62,8 @@ public class Drive extends SubsystemBase {
               Math.hypot(TunerConstants.BackLeft.LocationX, TunerConstants.BackLeft.LocationY),
               Math.hypot(TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)));
 
+  private ChassisSpeeds chassisSpeeds;
+
   // PathPlanner config constants
   private static final double ROBOT_MASS_KG = 74.088;
   private static final double ROBOT_MOI = 6.883;
@@ -221,6 +223,8 @@ public class Drive extends SubsystemBase {
     SwerveModuleState[] setpointStates = kinematics.toSwerveModuleStates(discreteSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(setpointStates, TunerConstants.kSpeedAt12Volts);
 
+    this.chassisSpeeds = discreteSpeeds;
+
     // Log unoptimized setpoints and setpoint speeds
     Logger.recordOutput("SwerveStates/Setpoints", setpointStates);
     Logger.recordOutput("SwerveChassisSpeeds/Setpoints", discreteSpeeds);
@@ -239,6 +243,14 @@ public class Drive extends SubsystemBase {
 
     // Log optimized setpoints (runSetpoint mutates each state)
     Logger.recordOutput("SwerveStates/SetpointsOptimized", setpointStates);
+  }
+
+  public Translation2d getRobotVelocityComponents() {
+    return new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond);
+  }
+
+  public double getAngularVelocity() {
+    return chassisSpeeds.omegaRadiansPerSecond;
   }
 
   /** Runs the drive in a straight line with the specified drive output. */
