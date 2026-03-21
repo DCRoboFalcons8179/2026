@@ -38,18 +38,10 @@ public class DriveByCalcs {
                 FieldConstants.HUB_HEIGHT,
                 Rotation3d.kZero);
 
-        // Robot Velocity relative to robot
-        // Translation2d robotVr = drive.getRobotVelocityComponents
-        // Robot angle to the ground
-        // Rotation2d robotAngle = drive.getRotation();
-
         // Robot Velocity relative to ground
         Translation2d robotVc = robotVr.rotateBy(robotAngle);
         // Dereference object of robot velocity relative to robot
         robotVr = null;
-
-        // Robot Rotations/s (relative to all reference frames)
-        // double robotRotationsPerSecond = drive.getAngularVelocity();
 
         // Distance from robot to hub
         Translation2d delta = FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
@@ -84,8 +76,5 @@ public class DriveByCalcs {
 
         numerator = turretRatioNumerator;
         denominator = turretRationDenominator;
-        
-        // Turret angle in degrees
-        // double turretAngle = Math.toDegrees(Math.atan(turretRatioNumerator / turretRationDenominator));
     }
 }
