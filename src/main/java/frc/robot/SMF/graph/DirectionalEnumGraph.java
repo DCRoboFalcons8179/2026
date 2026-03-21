@@ -32,10 +32,12 @@ public class DirectionalEnumGraph<V extends Enum<V>, T extends TransitionBase<? 
     }
   }
 
+  @SuppressWarnings("unchecked")
   private T getAsEdge(int x, int y) {
     return (T) adjacencyMap[x][y];
   }
 
+  @SuppressWarnings("unused")
   private V fromOrdinal(int ordinal) {
     return enumType.getEnumConstants()[ordinal];
   }

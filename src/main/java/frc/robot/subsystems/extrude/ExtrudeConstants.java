@@ -7,6 +7,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class ExtrudeConstants {
   // ID for extruder
   public static final int ID = 7;
+  public static final int FOLLOWER_ID = 99;
 
   // Neutral Mode for Extruder
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;

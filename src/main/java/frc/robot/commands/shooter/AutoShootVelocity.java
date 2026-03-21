@@ -10,22 +10,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterConstants;
-import frc.robot.subsystems.vision.Vision;
 import java.util.function.Supplier;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoShootVelocity extends Command {
-  private final Vision vision;
   private final Shooter shooter;
   private double launchVelocity = ShooterConstants.OUTPUT_SPEED;
   private Supplier<Pose2d> poseSupplier;
 
   /** Creates a new AutoShootVelocity. */
-  public AutoShootVelocity(Shooter shooter, Vision vision, Supplier<Pose2d> poseSupplier) {
+  public AutoShootVelocity(Shooter shooter, Supplier<Pose2d> poseSupplier) {
     this.shooter = shooter;
-    this.vision = vision;
     this.poseSupplier = poseSupplier;
-    addRequirements(shooter, vision);
+    addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

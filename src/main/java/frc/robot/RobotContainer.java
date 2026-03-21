@@ -102,7 +102,7 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIOReal(), drive);
 
-        shooter = new Shooter(new ShooterIOReal(), vision, drive::getPose);
+        shooter = new Shooter(new ShooterIOReal(), drive::getPose);
 
         intake = new Intake(new IntakeIOReal());
         extrude = new Extrude(new ExtrudeIOReal(), intake);
@@ -129,7 +129,7 @@ public class RobotContainer {
                     VisionConstants.camera2Name, VisionConstants.robotToCamera2, drive::getPose));
 
         turret = new Turret(new TurretIOSim(), drive);
-        shooter = new Shooter(new ShooterIO() {}, vision, drive::getPose);
+        shooter = new Shooter(new ShooterIO() {}, drive::getPose);
         intake = new Intake(new IntakeIOSim() {});
         extrude = new Extrude(new ExtrudeIOSim() {}, intake);
 
@@ -154,7 +154,7 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIO() {}, drive);
 
-        shooter = new Shooter(new ShooterIO() {}, vision, drive::getPose);
+        shooter = new Shooter(new ShooterIO() {}, drive::getPose);
 
         intake = new Intake(new IntakeIO() {});
 

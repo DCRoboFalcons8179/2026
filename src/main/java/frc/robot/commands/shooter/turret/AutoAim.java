@@ -4,10 +4,11 @@
 
 package frc.robot.commands.shooter.turret;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.FieldConstants;
@@ -42,13 +43,14 @@ public class AutoAim extends Command {
     Pose2d robotPose = drive.getPose();
 
     Translation2d delta =
-        FieldConstants.getTargetData(FieldConstants.HUB_POSITION).minus(robotPose.getTranslation());
+        FieldConstants.getTargetData(FieldConstants.HUB_POSITION).minus(robotPose.getTranslation().plus(TurretConstants.TURRET_POSE));
+        
+    // Use Rotation2d subtraction which properly wraps the angle to [-180, 180]
+    Rotation2d fieldAngle = delta.getAngle();
+    Rotation2d turretAngle = fieldAngle.minus(robotPose.getRotation());
 
-    Angle fieldAngle = delta.getAngle().getMeasure();
-
-    Angle turretAngle = fieldAngle.minus(robotPose.getRotation().getMeasure());
-
-    double angleDegrees = Math.toDegrees(turretAngle.baseUnitMagnitude());
+    // Clamp to the turret's physical range of [-90, 90] degrees
+    double angleDegrees = MathUtil.clamp(turretAngle.getDegrees(), -90.0, 90.0);
 
     SmartDashboard.putNumber("Turret Angle Desired", angleDegrees);
 

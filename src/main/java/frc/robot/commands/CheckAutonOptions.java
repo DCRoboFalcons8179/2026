@@ -22,14 +22,11 @@ import org.json.simple.parser.ParseException;
 public class CheckAutonOptions extends InstantCommand {
   private final CommandJoystick boxLeft;
   private final CommandJoystick boxRight;
-  private final Extrude extrude;
   PathPlannerPath path = null;
 
   public CheckAutonOptions(CommandJoystick boxLeft, CommandJoystick boxRight, Extrude extrude) {
     this.boxLeft = boxLeft;
     this.boxRight = boxRight;
-    this.extrude = extrude;
-    addRequirements(extrude);
   }
 
   // Called when the command is initially scheduled.
@@ -50,12 +47,6 @@ public class CheckAutonOptions extends InstantCommand {
 
     if (trench || ramp) {
       var auto = AutoBuilder.followPath(path);
-      // Before path runs
-      // .beforeStarting(
-      //     new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)))
-      // // After path runs
-      // .andThen(
-      //     new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
 
       CommandScheduler.getInstance().schedule(auto);
     }

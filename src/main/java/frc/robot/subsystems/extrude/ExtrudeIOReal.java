@@ -7,14 +7,18 @@ package frc.robot.subsystems.extrude;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+
 import org.littletonrobotics.junction.Logger;
 
 public class ExtrudeIOReal implements ExtrudeIO {
 
   // Motor
   protected final TalonFXS extruder = new TalonFXS(ExtrudeConstants.ID);
+  protected final TalonFXS follower = new TalonFXS(ExtrudeConstants.FOLLOWER_ID);
 
   private double targetPosition = 0;
 
@@ -50,6 +54,8 @@ public class ExtrudeIOReal implements ExtrudeIO {
     extruder.setNeutralMode(ExtrudeConstants.NEUTRAL_MODE);
     // Reset encoder position to 0 on startup
     extruder.setPosition(0);
+
+    follower.setControl(new Follower(ExtrudeConstants.ID, MotorAlignmentValue.Opposed));
   }
 
   @Override

@@ -2,6 +2,8 @@ package frc.robot.subsystems.shooter.turret;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.geometry.Translation2d;
+
 public class TurretConstants {
   /// ID of the turret motor
   public static final int TURRET_ID = 3;
@@ -41,4 +43,6 @@ public class TurretConstants {
   public static final double LEBRON_ANGLE = 90;
 
   public static final double ZERO_ANGLE = 0;
+
+  public static final Translation2d TURRET_POSE = new Translation2d(0, 0.5);
 }
