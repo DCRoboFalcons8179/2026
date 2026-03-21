@@ -4,6 +4,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import frc.robot.subsystems.Music;
 import frc.robot.subsystems.shooter.pitch.PitchConstants;
 import org.littletonrobotics.junction.Logger;
 
@@ -19,6 +20,10 @@ public class ShooterIOReal implements ShooterIO {
 
   public ShooterIOReal() {
     configureMotor();
+
+    Music.addMotor(shooter);
+    Music.addMotor(follower);
+    Music.addMotor(feeder);
   }
 
   private void configureMotor() {

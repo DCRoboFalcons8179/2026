@@ -35,6 +35,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Music;
 import java.util.Queue;
 
 /**
@@ -184,6 +185,9 @@ public class ModuleIOTalonFX implements ModuleIO {
         turnAppliedVolts,
         turnCurrent);
     ParentDevice.optimizeBusUtilizationForAll(driveTalon, turnTalon);
+
+    Music.addMotor(driveTalon);
+    Music.addMotor(turnTalon);
   }
 
   @Override

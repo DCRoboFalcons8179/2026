@@ -4,6 +4,7 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import frc.robot.subsystems.Music;
 import org.littletonrobotics.junction.Logger;
 
 public class TurretIOReal implements TurretIO {
@@ -14,6 +15,8 @@ public class TurretIOReal implements TurretIO {
 
   public TurretIOReal() {
     setPIDControl();
+
+    Music.addMotor(turretMotor);
   }
 
   @Override

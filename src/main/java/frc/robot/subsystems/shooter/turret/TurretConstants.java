@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shooter.turret;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class TurretConstants {

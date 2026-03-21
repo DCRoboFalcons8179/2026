@@ -11,7 +11,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
-
+import frc.robot.subsystems.Music;
 import org.littletonrobotics.junction.Logger;
 
 public class ExtrudeIOReal implements ExtrudeIO {
@@ -27,6 +27,9 @@ public class ExtrudeIOReal implements ExtrudeIO {
 
   public ExtrudeIOReal() {
     configureMotors();
+
+    Music.addMotor(extruder);
+    Music.addMotor(follower);
   }
 
   private void configureMotors() {

@@ -43,8 +43,9 @@ public class AutoAim extends Command {
     Pose2d robotPose = drive.getPose();
 
     Translation2d delta =
-        FieldConstants.getTargetData(FieldConstants.HUB_POSITION).minus(robotPose.getTranslation().plus(TurretConstants.TURRET_POSE));
-        
+        FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
+            .minus(robotPose.getTranslation().plus(TurretConstants.TURRET_POSE));
+
     // Use Rotation2d subtraction which properly wraps the angle to [-180, 180]
     Rotation2d fieldAngle = delta.getAngle();
     Rotation2d turretAngle = fieldAngle.minus(robotPose.getRotation());
