@@ -18,7 +18,7 @@ public class ExtrudeIOReal implements ExtrudeIO {
 
   // Motor
   protected final TalonFXS extruder = new TalonFXS(ExtrudeConstants.ID);
-  protected final TalonFXS follower = new TalonFXS(ExtrudeConstants.FOLLOWER_ID);
+  protected final TalonFXS secondary = new TalonFXS(ExtrudeConstants.FOLLOWER_ID);
 
   private double targetPosition = 0;
 
@@ -29,7 +29,7 @@ public class ExtrudeIOReal implements ExtrudeIO {
     configureMotors();
 
     Music.addMotor(extruder);
-    Music.addMotor(follower);
+    Music.addMotor(secondary);
   }
 
   private void configureMotors() {
@@ -58,7 +58,21 @@ public class ExtrudeIOReal implements ExtrudeIO {
     // Reset encoder position to 0 on startup
     extruder.setPosition(0);
 
-    follower.setControl(new Follower(ExtrudeConstants.ID, MotorAlignmentValue.Opposed));
+    secondary.getConfigurator().apply(slot0Configs);
+    secondary
+        .getConfigurator()
+        .apply(new MotorOutputConfigs().withInverted(ExtrudeConstants.INVERT));
+
+    secondary.getConfigurator().apply(motionMagicConfigs);
+
+    // gives a current limit
+    secondary.getConfigurator().apply(ExtrudeConstants.CURRENT_LIMIT);
+    // sets desired neutral state
+    secondary.setNeutralMode(ExtrudeConstants.NEUTRAL_MODE);
+    // Reset encoder position to 0 on startup
+    secondary.setPosition(0);
+
+    secondary.setControl(new Follower(ExtrudeConstants.ID, MotorAlignmentValue.Aligned));
   }
 
   @Override
@@ -73,14 +87,21 @@ public class ExtrudeIOReal implements ExtrudeIO {
   @Override
   public void setExtruderPosition(double position) {
     targetPosition = position;
+    if (targetPosition > ExtrudeConstants.MAX_POS) {
+      targetPosition = ExtrudeConstants.MAX_POS;
+    } else if (targetPosition < ExtrudeConstants.MIN_POS) {
+      targetPosition = ExtrudeConstants.MIN_POS;
+    }
+
     // Use Motion Magic for smooth, velocity-limited movement
     extruder.setControl(motionMagicControl.withPosition(position));
+    secondary.setControl(motionMagicControl.withPosition(position));
   }
 
   @Override
   public void addExtruderPosition(double Delta) {
-    targetPosition += Delta;
-    setExtruderPosition(targetPosition);
+    double pose = targetPosition + Delta;
+    setExtruderPosition(pose);
   }
 
   @Override

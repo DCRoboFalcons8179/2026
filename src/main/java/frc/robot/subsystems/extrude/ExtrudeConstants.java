@@ -7,7 +7,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class ExtrudeConstants {
   // ID for extruder
   public static final int ID = 7;
-  public static final int FOLLOWER_ID = 99;
+  public static final int FOLLOWER_ID = 16;
 
   // Neutral Mode for Extruder
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
@@ -18,6 +18,8 @@ public class ExtrudeConstants {
   public static final double IN_POSITION = -16;
   public static final double OUT_POSITION = -33;
   public static final double MANUAL_DELTA = 3;
+  public static final double MIN_POS = -34;
+  public static final double MAX_POS = 0;
 
   public static final InvertedValue INVERT = InvertedValue.CounterClockwise_Positive;
   // Error thresh hold (current just a placeholder number before being tested)
