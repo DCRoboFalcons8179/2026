@@ -13,7 +13,7 @@ public class ExtrudeConstants {
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
 
   public static final CurrentLimitsConfigs CURRENT_LIMIT =
-      new CurrentLimitsConfigs().withSupplyCurrentLimit(10).withSupplyCurrentLimitEnable(true);
+      new CurrentLimitsConfigs().withSupplyCurrentLimit(5).withSupplyCurrentLimitEnable(true);
 
   public static final double IN_POSITION = -10;
   public static final double OUT_POSITION = -33;
@@ -40,16 +40,13 @@ public class ExtrudeConstants {
   // Jerk control for even smoother motion (rotations per second cubed)
   public static final double JERK = 40.0; // Optional smoothing
 
-  // Agitate state - oscillates between in and out positions using velocity control
-  public static final double AGITATE_IN_POS = IN_POSITION;
+  // Agitate state - oscillates using velocity control
+  // Dynamic inward limit: reverses when current draw nears the supply limit
   public static final double AGITATE_OUT_POS = OUT_POSITION;
+  public static final double AGITATE_IN_POS = IN_POSITION;
   public static final double AGITATE_VELOCITY = 15.0; // rps - speed for agitation (mechanism)
-
-  // Baby agitate - smallest oscillation range
-  public static final double BABY_AGITATE_IN_POS = -15;
-  public static final double BABY_AGITATE_OUT_POS = -20;
-
-  // Teen agitate - medium oscillation range
-  public static final double TEEN_AGITATE_IN_POS = -12;
-  public static final double TEEN_AGITATE_OUT_POS = -27;
+  public static final double AGITATE_SLOW_VELOCITY = 5.0; // rps - slower speed near the in limit
+  public static final double AGITATE_SLOW_DISTANCE =
+      5.0; // rotations before the in pos to start slowing
+  public static final double AGITATE_CURRENT_THRESHOLD = CURRENT_LIMIT.SupplyCurrentLimit;
 }

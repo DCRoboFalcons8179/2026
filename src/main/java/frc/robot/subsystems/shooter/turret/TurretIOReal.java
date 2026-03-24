@@ -71,6 +71,8 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void moveTurret(double position) {
+    position += TurretConstants.NUDGE_AMOUNT;
+
     if (position > TurretConstants.MAX_MOTOR_ROT) {
       targetPosition = TurretConstants.MAX_MOTOR_ROT;
     } else if (position < TurretConstants.MIN_MOTOR_ROT) {
