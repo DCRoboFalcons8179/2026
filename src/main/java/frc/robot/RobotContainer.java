@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.CheckAutonOptions;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.ToggleCameras;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Music;
 import frc.robot.subsystems.drive.Drive;
@@ -230,6 +231,8 @@ public class RobotContainer {
         "Intake Enable", new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
     NamedCommands.registerCommand(
         "Intake Disable", new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
+
+    NamedCommands.registerCommand("ToggleCameras", new ToggleCameras());
   }
 
   private void enableStateSubsystems() {

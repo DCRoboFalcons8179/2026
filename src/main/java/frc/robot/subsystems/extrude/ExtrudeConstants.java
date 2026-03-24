@@ -13,9 +13,9 @@ public class ExtrudeConstants {
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
 
   public static final CurrentLimitsConfigs CURRENT_LIMIT =
-      new CurrentLimitsConfigs().withSupplyCurrentLimit(5).withSupplyCurrentLimitEnable(true);
+      new CurrentLimitsConfigs().withSupplyCurrentLimit(10).withSupplyCurrentLimitEnable(true);
 
-  public static final double IN_POSITION = -16;
+  public static final double IN_POSITION = -10;
   public static final double OUT_POSITION = -33;
   public static final double MANUAL_DELTA = 3;
   public static final double MIN_POS = -34;
@@ -32,9 +32,9 @@ public class ExtrudeConstants {
 
   // Motion profiling constraints to control speed
   // Maximum velocity in rotations per second (adjust lower to slow down)
-  public static final double MAX_VELOCITY = 48.0; // 24 rotations/sec - adjust as needed
+  public static final double MAX_VELOCITY = 60.0;
   // Maximum acceleration in rotations per second squared
-  public static final double MAX_ACCELERATION = 21.0; // Smooth acceleration
+  public static final double MAX_ACCELERATION = 30.0; // Smooth acceleration
   // Jerk control for even smoother motion (rotations per second cubed)
   public static final double JERK = 40.0; // Optional smoothing
 }

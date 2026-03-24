@@ -74,8 +74,7 @@ public class AutoShootVelocity extends Command {
 
     SmartDashboard.putNumber("Distance to Target", distance);
 
-    launchVelocity = (7.642 * distance) + 30.723;
-
+    launchVelocity = (7.725 * distance) + 28.723 - 5.5;
     shooter.setVelocity(launchVelocity);
   }
   // Called once the command ends or is interrupted.

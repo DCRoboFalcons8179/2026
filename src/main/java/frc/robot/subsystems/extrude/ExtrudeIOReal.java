@@ -94,8 +94,8 @@ public class ExtrudeIOReal implements ExtrudeIO {
     }
 
     // Use Motion Magic for smooth, velocity-limited movement
-    extruder.setControl(motionMagicControl.withPosition(position));
-    secondary.setControl(motionMagicControl.withPosition(position));
+    extruder.setControl(motionMagicControl.withPosition(targetPosition));
+    secondary.setControl(motionMagicControl.withPosition(targetPosition));
   }
 
   @Override
