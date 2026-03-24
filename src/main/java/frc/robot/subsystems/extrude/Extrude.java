@@ -23,6 +23,9 @@ public class Extrude extends StateMachine<Extrude.State> {
   /// Tracks if we already used auto intake on
   private boolean autoIntake = false;
 
+  /// Tracks the current agitate direction (true = moving out, false = moving in)
+  private boolean agitateOut = true;
+
   public Extrude(ExtrudeIO io, Intake intake) {
     super("Extruder", State.UNDETERMINED, State.class);
     this.io = io;
@@ -46,6 +49,30 @@ public class Extrude extends StateMachine<Extrude.State> {
         new SequentialCommandGroup(
             new InstantCommand(() -> io.setExtruderPosition(ExtrudeConstants.OUT_POSITION))));
     registerStateCommand(State.MANUAL_EXTRUDE, new MoveExtrude(this));
+    registerStateCommand(
+        State.AGITATE,
+        new InstantCommand(
+            () -> {
+              agitateOut = true;
+              io.setExtruderVelocity(-ExtrudeConstants.AGITATE_VELOCITY);
+              intake.requestTransition(Intake.State.FEED_IN);
+            }));
+    registerStateCommand(
+        State.BABY_AGITATE,
+        new InstantCommand(
+            () -> {
+              agitateOut = true;
+              io.setExtruderVelocity(-ExtrudeConstants.AGITATE_VELOCITY);
+              intake.requestTransition(Intake.State.FEED_IN);
+            }));
+    registerStateCommand(
+        State.TEEN_AGITATE,
+        new InstantCommand(
+            () -> {
+              agitateOut = true;
+              io.setExtruderVelocity(-ExtrudeConstants.AGITATE_VELOCITY);
+              intake.requestTransition(Intake.State.FEED_IN);
+            }));
   }
 
   public void addExtruderPosition(double delta) {
@@ -58,6 +85,9 @@ public class Extrude extends StateMachine<Extrude.State> {
     addOmniTransition(State.EXTRUDE_OUT);
     addOmniTransition(State.EXTRUDE_IN);
     addOmniTransition(State.MANUAL_EXTRUDE);
+    addOmniTransition(State.AGITATE);
+    addOmniTransition(State.BABY_AGITATE);
+    addOmniTransition(State.TEEN_AGITATE);
   }
 
   @Override
@@ -86,12 +116,35 @@ public class Extrude extends StateMachine<Extrude.State> {
     inputs.state = this.getState();
     io.updateInputs(inputs);
 
-    if (io.getPosition() > -3) {
-      intake.requestTransition(Intake.State.IDLE);
-      autoIntake = false;
-    } else if (io.getPosition() < -23 && !autoIntake) {
-      autoIntake = true;
-      intake.requestTransition(Intake.State.FEED_IN);
+    if (getState() == State.AGITATE) {
+      updateAgitate(ExtrudeConstants.AGITATE_IN_POS, ExtrudeConstants.AGITATE_OUT_POS);
+    } else if (getState() == State.BABY_AGITATE) {
+      updateAgitate(ExtrudeConstants.BABY_AGITATE_IN_POS, ExtrudeConstants.BABY_AGITATE_OUT_POS);
+    } else if (getState() == State.TEEN_AGITATE) {
+      updateAgitate(ExtrudeConstants.TEEN_AGITATE_IN_POS, ExtrudeConstants.TEEN_AGITATE_OUT_POS);
+    } else {
+      if (io.getPosition() > -3) {
+        intake.requestTransition(Intake.State.IDLE);
+        autoIntake = false;
+      } else if (io.getPosition() < -23 && !autoIntake) {
+        autoIntake = true;
+        intake.requestTransition(Intake.State.FEED_IN);
+      }
+    }
+  }
+
+  /** Shared oscillation logic for all agitate states. */
+  private void updateAgitate(double inPos, double outPos) {
+    double pos = io.getPosition();
+    // Reached the out limit — reverse to go in
+    if (agitateOut && pos <= outPos) {
+      agitateOut = false;
+      io.setExtruderVelocity(ExtrudeConstants.AGITATE_VELOCITY);
+    }
+    // Reached the in limit — reverse to go out
+    else if (!agitateOut && pos >= inPos) {
+      agitateOut = true;
+      io.setExtruderVelocity(-ExtrudeConstants.AGITATE_VELOCITY);
     }
   }
 
@@ -100,6 +153,9 @@ public class Extrude extends StateMachine<Extrude.State> {
     IDLE,
     EXTRUDE_IN,
     EXTRUDE_OUT,
-    MANUAL_EXTRUDE;
+    MANUAL_EXTRUDE,
+    AGITATE,
+    BABY_AGITATE,
+    TEEN_AGITATE;
   }
 }

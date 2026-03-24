@@ -24,6 +24,8 @@ public interface ExtrudeIO {
 
   public default void setExtruderPosition(double position) {}
 
+  public default void setExtruderVelocity(double velocity) {}
+
   public default void stop() {}
 
   public default void addExtruderPosition(double extruderManalDelta) {}

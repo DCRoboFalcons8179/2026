@@ -310,8 +310,21 @@ public class RobotContainer {
             new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
     controller
         .povUp()
-        .onTrue(
-            new InstantCommand(() -> extrude.addExtruderPosition(ExtrudeConstants.MANUAL_DELTA)));
+        .toggleOnTrue(
+            new InstantCommand(() -> extrude.requestTransition(Extrude.State.TEEN_AGITATE)));
+
+    controller
+        .povUp()
+        .toggleOnTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.IDLE)));
+
+    controller
+        .povDown()
+        .toggleOnTrue(
+            new InstantCommand(() -> extrude.requestTransition(Extrude.State.BABY_AGITATE)));
+
+    controller
+        .povDown()
+        .toggleOnTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.IDLE)));
 
     controller
         .povDown()
@@ -327,7 +340,13 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
 
     // Turret Reset to Zero
-    controller.a().onTrue(new InstantCommand(() -> turret.setTurretPose(0)));
+    controller
+        .a()
+        .toggleOnTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.AGITATE)));
+
+    controller
+        .a()
+        .toggleOnTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.IDLE)));
 
     controller
         .rightTrigger()

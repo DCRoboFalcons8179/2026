@@ -25,6 +25,8 @@ public class ExtrudeConstants {
   // Error thresh hold (current just a placeholder number before being tested)
   public static final double ERROR_THRESH_HOLD = .2;
 
+  public static final double GEAR_RATIO = 1 / 3;
+
   // PID values for extruder - These need tuning
   public static final double KP = 24;
   public static final double KI = 0.3;
@@ -37,4 +39,17 @@ public class ExtrudeConstants {
   public static final double MAX_ACCELERATION = 30.0; // Smooth acceleration
   // Jerk control for even smoother motion (rotations per second cubed)
   public static final double JERK = 40.0; // Optional smoothing
+
+  // Agitate state - oscillates between in and out positions using velocity control
+  public static final double AGITATE_IN_POS = IN_POSITION;
+  public static final double AGITATE_OUT_POS = OUT_POSITION;
+  public static final double AGITATE_VELOCITY = 15.0; // rps - speed for agitation (mechanism)
+
+  // Baby agitate - smallest oscillation range
+  public static final double BABY_AGITATE_IN_POS = -15;
+  public static final double BABY_AGITATE_OUT_POS = -20;
+
+  // Teen agitate - medium oscillation range
+  public static final double TEEN_AGITATE_IN_POS = -12;
+  public static final double TEEN_AGITATE_OUT_POS = -27;
 }

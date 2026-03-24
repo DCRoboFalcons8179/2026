@@ -56,6 +56,11 @@ public class ExtrudeIOSim implements ExtrudeIO {
   }
 
   @Override
+  public void setExtruderVelocity(double velocity) {
+    extruderSim.setAngularVelocity(velocity);
+  }
+
+  @Override
   public void updateInputs(ExtrudeInputsAutoLogged inputs) {
 
     // Update simulation with applied voltage

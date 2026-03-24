@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import frc.robot.subsystems.Music;
@@ -24,6 +25,9 @@ public class ExtrudeIOReal implements ExtrudeIO {
 
   // Control request for Motion Magic position control (smoother than basic position control)
   private final MotionMagicVoltage motionMagicControl = new MotionMagicVoltage(0);
+
+  // Control request for velocity control (used for agitation)
+  private final VelocityVoltage velocityControl = new VelocityVoltage(0);
 
   public ExtrudeIOReal() {
     configureMotors();
@@ -99,6 +103,12 @@ public class ExtrudeIOReal implements ExtrudeIO {
   }
 
   @Override
+  public void setExtruderVelocity(double velocity) {
+    extruder.setControl(velocityControl.withVelocity(velocity * 1 / ExtrudeConstants.GEAR_RATIO));
+    secondary.setControl(velocityControl.withVelocity(velocity * 1 / ExtrudeConstants.GEAR_RATIO));
+  }
+
+  @Override
   public void addExtruderPosition(double Delta) {
     double pose = targetPosition + Delta;
     setExtruderPosition(pose);
@@ -117,5 +127,6 @@ public class ExtrudeIOReal implements ExtrudeIO {
   @Override
   public void stop() {
     extruder.stopMotor();
+    secondary.stopMotor();
   }
 }
