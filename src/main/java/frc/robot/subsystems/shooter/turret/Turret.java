@@ -86,7 +86,7 @@ public class Turret extends StateMachine<Turret.State> {
   }
 
   public void incrementTurret(double increment) {
-    io.incrementTurret(increment);
+    io.incrementTurret(increment - TurretConstants.POSITION_OFFSET);
   }
 
   public enum State {
