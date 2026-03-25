@@ -24,7 +24,7 @@ public class Turret extends StateMachine<Turret.State> {
     this.io = io;
     this.drive = drive;
 
-    io.updateInputs(inputs);
+    io.updateInputs(inputs, drive.getPose());
 
     registerStateCommands();
     registerStateTransitions();
@@ -58,7 +58,7 @@ public class Turret extends StateMachine<Turret.State> {
   @Override
   protected void update() {
     inputs.state = this.getState();
-    io.updateInputs(inputs);
+    io.updateInputs(inputs, drive.getPose());
   }
 
   public void setTurretPose(double desiredTurretPose) {

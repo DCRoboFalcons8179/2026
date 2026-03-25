@@ -46,4 +46,6 @@ public class TurretConstants {
   public static final Translation2d TURRET_POSE = new Translation2d(0, 0.5);
 
   public static final double POSITION_OFFSET = 0.45;
+
+  public static final double POSITION_OFFSET_MULTIPLIER = 0.9;
 }

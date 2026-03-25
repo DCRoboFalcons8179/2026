@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shooter.turret;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface TurretIO {
@@ -17,7 +18,7 @@ public interface TurretIO {
 
   public default void stop() {}
 
-  public default void updateInputs(TurretInputsAutoLogged inputs) {}
+  public default void updateInputs(TurretInputsAutoLogged inputs, Pose2d robotPose) {}
 
   public default void setPIDControl() {}
 

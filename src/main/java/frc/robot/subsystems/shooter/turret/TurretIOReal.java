@@ -4,6 +4,9 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.FieldConstants;
 import frc.robot.subsystems.Music;
 import org.littletonrobotics.junction.Logger;
 
@@ -12,6 +15,8 @@ public class TurretIOReal implements TurretIO {
 
   private double targetPosition = 0.0;
   private boolean usePositionControl = false;
+
+  private Pose2d robotPose = new Pose2d();
 
   public TurretIOReal() {
     setPIDControl();
@@ -51,12 +56,14 @@ public class TurretIOReal implements TurretIO {
   }
 
   @Override
-  public void updateInputs(TurretInputsAutoLogged inputs) {
+  public void updateInputs(TurretInputsAutoLogged inputs, Pose2d robotPose) {
     inputs.current = turretMotor.getTorqueCurrent().getValueAsDouble();
     inputs.encoderPosition = turretMotor.getPosition().getValueAsDouble();
     inputs.velocity = turretMotor.getVelocity().getValueAsDouble();
     inputs.appliedVoltage = turretMotor.getMotorVoltage().getValueAsDouble();
     inputs.targetPosition = targetPosition;
+
+    this.robotPose = robotPose;
 
     // Check if at target (within tolerance when using position control)
     if (usePositionControl) {
@@ -71,7 +78,13 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void moveTurret(double position) {
-    position += TurretConstants.POSITION_OFFSET;
+    Translation2d delta =
+        FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
+            .minus(robotPose.getTranslation().plus(TurretConstants.TURRET_POSE));
+
+    position +=
+        TurretConstants.POSITION_OFFSET_MULTIPLIER * delta.getNorm()
+            + TurretConstants.POSITION_OFFSET;
 
     if (position > TurretConstants.MAX_MOTOR_ROT) {
       targetPosition = TurretConstants.MAX_MOTOR_ROT;

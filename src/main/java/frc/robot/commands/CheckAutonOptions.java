@@ -46,9 +46,19 @@ public class CheckAutonOptions extends InstantCommand {
     }
 
     if (trench || ramp) {
-      var auto = AutoBuilder.followPath(path);
+      try {
+        var auto = AutoBuilder.followPath(path);
 
-      CommandScheduler.getInstance().schedule(auto);
+        var side = getAutoSide(boxLeft, boxRight);
+
+        var secondPath =
+            AutoBuilder.followPath(PathPlannerPath.fromPathFile(side + " Back Trench"));
+
+        CommandScheduler.getInstance().schedule(auto.andThen(secondPath));
+
+      } catch (FileVersionException | IOException | ParseException e) {
+        e.printStackTrace();
+      }
     }
   }
 

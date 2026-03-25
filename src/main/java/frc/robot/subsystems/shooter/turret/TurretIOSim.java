@@ -1,6 +1,7 @@
 package frc.robot.subsystems.shooter.turret;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
@@ -57,7 +58,7 @@ public class TurretIOSim implements TurretIO {
   }
 
   @Override
-  public void updateInputs(TurretInputsAutoLogged inputs) {
+  public void updateInputs(TurretInputsAutoLogged inputs, Pose2d robotPose) {
     // If using position control, calculate voltage from PID
     if (usePositionControl) {
       double currentPosition = turretSim.getAngularPositionRotations();
