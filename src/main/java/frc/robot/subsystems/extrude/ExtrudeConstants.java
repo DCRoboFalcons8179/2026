@@ -13,7 +13,7 @@ public class ExtrudeConstants {
   public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
 
   public static final CurrentLimitsConfigs CURRENT_LIMIT =
-      new CurrentLimitsConfigs().withSupplyCurrentLimit(2).withSupplyCurrentLimitEnable(true);
+      new CurrentLimitsConfigs().withSupplyCurrentLimit(3).withSupplyCurrentLimitEnable(true);
 
   public static final double IN_POSITION = -10;
   public static final double OUT_POSITION = -33;
@@ -44,7 +44,7 @@ public class ExtrudeConstants {
   // Dynamic inward limit: reverses when current draw nears the supply limit
   public static final double AGITATE_OUT_POS = OUT_POSITION;
   public static final double AGITATE_IN_POS = IN_POSITION;
-  public static final double AGITATE_VELOCITY = 15.0; // rps - speed for agitation (mechanism)
+  public static final double AGITATE_VELOCITY = 10.0; // rps - speed for agitation (mechanism)
   public static final double AGITATE_SLOW_VELOCITY = 5.0; // rps - slower speed near the in limit
   public static final double AGITATE_SLOW_DISTANCE =
       5.0; // rotations before the in pos to start slowing

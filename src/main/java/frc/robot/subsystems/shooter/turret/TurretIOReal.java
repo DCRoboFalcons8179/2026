@@ -5,8 +5,6 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.FieldConstants;
 import frc.robot.subsystems.Music;
 import org.littletonrobotics.junction.Logger;
 
@@ -78,13 +76,15 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void moveTurret(double position) {
-    Translation2d delta =
-        FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
-            .minus(robotPose.getTranslation().plus(TurretConstants.TURRET_POSE));
+    // Translation2d delta =
+    //     FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
+    //         .minus(robotPose.getTranslation().plus(TurretConstants.TURRET_POSE));
 
-    position +=
-        TurretConstants.POSITION_OFFSET_MULTIPLIER * delta.getNorm()
-            + TurretConstants.POSITION_OFFSET;
+    // position +=
+    //     TurretConstants.POSITION_OFFSET_MULTIPLIER * delta.getNorm()
+    //         + TurretConstants.POSITION_OFFSET;
+
+    // position += TurretConstants.POSITION_OFFSET;
 
     if (position > TurretConstants.MAX_MOTOR_ROT) {
       targetPosition = TurretConstants.MAX_MOTOR_ROT;

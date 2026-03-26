@@ -44,7 +44,10 @@ public class AutoAim extends Command {
 
     Translation2d delta =
         FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
-            .minus(robotPose.getTranslation().plus(TurretConstants.TURRET_POSE));
+            .minus(
+                robotPose
+                    .getTranslation()
+                    .plus(TurretConstants.TURRET_POSE.rotateBy(robotPose.getRotation())));
 
     // Use Rotation2d subtraction which properly wraps the angle to [-180, 180]
     Rotation2d fieldAngle = delta.getAngle();
@@ -55,7 +58,7 @@ public class AutoAim extends Command {
 
     SmartDashboard.putNumber("Turret Angle Desired", angleDegrees);
 
-    turret.setTurretPose(-angleDegrees / 30);
+    turret.setTurretPose(-angleDegrees * TurretConstants.GEAR_RATIO / 360.0);
     turret.moveTurret();
   }
 

@@ -68,7 +68,7 @@ public class Turret extends StateMachine<Turret.State> {
   }
 
   public void setTurretDegrees(double degrees) {
-    this.desiredTurretPose = degrees / 30;
+    this.desiredTurretPose = degrees * TurretConstants.GEAR_RATIO / 360.0;
     moveTurret();
   }
 
@@ -86,7 +86,8 @@ public class Turret extends StateMachine<Turret.State> {
   }
 
   public void incrementTurret(double increment) {
-    io.incrementTurret(increment - TurretConstants.POSITION_OFFSET);
+    // io.incrementTurret(increment - TurretConstants.POSITION_OFFSET);
+    io.incrementTurret(increment);
   }
 
   public enum State {

@@ -29,7 +29,7 @@ public class TurretConstants {
   /// KD for auto aim
   public static final double AIM_KD = 0;
 
-  public static final double GEAR_RATIO = 10 / 1.0;
+  public static final double GEAR_RATIO = 12.5 / 1.0;
 
   // All in degrees
 
@@ -43,7 +43,7 @@ public class TurretConstants {
 
   public static final double ZERO_ANGLE = 0;
 
-  public static final Translation2d TURRET_POSE = new Translation2d(0, 0.5);
+  public static final Translation2d TURRET_POSE = new Translation2d(0.14, 0);
 
   public static final double POSITION_OFFSET = 0.45;
 
