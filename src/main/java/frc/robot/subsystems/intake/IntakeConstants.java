@@ -10,8 +10,8 @@ public class IntakeConstants {
   public static final double GEAR_RATIO = 1.0 / 3.0;
 
   // motor velocity
-  public static final double SPEED_IN = -27.5;
-  public static final double SPEED_OUT = 27.5;
+  public static final double SPEED_IN = -20.5;
+  public static final double SPEED_OUT = 20.5;
 
   public static final double EXTRUDE_IN_SPEED = -6;
 
