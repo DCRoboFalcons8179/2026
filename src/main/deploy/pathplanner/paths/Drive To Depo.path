@@ -1,0 +1,95 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.01,
+        "y": 5.475
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.1406695156626707,
+        "y": 4.952336182336309
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.3886609686609688,
+        "y": 4.913575498575499
+      },
+      "prevControl": {
+        "x": 0.33963193486388965,
+        "y": 4.668430329655275
+      },
+      "nextControl": {
+        "x": 0.49030023536879763,
+        "y": 5.421771831979537
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.5178632478632479,
+        "y": 7.006652421652421
+      },
+      "prevControl": {
+        "x": 0.26225555368493625,
+        "y": 6.683230441263664
+      },
+      "nextControl": {
+        "x": 1.150954415954649,
+        "y": 7.807706552706534
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.01,
+        "y": 5.475
+      },
+      "prevControl": {
+        "x": 2.567486116765844,
+        "y": 7.151506406277001
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.49,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.0067972810875543,
+      "rotationDegrees": -90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -34.99
+  },
+  "reversed": false,
+  "folder": "Pickups",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -34.99202019855879
+  },
+  "useDefaultConstraints": true
+}
