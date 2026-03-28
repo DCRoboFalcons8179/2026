@@ -206,6 +206,8 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Extrude In",
         new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
+    NamedCommands.registerCommand(
+        "Agitate", new InstantCommand(() -> extrude.requestTransition(Extrude.State.AGITATE)));
 
     NamedCommands.registerCommand(
         "Turret Aim Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)));
@@ -473,6 +475,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)))
         .andThen(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)))
-        .andThen(new CheckAutonOptions(boxLeft, boxRight, extrude));
+        .andThen(new CheckAutonOptions(boxLeft, boxRight, extrude, drive));
   }
 }

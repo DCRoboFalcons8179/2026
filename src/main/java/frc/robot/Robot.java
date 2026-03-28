@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.util.RobotLogger;
@@ -91,6 +92,8 @@ public class Robot extends LoggedRobot {
 
     // Update RobotLogger metrics (battery voltage, custom metrics, etc.)
     RobotLogger.getInstance().periodic();
+
+    SmartDashboard.putBoolean("Use Cameras", Constants.useCameras);
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);

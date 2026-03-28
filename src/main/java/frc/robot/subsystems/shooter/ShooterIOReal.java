@@ -62,7 +62,7 @@ public class ShooterIOReal implements ShooterIO {
             .withEnableFOC(false));
 
     // If the shooter is charged, run the feeder
-    if (isCharged()) {
+    if (true) {
       feeder.set(ShooterConstants.FEED_OUTPUT_SPEED);
     }
   }

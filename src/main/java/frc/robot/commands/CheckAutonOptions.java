@@ -7,11 +7,15 @@ package frc.robot.commands;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.FileVersionException;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.BinaryToInt;
 import frc.robot.GetAuton;
+import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.extrude.Extrude;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
@@ -23,10 +27,13 @@ public class CheckAutonOptions extends InstantCommand {
   private final CommandJoystick boxLeft;
   private final CommandJoystick boxRight;
   PathPlannerPath path = null;
+  private final Drive drive;
 
-  public CheckAutonOptions(CommandJoystick boxLeft, CommandJoystick boxRight, Extrude extrude) {
+  public CheckAutonOptions(
+      CommandJoystick boxLeft, CommandJoystick boxRight, Extrude extrude, Drive drive) {
     this.boxLeft = boxLeft;
     this.boxRight = boxRight;
+    this.drive = drive;
   }
 
   // Called when the command is initially scheduled.
@@ -47,6 +54,14 @@ public class CheckAutonOptions extends InstantCommand {
 
     if (trench || ramp) {
       try {
+        path.getStartingHolonomicPose();
+
+        PathPlannerPath originalPath = PathPlannerPath.fromPathFile(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)));
+
+        Translation2d pathEnd = originalPath.getAllPathPoints().get(originalPath.getAllPathPoints().size() - 1).position;
+
+        drive.setPose(new Pose2d(pathEnd, drive.getRotation()));
+
         var auto = AutoBuilder.followPath(path);
 
         var side = getAutoSide(boxLeft, boxRight);
@@ -54,7 +69,9 @@ public class CheckAutonOptions extends InstantCommand {
         var secondPath =
             AutoBuilder.followPath(PathPlannerPath.fromPathFile(side + " Back Trench"));
 
-        CommandScheduler.getInstance().schedule(auto.andThen(secondPath));
+        CommandScheduler.getInstance()
+            .schedule(
+                new ToggleCameras().andThen(auto.andThen(secondPath).andThen(new ToggleCameras())));
 
       } catch (FileVersionException | IOException | ParseException e) {
         e.printStackTrace();
