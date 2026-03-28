@@ -7,7 +7,6 @@ package frc.robot.commands;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.FileVersionException;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -56,9 +55,15 @@ public class CheckAutonOptions extends InstantCommand {
       try {
         path.getStartingHolonomicPose();
 
-        PathPlannerPath originalPath = PathPlannerPath.fromPathFile(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)));
+        PathPlannerPath originalPath =
+            PathPlannerPath.fromPathFile(
+                GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)));
 
-        Translation2d pathEnd = originalPath.getAllPathPoints().get(originalPath.getAllPathPoints().size() - 1).position;
+        Translation2d pathEnd =
+            originalPath
+                .getAllPathPoints()
+                .get(originalPath.getAllPathPoints().size() - 1)
+                .position;
 
         drive.setPose(new Pose2d(pathEnd, drive.getRotation()));
 
