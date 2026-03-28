@@ -98,8 +98,8 @@ public class GetAuton {
               /* 3*/ "C-Human-Simple",
               /* 4*/ "Crew",
               /* 5*/ "Human Pickup Shoot",
-              /* 6*/ "Depot Pickup Shoot",
-              /* 7*/ "Swap Button Order!"
+              /* 6*/ "Depo Pickup Shoot",
+              /* 7*/ "Depo Pickup Shoot Depo"
               /*20*/
               /*21*/
               ));

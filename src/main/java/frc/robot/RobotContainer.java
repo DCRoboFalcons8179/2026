@@ -24,7 +24,6 @@ import frc.robot.commands.CheckAutonOptions;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ToggleCameras;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Music;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -70,9 +69,6 @@ public class RobotContainer {
   private final Intake intake;
   private final Extrude extrude;
 
-  @SuppressWarnings("unused")
-  private final Music music;
-
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
   private final CommandJoystick boxLeft = new CommandJoystick(1);
@@ -85,7 +81,7 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-        // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
+        // ModuleIOTalonFX is intended f4or modules with TalonFX drive, TalonFX turn, and
         // a CANcoder
         drive =
             new Drive(
@@ -101,9 +97,9 @@ public class RobotContainer {
                 // new VisionIOPhotonVision(
                 //     VisionConstants.camera0Name, VisionConstants.robotToCamera0),
                 new VisionIOPhotonVision(
-                    VisionConstants.camera1Name, VisionConstants.robotToCamera1));
-        // new VisionIOPhotonVision(
-        //     VisionConstants.camera2Name, VisionConstants.robotToCamera2));
+                    VisionConstants.camera1Name, VisionConstants.robotToCamera1),
+                new VisionIOPhotonVision(
+                    VisionConstants.camera2Name, VisionConstants.robotToCamera2));
 
         turret = new Turret(new TurretIOReal(), drive);
 
@@ -111,7 +107,6 @@ public class RobotContainer {
 
         intake = new Intake(new IntakeIOReal());
         extrude = new Extrude(new ExtrudeIOReal(), intake);
-        music = new Music();
         break;
 
       case SIM:
@@ -138,7 +133,6 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {}, drive::getPose);
         intake = new Intake(new IntakeIOSim() {});
         extrude = new Extrude(new ExtrudeIOSim() {}, intake);
-        music = new Music();
 
         break;
 
@@ -166,7 +160,6 @@ public class RobotContainer {
         intake = new Intake(new IntakeIO() {});
 
         extrude = new Extrude(new ExtrudeIO() {}, intake);
-        music = new Music();
         break;
     }
 
