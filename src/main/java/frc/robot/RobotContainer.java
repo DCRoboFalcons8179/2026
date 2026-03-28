@@ -101,9 +101,9 @@ public class RobotContainer {
                 // new VisionIOPhotonVision(
                 //     VisionConstants.camera0Name, VisionConstants.robotToCamera0),
                 new VisionIOPhotonVision(
-                    VisionConstants.camera1Name, VisionConstants.robotToCamera1),
-                new VisionIOPhotonVision(
-                    VisionConstants.camera2Name, VisionConstants.robotToCamera2));
+                    VisionConstants.camera1Name, VisionConstants.robotToCamera1));
+        // new VisionIOPhotonVision(
+        //     VisionConstants.camera2Name, VisionConstants.robotToCamera2));
 
         turret = new Turret(new TurretIOReal(), drive);
 
@@ -302,6 +302,8 @@ public class RobotContainer {
         .start()
         .onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
 
+    controller.back().onTrue(new ToggleCameras());
+
     controller
         .leftBumper()
         .toggleOnTrue(
@@ -474,7 +476,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)))
-        .andThen(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)))
-        .andThen(new CheckAutonOptions(boxLeft, boxRight, extrude, drive));
+        .andThen(new CheckAutonOptions(boxLeft, boxRight, extrude, drive, shooter));
   }
 }

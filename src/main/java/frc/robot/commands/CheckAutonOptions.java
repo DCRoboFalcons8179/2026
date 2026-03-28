@@ -16,6 +16,7 @@ import frc.robot.BinaryToInt;
 import frc.robot.GetAuton;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.extrude.Extrude;
+import frc.robot.subsystems.shooter.Shooter;
 import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
@@ -27,12 +28,18 @@ public class CheckAutonOptions extends InstantCommand {
   private final CommandJoystick boxRight;
   PathPlannerPath path = null;
   private final Drive drive;
+  private final Shooter shooter;
 
   public CheckAutonOptions(
-      CommandJoystick boxLeft, CommandJoystick boxRight, Extrude extrude, Drive drive) {
+      CommandJoystick boxLeft,
+      CommandJoystick boxRight,
+      Extrude extrude,
+      Drive drive,
+      Shooter shooter) {
     this.boxLeft = boxLeft;
     this.boxRight = boxRight;
     this.drive = drive;
+    this.shooter = shooter;
   }
 
   // Called when the command is initially scheduled.
@@ -76,7 +83,10 @@ public class CheckAutonOptions extends InstantCommand {
 
         CommandScheduler.getInstance()
             .schedule(
-                new ToggleCameras().andThen(auto.andThen(secondPath).andThen(new ToggleCameras())));
+                new ToggleCameras()
+                    .andThen(
+                        new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)))
+                    .andThen(auto.andThen(secondPath).andThen(new ToggleCameras())));
 
       } catch (FileVersionException | IOException | ParseException e) {
         e.printStackTrace();
@@ -108,6 +118,12 @@ public class CheckAutonOptions extends InstantCommand {
 
   public static String getAutoSide(CommandJoystick boxLeft, CommandJoystick boxRight) {
     String autoName = GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)).toLowerCase();
+
+    int autonID = BinaryToInt.getInt(boxRight, boxLeft);
+
+    if (autonID > 3) {
+      return "None";
+    }
 
     String humanOrDepo;
     if (autoName.contains("c(hub)") || autoName.contains("do nothing") || autoName.equals("crew")) {

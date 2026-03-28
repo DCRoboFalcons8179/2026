@@ -129,7 +129,7 @@ public class Extrude extends StateMachine<Extrude.State> {
       }
     } else {
       // Moving inward — check if current is spiking (hit resistance) or reached in pos
-      if (current >= ExtrudeConstants.AGITATE_CURRENT_THRESHOLD
+      if (current >= ExtrudeConstants.AGITATE_CURRENT_THRESHOLD - 0.25
           || pos >= ExtrudeConstants.AGITATE_IN_POS) {
         agitateOut = true;
         io.setExtruderVelocity(-ExtrudeConstants.AGITATE_VELOCITY);

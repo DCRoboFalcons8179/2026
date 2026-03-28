@@ -27,7 +27,7 @@ public class ExtrudeConstants {
 
   public static final double GEAR_RATIO = 1 / 3;
 
-  // PID values for extruder - These need tuning
+  // PID values for extruder
   public static final double KP = 24;
   public static final double KI = 0.3;
   public static final double KD = 0.2;

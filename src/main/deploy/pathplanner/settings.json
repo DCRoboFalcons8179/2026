@@ -3,6 +3,7 @@
   "robotLength": 0.6858,
   "holonomicMode": true,
   "pathFolders": [
+    "Pickups",
     "adaptive paths",
     "depot",
     "hub",
@@ -11,6 +12,7 @@
   ],
   "autoFolders": [
     "Hang",
+    "Pickups",
     "No Hang"
   ],
   "defaultMaxVel": 3.0,
