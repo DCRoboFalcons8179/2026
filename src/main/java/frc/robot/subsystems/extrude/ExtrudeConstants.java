@@ -49,4 +49,8 @@ public class ExtrudeConstants {
   public static final double AGITATE_SLOW_DISTANCE =
       5.0; // rotations before the in pos to start slowing
   public static final double AGITATE_CURRENT_THRESHOLD = CURRENT_LIMIT.SupplyCurrentLimit;
+
+  public static final double AGITATE_BABY_IN_POSE = -30;
+  public static final double AGITATE_BABY_OUT_POSE = -33;
+  public static final double AGITATE_BABY_VELOCITY = 15;
 }

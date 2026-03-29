@@ -58,6 +58,15 @@ public class Extrude extends StateMachine<Extrude.State> {
               io.setExtruderVelocity(-ExtrudeConstants.AGITATE_VELOCITY);
               intake.requestTransition(Intake.State.FEED_IN);
             }));
+
+    registerStateCommand(
+        State.BABY_AGITATE,
+        new InstantCommand(
+            () -> {
+              agitateOut = true;
+              io.setExtruderVelocity(-ExtrudeConstants.AGITATE_BABY_VELOCITY);
+              intake.requestTransition(Intake.State.FEED_IN);
+            }));
   }
 
   public void addExtruderPosition(double delta) {
@@ -71,7 +80,9 @@ public class Extrude extends StateMachine<Extrude.State> {
     addOmniTransition(State.EXTRUDE_IN);
     addOmniTransition(State.MANUAL_EXTRUDE);
     addOmniTransition(State.AGITATE);
+    addOmniTransition(State.BABY_AGITATE);
     addTransition(State.EXTRUDE_OUT, State.AGITATE);
+    addTransition(State.EXTRUDE_OUT, State.BABY_AGITATE);
   }
 
   @Override
@@ -101,7 +112,15 @@ public class Extrude extends StateMachine<Extrude.State> {
     io.updateInputs(inputs);
 
     if (getState() == State.AGITATE) {
-      updateAgitateDynamic();
+      updateAgitateDynamic(
+          ExtrudeConstants.AGITATE_OUT_POS,
+          ExtrudeConstants.AGITATE_IN_POS,
+          ExtrudeConstants.AGITATE_VELOCITY);
+    } else if (getState() == State.BABY_AGITATE) {
+      updateAgitateDynamic(
+          ExtrudeConstants.AGITATE_BABY_OUT_POSE,
+          ExtrudeConstants.AGITATE_BABY_IN_POSE,
+          ExtrudeConstants.AGITATE_BABY_VELOCITY);
     } else {
       if (io.getPosition() > -3) {
         intake.requestTransition(Intake.State.IDLE);
@@ -117,25 +136,27 @@ public class Extrude extends StateMachine<Extrude.State> {
    * Dynamic agitate: pushes inward until motor current nears the limit (hit resistance), then
    * bounces back out to the out position. Slows down when approaching the in limit.
    */
-  private void updateAgitateDynamic() {
+  private void updateAgitateDynamic(double outPose, double inPose, double velocity) {
     double pos = io.getPosition();
     double current = Math.abs(inputs.current);
 
     if (agitateOut) {
       // Moving outward — check if we've reached the out position
-      if (pos <= ExtrudeConstants.AGITATE_OUT_POS) {
+      if (pos <= outPose) {
         agitateOut = false;
-        io.setExtruderVelocity(ExtrudeConstants.AGITATE_VELOCITY);
+        io.setExtruderVelocity(velocity);
       }
     } else {
-      // Moving inward — check if current is spiking (hit resistance) or reached in pos
+      // Moving inward — check if current is spiking (hit resistance) or reached in
+      // pos
       if (current >= ExtrudeConstants.AGITATE_CURRENT_THRESHOLD - 0.25
-          || pos >= ExtrudeConstants.AGITATE_IN_POS) {
+              && getState() != State.BABY_AGITATE
+          || pos >= inPose) {
         agitateOut = true;
-        io.setExtruderVelocity(-ExtrudeConstants.AGITATE_VELOCITY);
+        io.setExtruderVelocity(-velocity);
       }
       // Approaching the in limit — ease off the speed
-      else if (pos >= ExtrudeConstants.AGITATE_IN_POS - ExtrudeConstants.AGITATE_SLOW_DISTANCE) {
+      else if (pos >= inPose - ExtrudeConstants.AGITATE_SLOW_DISTANCE) {
         io.setExtruderVelocity(ExtrudeConstants.AGITATE_SLOW_VELOCITY);
       }
     }
@@ -147,6 +168,7 @@ public class Extrude extends StateMachine<Extrude.State> {
     EXTRUDE_IN,
     EXTRUDE_OUT,
     MANUAL_EXTRUDE,
-    AGITATE;
+    AGITATE,
+    BABY_AGITATE;
   }
 }

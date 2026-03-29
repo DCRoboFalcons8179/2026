@@ -264,7 +264,13 @@ public class RobotContainer {
             () -> -controller.getRightX()));
 
     // Switch to X pattern when X button is pressed
-    controller.b().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    controller
+        .b()
+        .toggleOnTrue(
+            new InstantCommand(() -> extrude.requestTransition(Extrude.State.BABY_AGITATE)));
+    controller
+        .b()
+        .toggleOnTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.IDLE)));
 
     // Reset gyro to 0° when B button is pressed
     controller
