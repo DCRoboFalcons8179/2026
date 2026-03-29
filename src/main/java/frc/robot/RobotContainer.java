@@ -230,6 +230,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("ToggleCameras", new ToggleCameras());
   }
 
+  public void idleShooter() {
+    shooter.requestTransition(Shooter.State.IDLE);
+  }
+
   private void enableStateSubsystems() {
     turret.enable();
     turret.determineState();
@@ -270,8 +274,8 @@ public class RobotContainer {
             new InstantCommand(() -> extrude.requestTransition(Extrude.State.BABY_AGITATE)));
     controller
         .b()
-        .toggleOnTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.IDLE)));
-
+        .toggleOnTrue(
+            new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
     // Reset gyro to 0° when B button is pressed
     controller
         .y()
@@ -336,7 +340,8 @@ public class RobotContainer {
 
     controller
         .a()
-        .toggleOnTrue(new InstantCommand(() -> extrude.requestTransition(Extrude.State.IDLE)));
+        .toggleOnTrue(
+            new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
 
     controller
         .rightTrigger()
