@@ -16,7 +16,7 @@ public class ExtrudeConstants {
       new CurrentLimitsConfigs().withSupplyCurrentLimit(3).withSupplyCurrentLimitEnable(true);
 
   public static final double IN_POSITION = -10;
-  public static final double OUT_POSITION = -30;
+  public static final double OUT_POSITION = -33;
   public static final double MANUAL_DELTA = 3;
   public static final double MIN_POS = -34;
   public static final double MAX_POS = 0;

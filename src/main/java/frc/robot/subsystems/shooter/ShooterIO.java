@@ -16,6 +16,7 @@ public interface ShooterIO {
     public Shooter.State state = Shooter.State.UNDETERMINED;
     public double bbbVoltage = 0;
     public double bbbCurrent = 0;
+    public boolean atSpeed = false;
   }
 
   public default void setShooterTargetVelocity(double velocity) {}
@@ -27,6 +28,10 @@ public interface ShooterIO {
   }
 
   public default void setPIDControl() {}
+
+  public default void outBBB() {}
+
+  public default void stopBBB() {}
 
   public default boolean isCharged() {
     return false;

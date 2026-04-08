@@ -68,7 +68,8 @@ public class ShooterIOReal implements ShooterIO {
             .withEnableFOC(false));
 
     // If the shooter is charged, run the feeder
-    if (true) {
+    if (isCharged()) {
+      System.out.println("Charged");
       feeder.set(ShooterConstants.FEED_OUTPUT_SPEED);
       inBBB();
     }
@@ -78,8 +79,16 @@ public class ShooterIOReal implements ShooterIO {
     bbb.set(ShooterConstants.BBB_IN_SPEED);
   }
 
+  @Override
   public void outBBB() {
+    System.out.println("OUT");
     bbb.set(ShooterConstants.BBB_OUT_SPEED);
+  }
+
+  public void stopBBB() {
+    System.out.println("STOPPING");
+    bbb.stopMotor();
+    bbb.set(0);
   }
 
   @Override
@@ -145,6 +154,7 @@ public class ShooterIOReal implements ShooterIO {
     inputs.followerTargetVelocity = followerTargetVelocity;
     inputs.bbbVoltage = bbb.getMotorVoltage().getValueAsDouble();
     inputs.bbbCurrent = bbb.getSupplyCurrent().getValueAsDouble();
+    inputs.atSpeed = isCharged();
 
     Logger.processInputs("Shooter", inputs);
   }
@@ -153,10 +163,9 @@ public class ShooterIOReal implements ShooterIO {
   public boolean isCharged() {
     double omega = follower.getVelocity().getValueAsDouble();
 
-    return omega * ShooterConstants.GEAR_RATIO + 10 > followerTargetVelocity;
-    // return Range.inRange(
-    //     omega * ShooterConstants.GEAR_RATIO, ShooterConstants.LOWER_ERROR_MARGIN,
-    // followerTargetVelocity);
+    boolean atSpeed = (omega * ShooterConstants.GEAR_RATIO) + 10 > followerTargetVelocity;
+
+    return atSpeed;
   }
 
   @Override

@@ -41,8 +41,7 @@ public class Shooter extends StateMachine<Shooter.State> {
             new WaitCommand(0.1),
             new InstantCommand(() -> requestTransition(State.SHOOT))));
 
-    registerStateCommand(
-        State.SHOOT, new InstantCommand(() -> new AutoShootVelocity(this, poseSupplier)));
+    registerStateCommand(State.SHOOT, new AutoShootVelocity(this, poseSupplier));
 
     registerStateCommand(State.REVERSE, new InstantCommand(() -> io.beaterBarReverse(-50)));
   }
@@ -61,6 +60,16 @@ public class Shooter extends StateMachine<Shooter.State> {
   @Override
   protected void determineSelf() {
     setState(State.IDLE);
+  }
+
+  public void empty() {
+    System.out.println("EMPTY");
+    io.outBBB();
+  }
+
+  public void stopBBB() {
+    System.out.println("STOP");
+    io.stopBBB();
   }
 
   @Override

@@ -29,7 +29,7 @@ public class ShooterConstants {
 
   /// Current to limit the motors to in amps
   public static final CurrentLimitsConfigs CURRENT_LIMIT =
-      new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
+      new CurrentLimitsConfigs().withSupplyCurrentLimit(40).withSupplyCurrentLimitEnable(true);
 
   public static final double GEAR_RATIO = 1.0 / 1.0;
 
@@ -63,7 +63,7 @@ public class ShooterConstants {
   public static final double FEED_KV = 0.2;
   /// Current to limit the motors to in amps
   public static final CurrentLimitsConfigs FEED_CURRENT_LIMIT =
-      new CurrentLimitsConfigs().withSupplyCurrentLimit(30).withSupplyCurrentLimitEnable(true);
+      new CurrentLimitsConfigs().withSupplyCurrentLimit(40).withSupplyCurrentLimitEnable(true);
 
   private static final double FEED_GEAR_RATIO = 1.0 / 5.0;
 
