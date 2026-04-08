@@ -15,6 +15,8 @@ public class ShooterIOReal implements ShooterIO {
   private final VelocityVoltage followerVelocityRequest = new VelocityVoltage(0).withSlot(0);
   protected final TalonFXS feeder = new TalonFXS(ShooterConstants.FEED_ID);
 
+  protected final TalonFXS bbb = new TalonFXS(ShooterConstants.BBB_ID);
+
   private double mainTargetVelocity = 0;
   private double followerTargetVelocity = 0;
 
@@ -39,6 +41,10 @@ public class ShooterIOReal implements ShooterIO {
         .apply(new MotorOutputConfigs().withInverted(ShooterConstants.FEED_INVERT));
 
     setPIDControl();
+
+    // bbb.getConfigurator().apply(ShooterConstants.CURRENT_LIMIT);
+    // bbb.setNeutralMode(NeutralModeValue.Coast);
+    bbb.getConfigurator().apply(new MotorOutputConfigs().withInverted(ShooterConstants.BBB_INVERT));
   }
 
   @Override
@@ -64,7 +70,16 @@ public class ShooterIOReal implements ShooterIO {
     // If the shooter is charged, run the feeder
     if (true) {
       feeder.set(ShooterConstants.FEED_OUTPUT_SPEED);
+      inBBB();
     }
+  }
+
+  public void inBBB() {
+    bbb.set(ShooterConstants.BBB_IN_SPEED);
+  }
+
+  public void outBBB() {
+    bbb.set(ShooterConstants.BBB_OUT_SPEED);
   }
 
   @Override
@@ -110,6 +125,9 @@ public class ShooterIOReal implements ShooterIO {
 
     feeder.set(0);
     feeder.stopMotor();
+
+    bbb.set(0);
+    bbb.stopMotor();
   }
 
   @Override
@@ -125,6 +143,8 @@ public class ShooterIOReal implements ShooterIO {
     inputs.mainTargetVelocity = mainTargetVelocity;
     inputs.followerVelocity = follower.getVelocity().getValueAsDouble();
     inputs.followerTargetVelocity = followerTargetVelocity;
+    inputs.bbbVoltage = bbb.getMotorVoltage().getValueAsDouble();
+    inputs.bbbCurrent = bbb.getSupplyCurrent().getValueAsDouble();
 
     Logger.processInputs("Shooter", inputs);
   }

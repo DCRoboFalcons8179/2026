@@ -82,4 +82,12 @@ public class ShooterConstants {
   public static final double CORNER_VELOCITY = 67;
 
   public static final double TRENCH_ARC = 71.2962679306;
+
+  // Belly Beater Bar
+  public static final int BBB_ID = 3;
+
+  public static final double BBB_IN_SPEED = 0.8;
+  public static final double BBB_OUT_SPEED = -0.8;
+
+  public static final InvertedValue BBB_INVERT = InvertedValue.Clockwise_Positive;
 }

@@ -14,6 +14,8 @@ public interface ShooterIO {
     public double followerVelocity = 0;
     public double followerTargetVelocity = 0;
     public Shooter.State state = Shooter.State.UNDETERMINED;
+    public double bbbVoltage = 0;
+    public double bbbCurrent = 0;
   }
 
   public default void setShooterTargetVelocity(double velocity) {}

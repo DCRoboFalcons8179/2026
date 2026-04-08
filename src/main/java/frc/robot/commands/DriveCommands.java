@@ -18,7 +18,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -27,7 +26,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.FieldConstants;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.vision.Vision;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
@@ -63,7 +61,7 @@ public class DriveCommands {
   }
 
   public static Command cameraDrive(
-      Drive drive, Vision vision, DoubleSupplier xSupplier, DoubleSupplier ySupplier) {
+      Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier) {
     return Commands.run(
         () -> {
           // Get linear velocity
@@ -72,24 +70,23 @@ public class DriveCommands {
 
           double omegaPercent = 0.0;
 
+          @SuppressWarnings("resource")
+          PIDController aimController = new PIDController(0.2, 0.0, 0.01);
+          aimController.enableContinuousInput(-Math.PI, Math.PI);
           Pose2d robotPose = drive.getPose();
 
           Translation2d delta =
               FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
                   .minus(robotPose.getTranslation());
 
-          Angle fieldAngle = delta.getAngle().getMeasure();
+          // Use Rotation2d subtraction which properly wraps the angle to [-180, 180]
+          Rotation2d fieldAngle = delta.getAngle();
+          Rotation2d turretAngle = fieldAngle.minus(robotPose.getRotation());
 
-          double angleDegrees = Math.toDegrees(fieldAngle.baseUnitMagnitude());
+          // Clamp to the turret's physical range of [-90, 90] degrees
+          double angleDegrees = MathUtil.clamp(turretAngle.getDegrees(), -90.0, 90.0);
 
-          @SuppressWarnings("resource")
-          PIDController aimController = new PIDController(0.8, 0.0, 0.01);
-          aimController.enableContinuousInput(-Math.PI, Math.PI);
-
-          // Clamp output to prevent violent turns
-          aimController.setTolerance(0.02); // ~1 degree tolerance
-
-          SmartDashboard.putNumber("Rads", angleDegrees);
+          SmartDashboard.putNumber("Turret Angle Desired", angleDegrees);
 
           omegaPercent = -aimController.calculate(angleDegrees);
 

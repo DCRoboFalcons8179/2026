@@ -7,11 +7,9 @@ package frc.robot.subsystems.extrude;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import frc.robot.subsystems.Music;
 import org.littletonrobotics.junction.Logger;
 
@@ -75,8 +73,6 @@ public class ExtrudeIOReal implements ExtrudeIO {
     secondary.setNeutralMode(ExtrudeConstants.NEUTRAL_MODE);
     // Reset encoder position to 0 on startup
     secondary.setPosition(0);
-
-    secondary.setControl(new Follower(ExtrudeConstants.ID, MotorAlignmentValue.Aligned));
   }
 
   @Override

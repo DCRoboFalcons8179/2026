@@ -43,11 +43,6 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
-import frc.robot.subsystems.shooter.turret.Turret;
-import frc.robot.subsystems.shooter.turret.TurretConstants;
-import frc.robot.subsystems.shooter.turret.TurretIO;
-import frc.robot.subsystems.shooter.turret.TurretIOReal;
-import frc.robot.subsystems.shooter.turret.TurretIOSim;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
@@ -64,7 +59,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Vision vision;
-  private final Turret turret;
+  //   private final Turret turret;
   private final Shooter shooter;
   private final Intake intake;
   private final Extrude extrude;
@@ -101,7 +96,7 @@ public class RobotContainer {
                 new VisionIOPhotonVision(
                     VisionConstants.camera2Name, VisionConstants.robotToCamera2));
 
-        turret = new Turret(new TurretIOReal(), drive);
+        // turret = new Turret(new TurretIOReal(), drive);
 
         shooter = new Shooter(new ShooterIOReal(), drive::getPose);
 
@@ -129,7 +124,7 @@ public class RobotContainer {
                 new VisionIOPhotonVisionSim(
                     VisionConstants.camera2Name, VisionConstants.robotToCamera2, drive::getPose));
 
-        turret = new Turret(new TurretIOSim(), drive);
+        // turret = new Turret(new TurretIOSim(), drive);
         shooter = new Shooter(new ShooterIO() {}, drive::getPose);
         intake = new Intake(new IntakeIOSim() {});
         extrude = new Extrude(new ExtrudeIOSim() {}, intake);
@@ -153,7 +148,7 @@ public class RobotContainer {
                 new VisionIO() {},
                 new VisionIO() {});
 
-        turret = new Turret(new TurretIO() {}, drive);
+        // turret = new Turret(new TurretIO() {}, drive);
 
         shooter = new Shooter(new ShooterIO() {}, drive::getPose);
 
@@ -183,7 +178,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "aimToTag",
         DriveCommands.cameraDrive(
-            drive, vision, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
+            drive, () -> -controller.getLeftY(), () -> -controller.getLeftX()));
 
     NamedCommands.registerCommand(
         "Shooter Charge",
@@ -202,25 +197,27 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Agitate", new InstantCommand(() -> extrude.requestTransition(Extrude.State.AGITATE)));
 
-    NamedCommands.registerCommand(
-        "Turret Aim Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)));
-    NamedCommands.registerCommand(
-        "Turret Aim Disable",
-        new SequentialCommandGroup(
-            new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)),
-            new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)),
-            new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT))));
+    // NamedCommands.registerCommand(
+    //     "Turret Aim Enable", new InstantCommand(() ->
+    // turret.requestTransition(Turret.State.AIM)));
+    // NamedCommands.registerCommand(
+    //     "Turret Aim Disable",
+    //     new SequentialCommandGroup(
+    //         new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)),
+    //         new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)),
+    //         new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT))));
 
-    NamedCommands.registerCommand(
-        "Turret Enable", new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+    // NamedCommands.registerCommand(
+    //     "Turret Enable", new InstantCommand(() ->
+    // turret.requestTransition(Turret.State.UNLOCKED)));
 
-    NamedCommands.registerCommand(
-        "Turret Nudge Left",
-        new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
+    // NamedCommands.registerCommand(
+    //     "Turret Nudge Left",
+    //     new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
 
-    NamedCommands.registerCommand(
-        "Turret Nudge Right",
-        new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
+    // NamedCommands.registerCommand(
+    //     "Turret Nudge Right",
+    //     new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
 
     NamedCommands.registerCommand(
         "Intake Enable", new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
@@ -235,8 +232,8 @@ public class RobotContainer {
   }
 
   private void enableStateSubsystems() {
-    turret.enable();
-    turret.determineState();
+    // turret.enable();
+    // turret.determineState();
 
     shooter.enable();
     shooter.determineState();
@@ -249,7 +246,7 @@ public class RobotContainer {
   }
 
   public void unlockTurret() {
-    turret.requestTransition(Turret.State.UNLOCKED);
+    // turret.requestTransition(Turret.State.UNLOCKED);
   }
 
   /**
@@ -287,10 +284,16 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
+    // controller
+    //     .leftTrigger()
+    //     .onTrue(new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)))
+    //     .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+
     controller
         .leftTrigger()
-        .onTrue(new InstantCommand(() -> turret.requestTransition(Turret.State.AIM)))
-        .onFalse(new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)));
+        .whileTrue(
+            DriveCommands.cameraDrive(
+                drive, () -> controller.getLeftX(), () -> controller.getLeftY()));
 
     controller
         .rightBumper()
@@ -326,12 +329,12 @@ public class RobotContainer {
             new InstantCommand(() -> extrude.addExtruderPosition(-ExtrudeConstants.MANUAL_DELTA)));
 
     // Turret Manual Bump
-    controller
-        .povLeft()
-        .onTrue(new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
-    controller
-        .povRight()
-        .onTrue(new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
+    // controller
+    //     .povLeft()
+    //     .onTrue(new InstantCommand(() -> turret.incrementTurret(-TurretConstants.NUDGE_AMOUNT)));
+    // controller
+    //     .povRight()
+    //     .onTrue(new InstantCommand(() -> turret.incrementTurret(TurretConstants.NUDGE_AMOUNT)));
 
     // Turret Reset to Zero
     controller
@@ -341,7 +344,9 @@ public class RobotContainer {
     controller
         .a()
         .toggleOnTrue(
-            new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT)));
+            new SequentialCommandGroup(
+                new InstantCommand(() -> extrude.requestTransition(Extrude.State.IDLE)),
+                new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT))));
 
     controller
         .rightTrigger()
@@ -364,7 +369,7 @@ public class RobotContainer {
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Corner Left (velocity calculated with shooter velocity equation)
@@ -372,12 +377,12 @@ public class RobotContainer {
         .button(1)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.CORNER_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.CORNER_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.CORNER_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Tower Shoot (velocity calculated with shooter velocity equation)
@@ -385,12 +390,12 @@ public class RobotContainer {
         .button(12)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TOWER_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Lebron Left
@@ -398,12 +403,12 @@ public class RobotContainer {
         .button(7)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.LEBRON_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.LEBRON_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.LEBRON_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Right box
@@ -417,28 +422,28 @@ public class RobotContainer {
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Zero turret
-    boxLeft
-        .button(11)
-        .onTrue(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)),
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE))));
+    // boxLeft
+    //     .button(11)
+    //     .onTrue(
+    //         new SequentialCommandGroup(
+    //             new InstantCommand(() -> turret.requestTransition(Turret.State.UNLOCKED)),
+    //             new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE))));
 
     // Corner Right (velocity calculated with shooter velocity equation)
     boxRight
         .button(8)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.CORNER_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.CORNER_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.CORNER_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     // Trench Arc
@@ -446,7 +451,7 @@ public class RobotContainer {
         .button(6)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_ARC)),
+                // new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_ARC)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
@@ -464,12 +469,12 @@ public class RobotContainer {
         .button(11)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.LEBRON_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(-TurretConstants.LEBRON_ANGLE)),
                 new InstantCommand(() -> shooter.setVelocity(ShooterConstants.LEBRON_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
-                new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                // new InstantCommand(() -> turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
   }
 
