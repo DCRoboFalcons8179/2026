@@ -24,6 +24,9 @@ import frc.robot.commands.CheckAutonOptions;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ToggleCameras;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.bellyBeaterBar.BellyBeaterBar;
+import frc.robot.subsystems.bellyBeaterBar.BellyBeaterBarIO;
+import frc.robot.subsystems.bellyBeaterBar.BellyBeaterBarIOReal;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -57,12 +60,13 @@ import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
  */
 public class RobotContainer {
   // Subsystems
-  private final Drive drive;
-  private final Vision vision;
-  // private final Turret turret;
-  private final Shooter shooter;
-  private final Intake intake;
-  private final Extrude extrude;
+    private final Drive drive;
+    @SuppressWarnings("unused")
+    private final Vision vision;
+    private final BellyBeaterBar bellyBeaterBar;
+    private final Shooter shooter;
+    private final Intake intake;
+    private final Extrude extrude;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -99,10 +103,13 @@ public class RobotContainer {
 
         // turret = new Turret(new TurretIOReal(), drive);
 
-        shooter = new Shooter(new ShooterIOReal(), drive::getPose);
+        bellyBeaterBar = new BellyBeaterBar(new BellyBeaterBarIOReal());
+
+        shooter = new Shooter(new ShooterIOReal(bellyBeaterBar), drive::getPose);
 
         intake = new Intake(new IntakeIOReal());
         extrude = new Extrude(new ExtrudeIOReal(), intake);
+
         break;
 
       case SIM:
@@ -126,6 +133,7 @@ public class RobotContainer {
                     VisionConstants.camera2Name, VisionConstants.robotToCamera2, drive::getPose));
 
         // turret = new Turret(new TurretIOSim(), drive);
+        bellyBeaterBar = new BellyBeaterBar(new BellyBeaterBarIO() {});
         shooter = new Shooter(new ShooterIO() {}, drive::getPose);
         intake = new Intake(new IntakeIOSim() {});
         extrude = new Extrude(new ExtrudeIOSim() {}, intake);
@@ -150,6 +158,8 @@ public class RobotContainer {
                 new VisionIO() {});
 
         // turret = new Turret(new TurretIO() {}, drive);
+        
+        bellyBeaterBar = new BellyBeaterBar(new BellyBeaterBarIO() {});
 
         shooter = new Shooter(new ShooterIO() {}, drive::getPose);
 
@@ -311,10 +321,13 @@ public class RobotContainer {
         .start()
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_OUT))));
+                new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_OUT)),
+            new InstantCommand(() -> bellyBeaterBar.requestTransition(BellyBeaterBar.State.OUT))));
     controller
         .start()
-        .onTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
+        .onTrue(new SequentialCommandGroup(
+                new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)),
+            new InstantCommand(() -> bellyBeaterBar.requestTransition(BellyBeaterBar.State.IDLE))));
 
     controller.back().onTrue(new ToggleCameras());
 

@@ -43,8 +43,9 @@ public class Music extends SubsystemBase {
 
     // Publish widgets to Elastic
     SmartDashboard.putData("Music/Song Select", songChooser);
-    SmartDashboard.putBoolean("Music/Playing", false);
+    SmartDashboard.putBoolean("Music/Play", false);
     SmartDashboard.putString("Music/Current Track", "None");
+    SmartDashboard.putBoolean("Music/Playing", isPlaying);
   }
 
   public static void addMotor(CommonDevice motor) {

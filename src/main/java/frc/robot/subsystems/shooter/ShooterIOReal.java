@@ -5,22 +5,27 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import frc.robot.subsystems.Music;
+import frc.robot.subsystems.bellyBeaterBar.BellyBeaterBar;
+import frc.robot.subsystems.bellyBeaterBar.BellyBeaterBar.State;
 import frc.robot.subsystems.shooter.pitch.PitchConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterIOReal implements ShooterIO {
+  private final BellyBeaterBar bellyBeaterBar;
+
   protected final TalonFXS shooter = new TalonFXS(ShooterConstants.ID);
   protected final TalonFXS follower = new TalonFXS(PitchConstants.PITCH_ID);
   private final VelocityVoltage shooterVelocityRequest = new VelocityVoltage(0).withSlot(0);
   private final VelocityVoltage followerVelocityRequest = new VelocityVoltage(0).withSlot(0);
   protected final TalonFXS feeder = new TalonFXS(ShooterConstants.FEED_ID);
 
-  protected final TalonFXS bbb = new TalonFXS(ShooterConstants.BBB_ID);
-
   private double mainTargetVelocity = 0;
   private double followerTargetVelocity = 0;
+  
 
-  public ShooterIOReal() {
+  public ShooterIOReal(BellyBeaterBar bellyBeaterBar) {
+    this.bellyBeaterBar = bellyBeaterBar;
+
     configureMotor();
 
     Music.addMotor(shooter);
@@ -41,10 +46,6 @@ public class ShooterIOReal implements ShooterIO {
         .apply(new MotorOutputConfigs().withInverted(ShooterConstants.FEED_INVERT));
 
     setPIDControl();
-
-    // bbb.getConfigurator().apply(ShooterConstants.CURRENT_LIMIT);
-    // bbb.setNeutralMode(NeutralModeValue.Coast);
-    bbb.getConfigurator().apply(new MotorOutputConfigs().withInverted(ShooterConstants.BBB_INVERT));
   }
 
   @Override
@@ -69,26 +70,11 @@ public class ShooterIOReal implements ShooterIO {
 
     // If the shooter is charged, run the feeder
     if (isCharged()) {
-      System.out.println("Charged");
       feeder.set(ShooterConstants.FEED_OUTPUT_SPEED);
-      inBBB();
+      bellyBeaterBar.requestTransition(State.OUT);
+    } else {
+      bellyBeaterBar.requestTransition(State.IDLE);
     }
-  }
-
-  public void inBBB() {
-    bbb.set(ShooterConstants.BBB_IN_SPEED);
-  }
-
-  @Override
-  public void outBBB() {
-    System.out.println("OUT");
-    bbb.set(ShooterConstants.BBB_OUT_SPEED);
-  }
-
-  public void stopBBB() {
-    System.out.println("STOPPING");
-    bbb.stopMotor();
-    bbb.set(0);
   }
 
   @Override
@@ -134,9 +120,6 @@ public class ShooterIOReal implements ShooterIO {
 
     feeder.set(0);
     feeder.stopMotor();
-
-    bbb.set(0);
-    bbb.stopMotor();
   }
 
   @Override
@@ -152,8 +135,6 @@ public class ShooterIOReal implements ShooterIO {
     inputs.mainTargetVelocity = mainTargetVelocity;
     inputs.followerVelocity = follower.getVelocity().getValueAsDouble();
     inputs.followerTargetVelocity = followerTargetVelocity;
-    inputs.bbbVoltage = bbb.getMotorVoltage().getValueAsDouble();
-    inputs.bbbCurrent = bbb.getSupplyCurrent().getValueAsDouble();
     inputs.atSpeed = isCharged();
 
     Logger.processInputs("Shooter", inputs);

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.SMF.StateMachine;
 import frc.robot.commands.shooter.AutoShootVelocity;
+
 import java.util.function.Supplier;
 
 public class Shooter extends StateMachine<Shooter.State> {

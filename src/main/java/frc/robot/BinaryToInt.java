@@ -9,7 +9,8 @@ public class BinaryToInt {
    *
    * @param boxRight
    * @param boxLeft
-   * @return The integer value of the binary value of the buttons on the joysticks.
+   * @return The integer value of the binary value of the buttons on the
+   *         joysticks.
    */
   public static int getInt(CommandJoystick boxRight, CommandJoystick boxLeft) {
     return (boxRight.button(3).getAsBoolean() ? 1 << 2 : 0) // 1 << 2 is the same as 2^2

@@ -4,7 +4,6 @@ import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
 
 public interface ShooterIO {
-
   @AutoLog
   public static class ShooterInputs {
     public double current = 0.0;
@@ -14,8 +13,6 @@ public interface ShooterIO {
     public double followerVelocity = 0;
     public double followerTargetVelocity = 0;
     public Shooter.State state = Shooter.State.UNDETERMINED;
-    public double bbbVoltage = 0;
-    public double bbbCurrent = 0;
     public boolean atSpeed = false;
   }
 
