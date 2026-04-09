@@ -61,56 +61,64 @@ public class DriveCommands {
   }
 
   public static Command cameraDrive(
-      Drive drive, DoubleSupplier xSupplier, DoubleSupplier ySupplier) {
+      Drive drive, DoubleSupplier ySupplier, DoubleSupplier xSupplier) {
+    // Create persistent PID controller (not recreated every loop)
+    @SuppressWarnings("resource")
+    PIDController aimController = new PIDController(4.5, 0.0, 0.02);
+    aimController.enableContinuousInput(-Math.PI, Math.PI);
+    aimController.setTolerance(Math.toRadians(2.0)); // 2 degree deadband
+
     return Commands.run(
-        () -> {
-          // Get linear velocity
-          Translation2d linearVelocity =
-              getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+            () -> {
+              // Get linear velocity
+              Translation2d linearVelocity =
+                  getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
 
-          double omegaPercent = 0.0;
+              Pose2d robotPose = drive.getPose();
 
-          @SuppressWarnings("resource")
-          PIDController aimController = new PIDController(0.2, 0.0, 0.01);
-          aimController.enableContinuousInput(-Math.PI, Math.PI);
-          Pose2d robotPose = drive.getPose();
+              Translation2d delta =
+                  FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
+                      .minus(robotPose.getTranslation());
 
-          Translation2d delta =
-              FieldConstants.getTargetData(FieldConstants.HUB_POSITION)
-                  .minus(robotPose.getTranslation());
+              // Calculate the desired robot heading to face the target
+              Rotation2d desiredHeading = delta.getAngle();
 
-          // Use Rotation2d subtraction which properly wraps the angle to [-180, 180]
-          Rotation2d fieldAngle = delta.getAngle();
-          Rotation2d turretAngle = fieldAngle.minus(robotPose.getRotation());
+              // Calculate heading error (continuous wrapping handled by PID)
+              double currentHeadingRad = robotPose.getRotation().getRadians();
+              double desiredHeadingRad = desiredHeading.getRadians();
 
-          // Clamp to the turret's physical range of [-90, 90] degrees
-          double angleDegrees = MathUtil.clamp(turretAngle.getDegrees(), -90.0, 90.0);
+              SmartDashboard.putNumber(
+                  "Camera Aim/Current Heading", Math.toDegrees(currentHeadingRad));
+              SmartDashboard.putNumber(
+                  "Camera Aim/Desired Heading", Math.toDegrees(desiredHeadingRad));
 
-          SmartDashboard.putNumber("Turret Angle Desired", angleDegrees);
+              // PID calculates angular velocity to reach setpoint
+              double omegaRadPerSec = aimController.calculate(currentHeadingRad, desiredHeadingRad);
 
-          omegaPercent = -aimController.calculate(angleDegrees);
+              // Limit max turning speed for smoother control
+              omegaRadPerSec = MathUtil.clamp(omegaRadPerSec, -4.5, 4.5);
 
-          // Limit max turning speed to 40% for smoother control
-          omegaPercent = MathUtil.clamp(omegaPercent, -0.4, 0.4);
+              SmartDashboard.putNumber("Camera Aim/Omega Rad/s", omegaRadPerSec);
+              SmartDashboard.putBoolean("Camera Aim/At Setpoint", aimController.atSetpoint());
 
-          SmartDashboard.putNumber("Omeag Percent Out", omegaPercent);
-
-          // Convert to field relative speeds & send command
-          ChassisSpeeds speeds =
-              new ChassisSpeeds(
-                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
-                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
-                  omegaPercent * drive.getMaxAngularSpeedRadPerSec());
-          boolean isFlipped =
-              DriverStation.getAlliance().isPresent()
-                  && DriverStation.getAlliance().get() == Alliance.Red;
-          drive.runVelocity(
-              ChassisSpeeds.fromFieldRelativeSpeeds(
-                  speeds,
-                  isFlipped
-                      ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                      : drive.getRotation()));
-        });
+              // Convert to field relative speeds & send command
+              ChassisSpeeds speeds =
+                  new ChassisSpeeds(
+                      linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                      linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                      omegaRadPerSec);
+              boolean isFlipped =
+                  DriverStation.getAlliance().isPresent()
+                      && DriverStation.getAlliance().get() == Alliance.Red;
+              drive.runVelocity(
+                  ChassisSpeeds.fromFieldRelativeSpeeds(
+                      speeds,
+                      isFlipped
+                          ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                          : drive.getRotation()));
+            })
+        // Reset PID when command starts to clear any accumulated error
+        .beforeStarting(() -> aimController.reset());
   }
 
   /**

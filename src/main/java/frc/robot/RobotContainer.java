@@ -299,7 +299,7 @@ public class RobotContainer {
         .leftTrigger()
         .whileTrue(
             DriveCommands.cameraDrive(
-                drive, () -> controller.getLeftX(), () -> controller.getLeftY()));
+                drive, () -> -controller.getLeftX(), () -> -controller.getLeftY()));
 
     controller
         .rightBumper()
