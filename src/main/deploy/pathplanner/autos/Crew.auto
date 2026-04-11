@@ -19,12 +19,6 @@
                 "data": {
                   "pathName": "Crew P1"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Extrude Out"
-                }
               }
             ]
           }
@@ -32,25 +26,13 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.3
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shooter Charge"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Agitate"
           }
         },
         {
@@ -92,13 +74,13 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 1.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Agitate"
+            "name": "Extrude In"
           }
         },
         {
@@ -111,6 +93,12 @@
           "type": "named",
           "data": {
             "name": "ToggleCameras"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
           }
         }
       ]

@@ -120,6 +120,8 @@ public class ShooterIOReal implements ShooterIO {
 
     feeder.set(0);
     feeder.stopMotor();
+
+    bellyBeaterBar.requestTransition(State.IDLE);
   }
 
   @Override

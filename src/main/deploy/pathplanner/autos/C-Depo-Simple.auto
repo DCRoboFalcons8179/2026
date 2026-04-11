@@ -19,12 +19,6 @@
                 "data": {
                   "pathName": "C-Depo-Simple"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Extrude Out"
-                }
               }
             ]
           }
@@ -44,49 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Turret Enable"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Turret Enable"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Turret Nudge Right"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Shooter Charge"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Agitate"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.0
+            "waitTime": 3.0
           }
         },
         {

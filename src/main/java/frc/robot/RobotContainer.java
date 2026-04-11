@@ -253,6 +253,9 @@ public class RobotContainer {
     shooter.enable();
     shooter.determineState();
 
+    bellyBeaterBar.enable();
+    bellyBeaterBar.determineState();
+
     intake.enable();
     intake.determineSelf();
 

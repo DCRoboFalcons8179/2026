@@ -38,19 +38,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Turret Aim Enable"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Shooter Charge"
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Agitate"
+            "name": "Extrude In"
           }
         },
         {

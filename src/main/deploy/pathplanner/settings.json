@@ -12,8 +12,9 @@
   ],
   "autoFolders": [
     "Hang",
-    "Pickups",
-    "No Hang"
+    "Double Pickups",
+    "No Hang",
+    "Pickups"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

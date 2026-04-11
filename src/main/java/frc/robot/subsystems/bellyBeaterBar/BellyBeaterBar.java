@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.bellyBeaterBar;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.SMF.StateMachine;
 
@@ -53,6 +54,7 @@ public class BellyBeaterBar extends StateMachine<BellyBeaterBar.State> {
   protected void update() {
     inputs.state = this.getState();
     io.updateInputs(inputs);
+    SmartDashboard.putString("BellyBeaterBar State", getState().toString());
   }
 
   public enum State {
