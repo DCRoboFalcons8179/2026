@@ -95,7 +95,7 @@ public class GetAuton {
               /* 0*/ "Do Nothing",
               /* 1*/ "C-Depo-Simple",
               /* 2*/ "C(hub)-simple-shot",
-              /* 3*/ "C-Human-Simple",
+              /* 3*/ "Depo",
               /* 4*/ "Crew",
               /* 5*/ "Human Pickup Shoot",
               /* 6*/ "Depo Pickup Shoot",

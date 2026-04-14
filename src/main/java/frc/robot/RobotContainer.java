@@ -96,8 +96,8 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 // new VisionIOPhotonVision(
                 // VisionConstants.camera0Name, VisionConstants.robotToCamera0),
-                new VisionIOPhotonVision(
-                    VisionConstants.camera1Name, VisionConstants.robotToCamera1),
+                // new VisionIOPhotonVision(
+                //     VisionConstants.camera1Name, VisionConstants.robotToCamera1),
                 new VisionIOPhotonVision(
                     VisionConstants.camera2Name, VisionConstants.robotToCamera2));
 
@@ -130,7 +130,8 @@ public class RobotContainer {
                 new VisionIOPhotonVisionSim(
                     VisionConstants.camera1Name, VisionConstants.robotToCamera0, drive::getPose),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.camera2Name, VisionConstants.robotToCamera2, drive::getPose));
+                    VisionConstants.camera2Name, VisionConstants.robotToCamera2, drive::getPose)
+                );
 
         // turret = new Turret(new TurretIOSim(), drive);
         bellyBeaterBar = new BellyBeaterBar(new BellyBeaterBarIO() {});
@@ -523,7 +524,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)))
-        .andThen(new CheckAutonOptions(boxLeft, boxRight, extrude, drive, shooter));
+    return new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)));
+        // .andThen(new CheckAutonOptions(boxLeft, boxRight, extrude, drive, shooter));
   }
 }

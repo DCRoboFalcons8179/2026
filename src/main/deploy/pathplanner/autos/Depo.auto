@@ -11,64 +11,33 @@
           }
         },
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Crew P1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Extrude Out"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shooter Charge"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shooter Idle"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Extrude Out"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "Crew P2"
+            "waitTime": 0.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Crew P3"
+            "pathName": "Depo P1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depo P2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depo P3"
           }
         },
         {
@@ -78,9 +47,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ToggleCameras"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
+            "waitTime": 0.75
           }
         },
         {
@@ -98,7 +73,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ToggleCameras"
+            "name": "Shooter Idle"
           }
         },
         {
@@ -106,11 +81,17 @@
           "data": {
             "name": "Extrude Out"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depo P4"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "New",
   "choreoAuto": false
 }

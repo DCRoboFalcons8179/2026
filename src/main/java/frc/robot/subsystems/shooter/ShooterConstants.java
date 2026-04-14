@@ -44,7 +44,7 @@ public class ShooterConstants {
   public static final double UPPER_ERROR_MARGIN = 15;
 
   /// The mode for the motors when inactive
-  public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
+  public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
 
   public static final NeutralModeValue FOLLOWER_NEUTRAL_MODE = NeutralModeValue.Coast;
 

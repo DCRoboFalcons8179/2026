@@ -3,6 +3,7 @@
   "robotLength": 0.6858,
   "holonomicMode": true,
   "pathFolders": [
+    "New",
     "Pickups",
     "adaptive paths",
     "depot",
@@ -11,8 +12,9 @@
     "start"
   ],
   "autoFolders": [
-    "Hang",
     "Double Pickups",
+    "Hang",
+    "New",
     "No Hang",
     "Pickups"
   ],
