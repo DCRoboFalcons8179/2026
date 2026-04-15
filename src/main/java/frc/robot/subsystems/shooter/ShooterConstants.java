@@ -79,7 +79,7 @@ public class ShooterConstants {
 
   public static final double TOWER_VELOCITY = 40;
 
-  public static final double CORNER_VELOCITY = 67;
+  public static final double CORNER_VELOCITY = 20;
 
   public static final double TRENCH_ARC = 71.2962679306;
 }

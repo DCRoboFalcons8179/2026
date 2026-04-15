@@ -476,8 +476,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 // new InstantCommand(() ->
                 // turret.setTurretDegrees(-TurretConstants.CORNER_ANGLE)),
-                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.CORNER_VELOCITY)),
-                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.CORNER_VELOCITY))))
         .onFalse(
             new SequentialCommandGroup(
                 // new InstantCommand(() ->

@@ -1,0 +1,97 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ToggleCameras"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human P1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human P2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human P3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Charge"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ToggleCameras"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Extrude In"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Idle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human P4"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "New",
+  "choreoAuto": false
+}
