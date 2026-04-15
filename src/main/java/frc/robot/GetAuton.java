@@ -94,7 +94,7 @@ public class GetAuton {
           Arrays.asList(
               /* 0*/ "Do Nothing",
               /* 1*/ "C-Depo-Simple",
-              /* 2*/ "C(hub)-simple-shot",
+              /* 2*/ "Human",
               /* 3*/ "Depo",
               /* 4*/ "Crew",
               /* 5*/ "Human Pickup Shoot",
