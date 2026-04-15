@@ -8,73 +8,77 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.7994421437428203,
-        "y": 5.359827789549519
+        "x": 3.4355457382660113,
+        "y": 5.3726732018755055
       },
       "isLocked": false,
       "linkedName": "Depo P3 End"
     },
     {
       "anchor": {
-        "x": 0.4920227920227922,
-        "y": 4.719772079772081
+        "x": 2.9468660968584235,
+        "y": 7.045413105416071
       },
       "prevControl": {
-        "x": 0.2420227920227922,
-        "y": 4.719772079772081
+        "x": 2.6817732465610074,
+        "y": 6.546426024064465
       },
       "nextControl": {
-        "x": 0.742022792022792,
-        "y": 4.719772079772081
+        "x": 3.287320194316936,
+        "y": 7.686253460915747
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.41450142450142446,
-        "y": 6.877450142450143
+        "x": 6.6420512820512805,
+        "y": 7.368418803418804
       },
       "prevControl": {
-        "x": 0.4145014245014245,
-        "y": 5.856752136752136
+        "x": 5.855034256937392,
+        "y": 7.700015125513999
       },
       "nextControl": {
-        "x": 0.4145014245014245,
-        "y": 7.948482882577167
+        "x": 7.4564710468437205,
+        "y": 7.025276800095906
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.205270655270655,
-        "y": 5.27534188034188
+        "x": 7.727350427342753,
+        "y": 4.719772079775047
       },
       "prevControl": {
-        "x": 1.689967626019716,
-        "y": 6.567454779706833
+        "x": 7.450344741494107,
+        "y": 5.461568446622071
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Depo P3 End"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.77,
-      "rotationDegrees": -90.0
+      "waypointRelativePos": 1.0682302771854788,
+      "rotationDegrees": 0.0
     },
     {
-      "waypointRelativePos": 2.3027718550106253,
-      "rotationDegrees": -90.0
+      "waypointRelativePos": 1.8230277185501016,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 2.194029850746242,
+      "rotationDegrees": 90.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.288318703578668,
-      "maxWaypointRelativePos": 2.0742741390951953,
+      "minWaypointRelativePos": 0.2,
+      "maxWaypointRelativePos": 0.3,
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 3.0,
@@ -97,7 +101,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -48.18
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": "New",
