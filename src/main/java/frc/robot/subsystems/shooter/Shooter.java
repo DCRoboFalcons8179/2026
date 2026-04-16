@@ -5,6 +5,8 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -19,6 +21,9 @@ public class Shooter extends StateMachine<Shooter.State> {
 
   private final ShooterInputsAutoLogged inputs = new ShooterInputsAutoLogged();
   private final Supplier<Pose2d> poseSupplier;
+
+  private boolean autoShoot = false;
+  private double setVelocity = 0;
 
   public Shooter(ShooterIO io, Supplier<Pose2d> poseSupplier) {
     super("Shooter", State.UNDETERMINED, State.class);
@@ -37,12 +42,24 @@ public class Shooter extends StateMachine<Shooter.State> {
     registerStateCommand(
         State.CHARGE,
         new SequentialCommandGroup(
-            new AutoShootVelocity(this, poseSupplier).withTimeout(0.25),
+            Commands.run(() -> {
+              if (autoShoot) {
+                CommandScheduler.getInstance().schedule(new AutoShootVelocity(this, poseSupplier));
+              } else {
+                setVelocity(setVelocity);
+              }
+            }),
             new WaitUntilCommand(() -> io.isCharged()),
             new WaitCommand(0.1),
             new InstantCommand(() -> requestTransition(State.SHOOT))));
 
-    registerStateCommand(State.SHOOT, new AutoShootVelocity(this, poseSupplier));
+    registerStateCommand(State.SHOOT, Commands.run(() -> {
+      if (autoShoot) {
+        CommandScheduler.getInstance().schedule(new AutoShootVelocity(this, poseSupplier));
+      } else {
+        setVelocity(setVelocity);
+      }
+    }));
 
     registerStateCommand(State.REVERSE, new InstantCommand(() -> io.beaterBarReverse(-50)));
   }
@@ -56,6 +73,15 @@ public class Shooter extends StateMachine<Shooter.State> {
 
   public void setVelocity(double velocity) {
     io.setShooterTargetVelocity(velocity);
+    this.setVelocity = velocity;
+  }
+
+  public void setAutoShootMode(boolean autoAim) {
+    this.autoShoot = autoAim;
+  }
+
+  public boolean getAutoAimMode() {
+    return autoShoot;
   }
 
   @Override

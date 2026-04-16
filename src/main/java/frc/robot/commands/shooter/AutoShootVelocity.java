@@ -7,13 +7,14 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.FieldConstants;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterConstants;
 import java.util.function.Supplier;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class AutoShootVelocity extends Command {
+public class AutoShootVelocity extends InstantCommand {
   private final Shooter shooter;
   private double launchVelocity = ShooterConstants.OUTPUT_SPEED;
   private Supplier<Pose2d> poseSupplier;
@@ -28,11 +29,7 @@ public class AutoShootVelocity extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
+  public void initialize() {
     // double distance = vision.getTargetDistance(1).getDistance(Translation2d.kZero);
 
     // int targetID = vision.getBestTagId(1);

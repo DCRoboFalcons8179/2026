@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.CheckAutonOptions;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ToggleCameras;
+import frc.robot.commands.shooter.SetAutoShootMode;
+import frc.robot.commands.shooter.SetManualShootMode;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.bellyBeaterBar.BellyBeaterBar;
 import frc.robot.subsystems.bellyBeaterBar.BellyBeaterBarIO;
@@ -377,8 +379,8 @@ public class RobotContainer {
 
     controller
         .rightTrigger()
-        .onTrue(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE)))
-        .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+        .onTrue(new SetAutoShootMode(shooter).andThen(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
+        .onFalse(new SetManualShootMode(shooter).andThen(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
     controller
         .x()
