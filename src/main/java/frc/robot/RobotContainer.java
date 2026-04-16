@@ -387,6 +387,8 @@ public class RobotContainer {
 
     // Left box
 
+    boxLeft.button(2).whileTrue(new InstantCommand(() -> drive.stopWithX()));
+
     // Trench Left (velocity calculated with shooter velocity equation)
     boxLeft
         .button(8)
