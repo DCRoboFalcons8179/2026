@@ -76,8 +76,9 @@ public class Shooter extends StateMachine<Shooter.State> {
     this.setVelocity = velocity;
   }
 
-  public void setAutoShootMode(boolean autoAim) {
-    this.autoShoot = autoAim;
+  public void setAutoShootMode(boolean autoShoot) {
+    this.autoShoot = autoShoot;
+    System.out.println(autoShoot);
   }
 
   public boolean getAutoAimMode() {

@@ -527,7 +527,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)));
+    return new SequentialCommandGroup(new SetAutoShootMode(shooter), new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft))).andThen(new SetManualShootMode(shooter)));
         // .andThen(new CheckAutonOptions(boxLeft, boxRight, extrude, drive, shooter));
   }
 }
