@@ -210,6 +210,9 @@ public class RobotContainer {
         new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_IN)));
     NamedCommands.registerCommand(
         "Agitate", new InstantCommand(() -> extrude.requestTransition(Extrude.State.AGITATE)));
+    
+    NamedCommands.registerCommand("Auto Shoot", new SetAutoShootMode(shooter));
+    NamedCommands.registerCommand("Manual Shoot", new SetManualShootMode(shooter));
 
     // NamedCommands.registerCommand(
     // "Turret Aim Enable", new InstantCommand(() ->
