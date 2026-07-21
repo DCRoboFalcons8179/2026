@@ -22,7 +22,7 @@ public class Shooter extends StateMachine<Shooter.State> {
   private final ShooterInputsAutoLogged inputs = new ShooterInputsAutoLogged();
   private final Supplier<Pose2d> poseSupplier;
 
-  private boolean autoShoot = false;
+  public boolean autoShoot = false;
   private double setVelocity = 0;
 
   public Shooter(ShooterIO io, Supplier<Pose2d> poseSupplier) {

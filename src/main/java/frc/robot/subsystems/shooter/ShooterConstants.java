@@ -77,9 +77,13 @@ public class ShooterConstants {
   // 78.90931314
   public static final double LEBRON_VELOCITY = TRENCH_VELOCITY;
 
-  public static final double TOWER_VELOCITY = 35;
+  public static final double TOWER_VELOCITY = 25;
 
   public static final double CORNER_VELOCITY = 20;
 
   public static final double TRENCH_ARC = 71.2962679306;
+
+  public static final double CLOSE_VELOCITY = 25;
+  public static final double MIDDLE_VELOCITY = 30;
+  public static final double FAR_VELOCITY = 38;
 }

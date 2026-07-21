@@ -11,15 +11,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Extrude Out"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Extrude Out"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shooter Charge"
+            "name": "MiddleVelocityShoot"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.75
+            "waitTime": 0.9
           }
         },
         {

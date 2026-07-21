@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -18,12 +24,6 @@
                 "type": "path",
                 "data": {
                   "pathName": "Crew P1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Extrude Out"
                 }
               }
             ]
@@ -38,7 +38,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shooter Charge"
+            "name": "MiddleVelocityShoot"
           }
         },
         {
@@ -51,6 +51,12 @@
           "type": "named",
           "data": {
             "name": "Shooter Idle"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
           }
         },
         {
@@ -74,7 +80,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shooter Charge"
+            "name": "MiddleVelocityShoot"
           }
         },
         {

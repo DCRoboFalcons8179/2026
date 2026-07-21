@@ -186,6 +186,8 @@ public class RobotContainer {
 
     SmartDashboard.putString("Auto Side", CheckAutonOptions.getAutoSide(boxLeft, boxRight));
     SmartDashboard.putString("Path Name", CheckAutonOptions.getPathName(boxLeft, boxRight));
+
+    // SmartDashboard.putBoolean("Auto Vision", Shooter.autoShoot);
   }
 
   private void configureNamedCommands() {
@@ -243,6 +245,13 @@ public class RobotContainer {
         "Intake Disable", new InstantCommand(() -> intake.requestTransition(Intake.State.IDLE)));
 
     NamedCommands.registerCommand("ToggleCameras", new ToggleCameras());
+
+    NamedCommands.registerCommand("ToggleAutoVelocity", new SetManualShootMode(shooter));
+
+    NamedCommands.registerCommand("MiddleVelocityShoot", 
+        new SequentialCommandGroup(
+            new InstantCommand(() -> shooter.setVelocity(ShooterConstants.MIDDLE_VELOCITY)),
+            new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))));
   }
 
   public void idleShooter() {
@@ -312,12 +321,16 @@ public class RobotContainer {
     // turret.requestTransition(Turret.State.UNLOCKED)));
 
     controller
-        .leftTrigger()
-        .whileTrue(
-            DriveCommands.cameraDrive(
-                drive, () -> -controller.getLeftX(), () -> -controller.getLeftY()));
-
-    controller
+        .rightTrigger()
+        .onTrue(
+            new SequentialCommandGroup(
+                // new InstantCommand(() ->
+                // turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.MIDDLE_VELOCITY)),
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
+        .onFalse
+            (new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+        controller
         .rightBumper()
         .toggleOnTrue(new InstantCommand(() -> intake.requestTransition(Intake.State.FEED_IN)));
     controller
@@ -378,7 +391,7 @@ public class RobotContainer {
                 new InstantCommand(() -> extrude.requestTransition(Extrude.State.EXTRUDE_OUT))));
 
     controller
-        .rightTrigger()
+        .leftTrigger()
         .onTrue(new SetAutoShootMode(shooter).andThen(new InstantCommand(() -> shooter.requestTransition(Shooter.State.CHARGE))))
         .onFalse(new SetManualShootMode(shooter).andThen(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE))));
 
@@ -426,7 +439,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 // new InstantCommand(() ->
                 // turret.setTurretDegrees(TurretConstants.ZERO_ANGLE)),
-                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TOWER_VELOCITY)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.FAR_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
@@ -456,7 +469,7 @@ public class RobotContainer {
         .button(12)
         .onTrue(
             new SequentialCommandGroup(
-                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_VELOCITY)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.FAR_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(
             new SequentialCommandGroup(
@@ -492,7 +505,15 @@ public class RobotContainer {
         .button(6)
         .onTrue(
             new SequentialCommandGroup(
-                // new InstantCommand(() -> shooter.setVelocity(ShooterConstants.TRENCH_ARC)),
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.CLOSE_VELOCITY)),
+                new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
+        .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
+
+    boxRight
+        .button(7)
+        .onTrue(
+            new SequentialCommandGroup(
+                new InstantCommand(() -> shooter.setVelocity(ShooterConstants.MIDDLE_VELOCITY)),
                 new InstantCommand(() -> shooter.requestTransition(Shooter.State.SHOOT))))
         .onFalse(new InstantCommand(() -> shooter.requestTransition(Shooter.State.IDLE)));
 
@@ -527,7 +548,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft)));
-        // .andThen(new CheckAutonOptions(boxLeft, boxRight, extrude, drive, shooter));
+    return new SequentialCommandGroup(
+        new SetAutoShootMode(shooter),
+        new PathPlannerAuto(GetAuton.getAutonName(BinaryToInt.getInt(boxRight, boxLeft))),
+        new SetManualShootMode(shooter));
   }
 }
